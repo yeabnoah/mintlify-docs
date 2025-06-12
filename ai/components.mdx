@@ -1,0 +1,239 @@
+---
+title: 'AI Components'
+description: 'Learn about the pre-built AI components available in the boilerplate'
+---
+
+# AI Components
+
+The Ultimate Boilerplate includes several pre-built AI components that you can use to quickly add AI features to your application.
+
+## Chat Interface
+
+The `AIChat` component provides a fully-featured chat interface with streaming support.
+
+```typescript
+// app/components/ai/chat.tsx
+'use client';
+
+import { useChat } from 'ai/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+
+export function AIChat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+
+  return (
+    <Card className="w-full max-w-2xl p-4">
+      <div className="space-y-4">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${
+              message.role === 'user' ? 'justify-end' : 'justify-start'
+            }`}
+          >
+            <div
+              className={`rounded-lg p-3 ${
+                message.role === 'user'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted'
+              }`}
+            >
+              {message.content}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+        <Input
+          value={input}
+          onChange={handleInputChange}
+          placeholder="Type your message..."
+        />
+        <Button type="submit">Send</Button>
+      </form>
+    </Card>
+  );
+}
+```
+
+## Text Generation
+
+The `AITextGenerator` component provides a simple interface for text generation.
+
+```typescript
+// app/components/ai/text-generator.tsx
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
+
+export function AITextGenerator() {
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const generate = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await response.json();
+      setResult(data.text);
+    } catch (error) {
+      console.error('Generation failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Card className="w-full max-w-2xl p-4">
+      <Textarea
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Enter your prompt..."
+        className="mb-4"
+      />
+      <Button onClick={generate} disabled={loading}>
+        {loading ? 'Generating...' : 'Generate'}
+      </Button>
+      {result && (
+        <div className="mt-4 rounded-lg bg-muted p-4">
+          <p>{result}</p>
+        </div>
+      )}
+    </Card>
+  );
+}
+```
+
+## Image Generation
+
+The `AIImageGenerator` component provides an interface for AI image generation.
+
+```typescript
+// app/components/ai/image-generator.tsx
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+import Image from 'next/image';
+
+export function AIImageGenerator() {
+  const [prompt, setPrompt] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const generate = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/ai/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await response.json();
+      setImageUrl(data.imageUrl);
+    } catch (error) {
+      console.error('Image generation failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Card className="w-full max-w-2xl p-4">
+      <Input
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Describe the image you want to generate..."
+        className="mb-4"
+      />
+      <Button onClick={generate} disabled={loading}>
+        {loading ? 'Generating...' : 'Generate Image'}
+      </Button>
+      {imageUrl && (
+        <div className="mt-4">
+          <Image
+            src={imageUrl}
+            alt="Generated image"
+            width={512}
+            height={512}
+            className="rounded-lg"
+          />
+        </div>
+      )}
+    </Card>
+  );
+}
+```
+
+## Usage Examples
+
+### 1. Chat Interface
+
+```typescript
+// app/page.tsx
+import { AIChat } from '@/components/ai/chat';
+
+export default function ChatPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="mb-8 text-2xl font-bold">AI Chat</h1>
+      <AIChat />
+    </div>
+  );
+}
+```
+
+### 2. Text Generation
+
+```typescript
+// app/generate/page.tsx
+import { AITextGenerator } from '@/components/ai/text-generator';
+
+export default function GeneratePage() {
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="mb-8 text-2xl font-bold">AI Text Generation</h1>
+      <AITextGenerator />
+    </div>
+  );
+}
+```
+
+### 3. Image Generation
+
+```typescript
+// app/images/page.tsx
+import { AIImageGenerator } from '@/components/ai/image-generator';
+
+export default function ImagesPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="mb-8 text-2xl font-bold">AI Image Generation</h1>
+      <AIImageGenerator />
+    </div>
+  );
+}
+```
+
+## Customization
+
+All components are built using shadcn/ui and can be customized using Tailwind CSS. You can modify the styling, add new features, or combine components to create more complex AI interfaces.
+
+## Next Steps
+
+- Learn about [Server Actions](/docs/ai/server-actions)
+- Explore [Use Cases](/docs/ai/use-cases)
+- Check out [OpenRouter Integration](/docs/ai/openrouter) 

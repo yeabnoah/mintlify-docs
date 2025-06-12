@@ -1,0 +1,137 @@
+---
+title: 'Public Routes'
+description: 'Learn how to create and use public API routes'
+---
+
+# Public Routes
+
+Public routes are accessible without authentication and are perfect for endpoints that need to be available to all users.
+
+## When to Use Public Routes
+
+Use public routes for:
+- Public data access
+- Authentication endpoints
+- Health checks
+- Public product information
+- Public API documentation
+- Public search functionality
+
+## Creating Public Routes
+
+```typescript
+import { router, publicProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const publicRouter = router({
+  // Simple health check
+  healthCheck: publicProcedure.query(() => {
+    return { status: 'ok' };
+  }),
+
+  // Public data with input validation
+  getPublicData: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      return { data: 'public data' };
+    }),
+
+  // Public mutation
+  createPublicItem: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(async ({ input }) => {
+      return { success: true, item: input };
+    }),
+});
+```
+
+## Example: Health Check Endpoint
+
+```typescript
+// apps/server/src/routers/health.ts
+import { router, publicProcedure } from '../lib/trpc';
+
+export const healthRouter = router({
+  check: publicProcedure.query(() => {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      version: process.env.VERSION,
+    };
+  }),
+});
+```
+
+## Example: Public Search
+
+```typescript
+// apps/server/src/routers/search.ts
+import { router, publicProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const searchRouter = router({
+  search: publicProcedure
+    .input(z.object({
+      query: z.string(),
+      limit: z.number().optional(),
+    }))
+    .query(async ({ input }) => {
+      // Implement your search logic here
+      return {
+        results: [],
+        total: 0,
+      };
+    }),
+});
+```
+
+## Client Usage
+
+```typescript
+// In your React component
+function PublicDataComponent() {
+  const { data, isLoading } = trpc.publicRouter.getPublicData.useQuery({ id: '123' });
+  
+  return (
+    <div>
+      {isLoading ? 'Loading...' : JSON.stringify(data)}
+    </div>
+  );
+}
+```
+
+## Best Practices for Public Routes
+
+1. **Input Validation**
+   - Always validate input using Zod
+   - Define clear input schemas
+   - Handle edge cases
+
+2. **Rate Limiting**
+   - Implement rate limiting for public endpoints
+   - Consider using a middleware
+
+3. **Caching**
+   - Cache frequently accessed public data
+   - Use appropriate cache headers
+
+4. **Error Handling**
+   - Return meaningful error messages
+   - Use appropriate HTTP status codes
+
+## Security Considerations
+
+Even though these routes are public, you should still:
+
+1. Validate all input data
+2. Implement rate limiting
+3. Sanitize output data
+4. Monitor for abuse
+5. Use HTTPS only
+
+## Next Steps
+
+- [Protected Routes](/docs/api/protected)
+- [Subscribed Routes](/docs/api/subscribed)
+- [Client Usage](/docs/api/client)
+- [Best Practices](/docs/api/best-practices) 

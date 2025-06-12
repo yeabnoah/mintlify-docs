@@ -1,4 +1,238 @@
 ---
-title: 'Database Page'
-description: 'Preview changes locally to update your docs'
+title: 'Database'
+description: 'Learn about our database setup, schema, and how to extend it'
 ---
+
+# Database
+
+Our application uses Supabase as the primary database provider, which is built on top of PostgreSQL. We use Prisma as our ORM to interact with the database.
+
+## Schema Overview
+
+Our database schema is designed to support authentication, user management, and subscription handling. Here's a detailed breakdown of our models:
+
+### User Model
+
+```prisma
+model User {
+  id               String         @id @map("_id")
+  name             String
+  email            String
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
+  sessions         Session[]
+  accounts         Account[]
+  stripeCustomerId String?
+  subscription     subscription[]
+
+  @@unique([email])
+  @@map("user")
+}
+```
+
+The User model is the central entity in our application, storing essential user information and relationships.
+
+### Session Model
+
+```prisma
+model Session {
+  id        String   @id @map("_id")
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+```
+
+Sessions track user authentication states and provide security features.
+
+### Account Model
+
+```prisma
+model Account {
+  id                    String    @id @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+```
+
+The Account model handles OAuth and authentication provider connections.
+
+### Subscription Model
+
+```prisma
+model subscription {
+  id                   String    @id
+  provider             Provider  @default(STRIPE)
+  plan                 String
+  referenceId          String?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  polarSubscriptionId  String?
+  polarCustomerId      String?
+  productId            String?
+  status               String?
+  seats                Int?
+  periodStart          DateTime?
+  periodEnd            DateTime?
+  cancelAtPeriodEnd    Boolean?
+  trialStart           DateTime?
+  trialEnd             DateTime?
+  metadata             Json?
+  user                 User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String?
+
+  @@index([stripeCustomerId], name: "stripe_customer_id_idx")
+}
+```
+
+The subscription model manages user subscriptions with support for both Stripe and Polar payment providers.
+
+## Setting Up the Database
+
+### Local Development Setup
+
+1. Install Supabase CLI:
+```bash
+npm install -g supabase
+```
+
+2. Initialize Supabase locally:
+```bash
+supabase init
+```
+
+3. Start the local Supabase instance:
+```bash
+supabase start
+```
+
+4. Apply the database schema:
+```bash
+npx prisma db push
+```
+
+### Cloud Setup
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+
+2. Get your database connection strings from the Supabase dashboard:
+   - Database URL
+   - Direct URL
+
+3. Add these to your `.env` file:
+```env
+DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
+DIRECT_URL="postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
+```
+
+4. Apply the schema:
+```bash
+npx prisma db push
+```
+
+## Extending the Schema
+
+To add new features to the database:
+
+1. Modify the schema in `prisma/schema.prisma`
+2. Create a new migration:
+```bash
+npx prisma migrate dev --name your_migration_name
+```
+
+### Best Practices
+
+- Always use meaningful field names
+- Include proper indexes for frequently queried fields
+- Use appropriate data types
+- Add comments to complex fields
+- Follow the naming conventions (camelCase for fields, PascalCase for models)
+
+## Database Operations
+
+### Using Prisma Client
+
+```typescript
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+// Create a user
+const user = await prisma.user.create({
+  data: {
+    name: 'John Doe',
+    email: 'john@example.com',
+    emailVerified: false,
+  },
+})
+
+// Query users
+const users = await prisma.user.findMany({
+  include: {
+    subscription: true,
+  },
+})
+```
+
+### Common Operations
+
+- **Create**: `prisma.model.create()`
+- **Read**: `prisma.model.findUnique()`, `prisma.model.findMany()`
+- **Update**: `prisma.model.update()`
+- **Delete**: `prisma.model.delete()`
+
+## Security Considerations
+
+1. Always use environment variables for sensitive data
+2. Implement proper access control in your API routes
+3. Use Prisma's built-in security features
+4. Regularly backup your database
+5. Monitor database performance
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Connection Issues**
+   - Verify your connection strings
+   - Check network connectivity
+   - Ensure proper firewall rules
+
+2. **Migration Problems**
+   - Check for conflicting changes
+   - Verify schema syntax
+   - Ensure proper backup before migrations
+
+3. **Performance Issues**
+   - Check indexes
+   - Monitor query performance
+   - Use Prisma's query optimization features
+
+## Additional Resources
+
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/) 

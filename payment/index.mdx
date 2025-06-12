@@ -1,4 +1,144 @@
 ---
-title: 'Payment Page'
-description: 'Preview changes locally to update your docs'
+title: 'Payments Overview'
+description: 'Learn how to handle payments in your application using Stripe and Polar.sh'
 ---
+
+# Payments Overview
+
+The Ultimate Boilerplate provides a robust payment system that supports both Stripe and Polar.sh as payment providers. This guide will help you understand the payment architecture and how to implement it in your application.
+
+## Architecture
+
+The payment system is built on top of BetterAuth and provides:
+
+- Unified subscription management
+- Multiple payment provider support
+- Webhook handling
+- Subscription status tracking
+- Customer portal integration
+
+## Database Schema
+
+The system uses a unified subscription model that supports both providers:
+
+```prisma
+model subscription {
+  id                   String    @id
+  provider             Provider  @default(STRIPE)
+  plan                 String
+  referenceId          String?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  polarSubscriptionId  String?
+  polarCustomerId      String?
+  productId            String?
+  status               String?
+  seats                Int?
+  periodStart          DateTime?
+  periodEnd            DateTime?
+  cancelAtPeriodEnd    Boolean?
+  trialStart           DateTime?
+  trialEnd             DateTime?
+  metadata             Json?
+  user                 User?     @relation(fields: [userId], references: [id])
+  userId               String?
+}
+```
+
+## Available Payment Providers
+
+### 1. Stripe
+- Industry standard payment processor
+- Comprehensive API and dashboard
+- Extensive documentation and support
+- [Learn more about Stripe setup](/payments/stripe)
+
+### 2. Polar.sh
+- Modern payment platform
+- Developer-friendly API
+- Built-in subscription management
+- [Learn more about Polar.sh setup](/payments/polar)
+
+## Client-Side Integration
+
+The payment system is integrated into the client using BetterAuth:
+
+```typescript
+import { createAuthClient } from "better-auth/react";
+import { polarClient } from "@polar-sh/better-auth";
+import { stripeClient } from "@better-auth/stripe/client";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+  plugins: [
+    polarClient(),
+    stripeClient({
+      subscription: true,
+    }),
+  ],
+});
+```
+
+## Server-Side Integration
+
+The server-side implementation uses BetterAuth with both payment providers:
+
+```typescript
+import { betterAuth } from "better-auth";
+import { polar } from "@polar-sh/better-auth";
+import { stripe } from "@better-auth/stripe";
+
+export const auth = betterAuth({
+  plugins: [
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      // ... polar configuration
+    }),
+    stripe({
+      stripeClient,
+      createCustomerOnSignUp: true,
+      // ... stripe configuration
+    }),
+  ],
+});
+```
+
+## Subscription Management
+
+The system provides a unified interface for managing subscriptions:
+
+```typescript
+// Get subscription status
+const paymentDetails = await authClient.getPaymentDetails();
+const isSubscribed = paymentDetails?.polar || paymentDetails?.stripe;
+
+// Start checkout
+await authClient.checkout({
+  products: [productId],
+  slug: productSlug,
+});
+```
+
+## UI Components
+
+The boilerplate includes pre-built UI components for:
+
+- Subscription status display
+- Payment provider selection
+- Checkout flow
+- Customer portal access
+
+## Security Considerations
+
+1. Always use environment variables for sensitive data
+2. Implement proper webhook signature verification
+3. Use authenticated routes for subscription management
+4. Implement proper error handling for failed payments
+
+## Next Steps
+
+- [Set up Stripe](/payments/stripe)
+- [Set up Polar.sh](/payments/polar)
+- [Configure webhooks](/payments/webhooks)
+- [Implement subscription management](/payments/subscriptions) 

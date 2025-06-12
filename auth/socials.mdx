@@ -1,0 +1,235 @@
+---
+title: 'Social Authentication'
+description: 'Learn how to set up and use social authentication providers'
+---
+
+# Social Authentication
+
+The boilerplate supports social authentication through various providers, currently including Google OAuth. The system is built to be easily extensible for additional providers.
+
+## Server-Side Setup
+
+### 1. Configure BetterAuth
+
+```typescript
+// apps/server/src/lib/auth.ts
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+    // Add more providers here
+  },
+
+  trustedOrigins: [
+    process.env.CORS_ORIGIN as string,
+  ],
+});
+```
+
+### 2. Environment Variables
+
+```env
+# OAuth Providers
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Add more provider credentials as needed
+```
+
+## Client-Side Implementation
+
+### 1. Auth Client Setup
+
+```typescript
+// apps/web/src/lib/auth-client.ts
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+});
+```
+
+### 2. Social Login Buttons
+
+```typescript
+// apps/web/src/features/auth/social-buttons.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+
+export function SocialButtons() {
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signInWithProvider("google");
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <Button
+        onClick={handleGoogleSignIn}
+        className="w-full"
+        variant="outline"
+      >
+        <svg className="mr-2 h-4 w-4" />
+        Continue with Google
+      </Button>
+      {/* Add more provider buttons */}
+    </div>
+  );
+}
+```
+
+### 3. OAuth Callback Page
+
+```typescript
+// apps/web/src/app/(auth)/oauth/callback/page.tsx
+"use client";
+
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+
+export default function OAuthCallback() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
+  const provider = searchParams.get("provider");
+
+  useEffect(() => {
+    if (code && provider) {
+      authClient.handleOAuthCallback(provider, code)
+        .then(() => {
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          // Handle error
+        });
+    }
+  }, [code, provider, router]);
+
+  return (
+    <div>
+      <h1>Completing sign in...</h1>
+      {/* Loading state */}
+    </div>
+  );
+}
+```
+
+## Authentication Flow
+
+1. User clicks social provider button
+2. Redirect to provider's login page
+3. User authenticates with provider
+4. Provider redirects back with code
+5. Exchange code for tokens
+6. Create or update user account
+7. Create session
+8. Redirect to dashboard
+
+## Security Features
+
+1. **OAuth Security**
+   - State parameter validation
+   - PKCE for mobile apps
+   - Secure token storage
+   - Token refresh handling
+
+2. **Account Security**
+   - Email verification
+   - Account linking
+   - Session management
+   - Rate limiting
+
+3. **Data Security**
+   - Secure user data storage
+   - Privacy compliance
+   - Data encryption
+   - Access control
+
+## Best Practices
+
+1. **Error Handling**
+   - Show user-friendly error messages
+   - Log authentication errors
+   - Handle edge cases
+   - Provide fallback options
+
+2. **User Experience**
+   - Clear provider buttons
+   - Loading states
+   - Success/error feedback
+   - Account linking options
+
+3. **Security**
+   - HTTPS in production
+   - Rate limiting
+   - Input validation
+   - Token validation
+
+## Adding New Providers
+
+To add a new social provider:
+
+1. Register your application with the provider
+2. Get client ID and secret
+3. Add provider configuration to BetterAuth
+4. Create provider button component
+5. Handle provider-specific scopes
+6. Test the integration
+
+Example for adding GitHub:
+
+```typescript
+// Server-side
+export const auth = betterAuth({
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    },
+  },
+});
+
+// Client-side
+const handleGithubSignIn = async () => {
+  await authClient.signInWithProvider("github");
+};
+```
+
+## Common Issues & Solutions
+
+1. **Callback URL Issues**
+   - Verify callback URLs in provider dashboard
+   - Check CORS configuration
+   - Validate redirect URIs
+
+2. **Token Issues**
+   - Check token expiration
+   - Verify token storage
+   - Handle token refresh
+
+3. **Account Linking**
+   - Handle existing accounts
+   - Manage multiple providers
+   - Resolve conflicts
+
+## Next Steps
+
+- [Set up Email & Password authentication](/auth/email-password)
+- [Configure Magic Link authentication](/auth/magic-link)
+- [Set up protected routes](/auth/protected-routes)
+- [Configure session management](/auth/sessions) 

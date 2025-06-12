@@ -1,0 +1,348 @@
+---
+title: 'AI Use Cases'
+description: 'Explore common use cases and examples for AI features in your application'
+---
+
+# AI Use Cases
+
+This guide provides examples of common AI use cases and how to implement them using the Ultimate Boilerplate.
+
+## 1. Content Generation
+
+### Blog Post Generation
+
+```typescript
+// app/actions/content.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const blogPostSchema = z.object({
+  topic: z.string(),
+  keywords: z.array(z.string()),
+  tone: z.enum(['professional', 'casual', 'technical']),
+});
+
+export async function generateBlogPost(input: z.infer<typeof blogPostSchema>) {
+  const { topic, keywords, tone } = blogPostSchema.parse(input);
+
+  const prompt = `Write a blog post about ${topic} with the following keywords: ${keywords.join(
+    ', '
+  )}. Use a ${tone} tone.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-4',
+    prompt,
+    maxTokens: 2000,
+  });
+
+  return { content: response.text };
+}
+```
+
+### Social Media Posts
+
+```typescript
+// app/actions/social.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const socialPostSchema = z.object({
+  platform: z.enum(['twitter', 'linkedin', 'instagram']),
+  topic: z.string(),
+  tone: z.enum(['professional', 'casual', 'humorous']),
+});
+
+export async function generateSocialPost(input: z.infer<typeof socialPostSchema>) {
+  const { platform, topic, tone } = socialPostSchema.parse(input);
+
+  const prompt = `Write a ${platform} post about ${topic} with a ${tone} tone.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-3.5-turbo',
+    prompt,
+    maxTokens: 500,
+  });
+
+  return { content: response.text };
+}
+```
+
+## 2. Code Generation
+
+### Component Generation
+
+```typescript
+// app/actions/code.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const componentSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  framework: z.enum(['react', 'vue', 'svelte']),
+});
+
+export async function generateComponent(input: z.infer<typeof componentSchema>) {
+  const { name, description, framework } = componentSchema.parse(input);
+
+  const prompt = `Generate a ${framework} component named ${name} that ${description}. Include TypeScript types and proper documentation.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-4',
+    prompt,
+    maxTokens: 2000,
+  });
+
+  return { code: response.text };
+}
+```
+
+### API Route Generation
+
+```typescript
+// app/actions/api.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const apiRouteSchema = z.object({
+  method: z.enum(['GET', 'POST', 'PUT', 'DELETE']),
+  path: z.string(),
+  description: z.string(),
+});
+
+export async function generateApiRoute(input: z.infer<typeof apiRouteSchema>) {
+  const { method, path, description } = apiRouteSchema.parse(input);
+
+  const prompt = `Generate a Next.js API route for ${method} ${path} that ${description}. Include proper error handling and TypeScript types.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-4',
+    prompt,
+    maxTokens: 2000,
+  });
+
+  return { code: response.text };
+}
+```
+
+## 3. Data Analysis
+
+### Text Analysis
+
+```typescript
+// app/actions/analysis.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const textAnalysisSchema = z.object({
+  text: z.string(),
+  analysisType: z.enum(['sentiment', 'keywords', 'summary']),
+});
+
+export async function analyzeText(input: z.infer<typeof textAnalysisSchema>) {
+  const { text, analysisType } = textAnalysisSchema.parse(input);
+
+  const prompt = `Analyze the following text for ${analysisType}: ${text}`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-3.5-turbo',
+    prompt,
+    maxTokens: 1000,
+  });
+
+  return { analysis: response.text };
+}
+```
+
+### Data Extraction
+
+```typescript
+// app/actions/extraction.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const extractionSchema = z.object({
+  text: z.string(),
+  fields: z.array(z.string()),
+});
+
+export async function extractData(input: z.infer<typeof extractionSchema>) {
+  const { text, fields } = extractionSchema.parse(input);
+
+  const prompt = `Extract the following fields from the text: ${fields.join(
+    ', '
+  )}. Text: ${text}. Return the data in JSON format.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-3.5-turbo',
+    prompt,
+    maxTokens: 1000,
+  });
+
+  return { data: JSON.parse(response.text) };
+}
+```
+
+## 4. Customer Support
+
+### FAQ Generation
+
+```typescript
+// app/actions/support.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const faqSchema = z.object({
+  topic: z.string(),
+  count: z.number().min(1).max(10),
+});
+
+export async function generateFaq(input: z.infer<typeof faqSchema>) {
+  const { topic, count } = faqSchema.parse(input);
+
+  const prompt = `Generate ${count} frequently asked questions about ${topic} with detailed answers.`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-3.5-turbo',
+    prompt,
+    maxTokens: 2000,
+  });
+
+  return { faqs: response.text };
+}
+```
+
+### Email Response Generation
+
+```typescript
+// app/actions/email.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const emailSchema = z.object({
+  customerEmail: z.string().email(),
+  tone: z.enum(['professional', 'friendly', 'apologetic']),
+});
+
+export async function generateEmailResponse(input: z.infer<typeof emailSchema>) {
+  const { customerEmail, tone } = emailSchema.parse(input);
+
+  const prompt = `Generate a ${tone} email response to: ${customerEmail}`;
+
+  const response = await openrouter.complete({
+    model: 'gpt-3.5-turbo',
+    prompt,
+    maxTokens: 1000,
+  });
+
+  return { response: response.text };
+}
+```
+
+## 5. Image Generation
+
+### Product Images
+
+```typescript
+// app/actions/images.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const imageSchema = z.object({
+  description: z.string(),
+  style: z.enum(['realistic', 'cartoon', 'artistic']),
+  size: z.enum(['256x256', '512x512', '1024x1024']),
+});
+
+export async function generateProductImage(input: z.infer<typeof imageSchema>) {
+  const { description, style, size } = imageSchema.parse(input);
+
+  const prompt = `Generate a ${style} product image of ${description}`;
+
+  const response = await openrouter.generateImage({
+    model: 'dall-e-3',
+    prompt,
+    size,
+  });
+
+  return { imageUrl: response.url };
+}
+```
+
+### Social Media Graphics
+
+```typescript
+// app/actions/graphics.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { z } from 'zod';
+
+const graphicSchema = z.object({
+  theme: z.string(),
+  platform: z.enum(['instagram', 'twitter', 'linkedin']),
+  text: z.string().optional(),
+});
+
+export async function generateSocialGraphic(input: z.infer<typeof graphicSchema>) {
+  const { theme, platform, text } = graphicSchema.parse(input);
+
+  const prompt = `Generate a ${platform} graphic about ${theme}${
+    text ? ` with the text: ${text}` : ''
+  }`;
+
+  const response = await openrouter.generateImage({
+    model: 'dall-e-3',
+    prompt,
+    size: '1024x1024',
+  });
+
+  return { imageUrl: response.url };
+}
+```
+
+## Best Practices
+
+1. **Prompt Engineering**
+   - Be specific and clear in your prompts
+   - Include examples when possible
+   - Use system messages for context
+
+2. **Error Handling**
+   - Validate all inputs
+   - Handle API errors gracefully
+   - Implement retry logic for failed requests
+
+3. **Performance**
+   - Cache responses when appropriate
+   - Use streaming for long-running operations
+   - Implement rate limiting
+
+4. **Security**
+   - Sanitize user input
+   - Validate model outputs
+   - Implement proper access controls
+
+## Next Steps
+
+- Learn about [AI Components](/docs/ai/components)
+- Check out [Server Actions](/docs/ai/server-actions)
+- Explore [OpenRouter Integration](/docs/ai/openrouter) 

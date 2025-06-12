@@ -1,0 +1,213 @@
+---
+title: 'Subscribed Routes'
+description: 'Learn how to create and use API routes that require an active subscription'
+---
+
+# Subscribed Routes
+
+Subscribed routes require both user authentication and an active subscription. These routes are perfect for premium features and subscription-gated content.
+
+## When to Use Subscribed Routes
+
+Use subscribed routes for:
+- Premium features
+- Subscription-gated content
+- Advanced functionality
+- Paid API endpoints
+- Premium data access
+- Subscription-specific features
+
+## Creating Subscribed Routes
+
+```typescript
+import { router, subscribedProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const premiumRouter = router({
+  // Get premium content
+  getPremiumContent: subscribedProcedure.query(async ({ ctx }) => {
+    return { content: 'premium data' };
+  }),
+
+  // Access premium feature
+  usePremiumFeature: subscribedProcedure
+    .input(z.object({
+      featureId: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Implement premium feature logic
+      return { success: true };
+    }),
+});
+```
+
+## Subscription Check Flow
+
+Subscribed routes automatically check for both authentication and an active subscription:
+
+```typescript
+export const subscribedProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId: ctx.session.userId,
+      status: 'active',
+      currentPeriodEnd: {
+        gt: new Date(),
+      },
+    },
+  });
+
+  if (!subscription) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Active subscription required',
+    });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      subscription,
+    },
+  });
+});
+```
+
+## Example: Premium Content Management
+
+```typescript
+// apps/server/src/routers/premium.ts
+import { router, subscribedProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const premiumRouter = router({
+  // Get premium content
+  getContent: subscribedProcedure
+    .input(z.object({
+      contentType: z.enum(['article', 'video', 'download']),
+    }))
+    .query(async ({ ctx, input }) => {
+      const content = await prisma.premiumContent.findMany({
+        where: {
+          type: input.contentType,
+          subscriptionTier: {
+            lte: ctx.subscription.tier,
+          },
+        },
+      });
+      return content;
+    }),
+
+  // Access premium feature
+  useFeature: subscribedProcedure
+    .input(z.object({
+      featureId: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if feature is available in subscription tier
+      const feature = await prisma.premiumFeature.findFirst({
+        where: {
+          id: input.featureId,
+          requiredTier: {
+            lte: ctx.subscription.tier,
+          },
+        },
+      });
+
+      if (!feature) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Feature not available in your subscription tier',
+        });
+      }
+
+      // Implement feature logic
+      return { success: true };
+    }),
+});
+```
+
+## Client Usage
+
+```typescript
+// In your React component
+function PremiumContentComponent() {
+  const { data: content, isLoading } = trpc.premiumRouter.getContent.useQuery({
+    contentType: 'article',
+  });
+  const useFeature = trpc.premiumRouter.useFeature.useMutation();
+
+  const handleFeatureUse = async (featureId: string) => {
+    try {
+      await useFeature.mutateAsync({ featureId });
+    } catch (error) {
+      if (error.code === 'FORBIDDEN') {
+        // Handle subscription upgrade prompt
+      }
+    }
+  };
+
+  return (
+    <div>
+      {isLoading ? 'Loading...' : (
+        <div>
+          {content.map(item => (
+            <div key={item.id}>
+              {item.title}
+              <button onClick={() => handleFeatureUse(item.featureId)}>
+                Use Feature
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Best Practices for Subscribed Routes
+
+1. **Subscription Management**
+   - Check subscription status
+   - Handle subscription expiration
+   - Implement tier-based access
+
+2. **Feature Access**
+   - Implement feature flags
+   - Handle tier limitations
+   - Provide upgrade paths
+
+3. **Error Handling**
+   - Handle subscription errors
+   - Provide clear upgrade messages
+   - Implement proper error logging
+
+4. **Security**
+   - Validate subscription status
+   - Implement proper access controls
+   - Use database-level security
+
+## Security Considerations
+
+1. **Subscription Security**
+   - Validate subscription status
+   - Check subscription expiration
+   - Handle subscription changes
+
+2. **Feature Access**
+   - Implement proper access controls
+   - Check feature availability
+   - Handle tier limitations
+
+3. **Data Protection**
+   - Protect premium content
+   - Implement proper access controls
+   - Use database-level security
+
+## Next Steps
+
+- [Public Routes](/docs/api/public)
+- [Protected Routes](/docs/api/protected)
+- [Client Usage](/docs/api/client)
+- [Best Practices](/docs/api/best-practices) 

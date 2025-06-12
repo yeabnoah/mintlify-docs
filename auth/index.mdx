@@ -1,4 +1,141 @@
 ---
-title: 'Auth Page'
-description: 'Preview changes locally to update your docs'
+title: 'Authentication'
+description: 'Comprehensive guide to authentication in the Ultimate Boilerplate'
 ---
+
+# Authentication Overview
+
+The Ultimate Boilerplate uses BetterAuth for handling authentication, providing a robust and secure authentication system with multiple sign-in methods and seamless integration with payment providers.
+
+## Features
+
+- 🔐 Multiple Authentication Methods
+  - Email & Password
+  - Magic Link
+  - Social Providers (Google)
+  - Email Verification
+  - Password Reset Flow
+- 💳 Payment Integration (Polar.sh & Stripe)
+- 🛡️ Protected Routes
+- 🔒 Session Management
+
+## Quick Start
+
+1. Set up environment variables:
+
+```env
+# Auth Configuration
+AUTH_SECRET="your-auth-secret"
+CORS_ORIGIN="http://localhost:3000"
+
+# OAuth Providers
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Email (Resend)
+RESEND_API_KEY="your-resend-api-key"
+```
+
+2. Install dependencies:
+
+```bash
+bun add better-auth @better-auth/stripe @polar-sh/better-auth
+```
+
+## Authentication Methods
+
+### Email & Password
+
+The boilerplate supports traditional email and password authentication with:
+
+- Email verification
+- Password reset flow
+- Secure password hashing
+- Rate limiting
+
+[Learn more about Email & Password authentication](/auth/email-password)
+
+### Magic Link
+
+Passwordless authentication using magic links:
+
+- One-click sign-in
+- Secure token generation
+- Email delivery via Resend
+- Automatic session creation
+
+[Learn more about Magic Link authentication](/auth/magic-link)
+
+### Social Providers
+
+Currently supported social providers:
+
+- Google OAuth
+- More providers coming soon
+
+[Learn more about Social authentication](/auth/social)
+
+## Protected Routes
+
+The boilerplate includes middleware for protecting routes:
+
+```typescript
+// middleware.ts
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/settings/:path*",
+    "/api/protected/:path*",
+  ],
+};
+```
+
+[Learn more about route protection](/auth/protected-routes)
+
+## Session Management
+
+Sessions are managed securely with:
+
+- JWT-based tokens
+- Secure cookie storage
+- Automatic session refresh
+- Cross-subdomain support
+
+[Learn more about session management](/auth/sessions)
+
+## Integration with Payments
+
+Authentication is integrated with payment providers:
+
+- Polar.sh (primary)
+- Stripe (fallback)
+- Subscription management
+- Customer portal
+
+[Learn more about payment integration](/payments/overview)
+
+## Security Best Practices
+
+1. **Password Security**
+   - Strong password hashing
+   - Rate limiting
+   - Password complexity requirements
+
+2. **Session Security**
+   - Secure session storage
+   - Session timeout
+   - CSRF protection
+   - Secure cookies
+
+3. **OAuth Security**
+   - Token validation
+   - State parameter
+   - Secure client secrets
+
+## Next Steps
+
+- [Set up Email & Password auth](/auth/email-password)
+- [Configure Magic Link auth](/auth/magic-link)
+- [Set up Social auth](/auth/social)
+- [Configure protected routes](/auth/protected-routes)
+- [Set up session management](/auth/sessions) 

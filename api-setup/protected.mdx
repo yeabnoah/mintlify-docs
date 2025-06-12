@@ -1,0 +1,166 @@
+---
+title: 'Protected Routes'
+description: 'Learn how to create and use protected API routes that require authentication'
+---
+
+# Protected Routes
+
+Protected routes require user authentication and are used for endpoints that should only be accessible to logged-in users.
+
+## When to Use Protected Routes
+
+Use protected routes for:
+- User-specific data
+- Profile management
+- User settings
+- Personal data access
+- User preferences
+- Private content
+
+## Creating Protected Routes
+
+```typescript
+import { router, protectedProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const userRouter = router({
+  // Get user profile
+  getProfile: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.session.user;
+  }),
+
+  // Update user settings
+  updateSettings: protectedProcedure
+    .input(z.object({
+      theme: z.enum(['light', 'dark']),
+      notifications: z.boolean(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Update user settings in database
+      return { success: true };
+    }),
+});
+```
+
+## Authentication Flow
+
+Protected routes automatically check for a valid session:
+
+```typescript
+export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.session) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Authentication required',
+    });
+  }
+  return next();
+});
+```
+
+## Example: User Profile Management
+
+```typescript
+// apps/server/src/routers/profile.ts
+import { router, protectedProcedure } from '../lib/trpc';
+import { z } from 'zod';
+
+export const profileRouter = router({
+  // Get user profile
+  getProfile: protectedProcedure.query(async ({ ctx }) => {
+    const user = await prisma.user.findUnique({
+      where: { id: ctx.session.userId },
+    });
+    return user;
+  }),
+
+  // Update profile
+  updateProfile: protectedProcedure
+    .input(z.object({
+      name: z.string().optional(),
+      email: z.string().email().optional(),
+      bio: z.string().optional(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const updated = await prisma.user.update({
+        where: { id: ctx.session.userId },
+        data: input,
+      });
+      return updated;
+    }),
+});
+```
+
+## Client Usage
+
+```typescript
+// In your React component
+function ProfileComponent() {
+  const { data: profile, isLoading } = trpc.profileRouter.getProfile.useQuery();
+  const updateProfile = trpc.profileRouter.updateProfile.useMutation();
+
+  const handleUpdate = async (data) => {
+    try {
+      await updateProfile.mutateAsync(data);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
+  return (
+    <div>
+      {isLoading ? 'Loading...' : (
+        <form onSubmit={handleUpdate}>
+          {/* Profile form fields */}
+        </form>
+      )}
+    </div>
+  );
+}
+```
+
+## Best Practices for Protected Routes
+
+1. **Session Management**
+   - Always check session validity
+   - Handle session expiration
+   - Implement proper logout
+
+2. **Data Access**
+   - Only return data the user has permission to access
+   - Implement proper data filtering
+   - Use database-level permissions
+
+3. **Error Handling**
+   - Handle authentication errors gracefully
+   - Provide clear error messages
+   - Implement proper error logging
+
+4. **Security**
+   - Validate all input data
+   - Implement CSRF protection
+   - Use secure session management
+
+## Security Considerations
+
+1. **Session Security**
+   - Use secure session cookies
+   - Implement session timeout
+   - Handle session revocation
+
+2. **Data Protection**
+   - Encrypt sensitive data
+   - Implement proper access controls
+   - Use database-level security
+
+3. **Input Validation**
+   - Validate all user input
+   - Sanitize data before storage
+   - Implement proper error handling
+
+## Next Steps
+
+- [Public Routes](/docs/api/public)
+- [Subscribed Routes](/docs/api/subscribed)
+- [Client Usage](/docs/api/client)
+- [Best Practices](/docs/api/best-practices) 
