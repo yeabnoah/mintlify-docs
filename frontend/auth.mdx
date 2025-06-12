@@ -1,0 +1,84 @@
+---
+title: Authentication Components
+---
+
+# Authentication (`features/auth`)
+
+This module provides all authentication-related UI and logic for the boilerplate, including sign up, login, password reset, and forgot password flows. It is designed to work with BetterAuth and integrates with the rest of the app using React hooks, zod validation, and UI primitives from shadcn/ui.
+
+## Overview
+- **Purpose:** Handle all user authentication flows in a secure, user-friendly, and extensible way.
+- **Integration:** Used in Next.js pages (e.g., `/login`, `/signup`, `/forgot-password`, `/reset-password`).
+- **Tech:** React, shadcn/ui, zod, react-hook-form, BetterAuth client, toast notifications.
+
+---
+
+## Components
+
+### SignupForm
+- **File:** `features/auth/signup-form.tsx`
+- **Purpose:** User registration form supporting name, email, password, and social signups (GitHub, Google).
+- **How it works:**
+  - Uses `react-hook-form` and zod for validation.
+  - Calls `authClient.signUp.email` to register a new user.
+  - On success, shows a toast and prompts for email verification.
+  - Supports toggling password visibility.
+  - Social signup buttons trigger OAuth flows via BetterAuth.
+- **Usage:** Used on `/signup` page.
+
+### LoginForm
+- **File:** `features/auth/login-form.tsx`
+- **Purpose:** User login form supporting email/password and social logins.
+- **How it works:**
+  - Uses `react-hook-form` and zod for validation.
+  - Calls `authClient.signIn.email` for email/password login.
+  - On success, shows a toast and redirects to dashboard.
+  - Social login buttons trigger OAuth flows via BetterAuth.
+  - Includes a link to the forgot password page.
+- **Usage:** Used on `/login` page.
+
+### ForgotPasswordForm
+- **File:** `features/auth/forgot-password-form.tsx`
+- **Purpose:** Initiates password reset by sending a reset link to the user's email.
+- **How it works:**
+  - Uses `react-hook-form` and zod for validation.
+  - Calls `authClient.forgetPassword` to send a reset email.
+  - Shows a toast on success or error.
+- **Usage:** Used on `/forgot-password` page.
+
+### ResetPasswordForm
+- **File:** `features/auth/reset-password-form.tsx`
+- **Purpose:** Allows users to set a new password after clicking the reset link.
+- **How it works:**
+  - Uses `react-hook-form` and zod for validation (password and confirm password).
+  - Calls `authClient.resetPassword` with the new password and token from the URL.
+  - Shows a toast on success and redirects to login.
+- **Usage:** Used on `/reset-password` page.
+
+---
+
+## How It Works in the App
+- Each form is imported and rendered in the corresponding Next.js page under `/app`.
+- All forms use shadcn/ui components for consistent styling.
+- Toast notifications provide user feedback for all actions.
+- Social login/signup is handled via BetterAuth and can be extended with more providers.
+
+---
+
+## Example Usage
+
+```tsx
+// In /app/signup/page.tsx
+import { SignupForm } from '@/features/auth/signup-form';
+
+export default function SignupPage() {
+  return <SignupForm />;
+}
+```
+
+---
+
+## Extending
+- Add more providers by extending the social login/signup button logic.
+- Customize validation by editing the zod schemas in `@app/validators`.
+- Adjust UI by modifying the shadcn/ui components or adding new ones.

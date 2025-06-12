@@ -20,12 +20,22 @@ title: "Component Library & Usage"
 ## Home/Landing Components (`@/features`)
 
 ### Hero Sections
+<img
+  className="block dark:hidden"
+  src="/images/frontend/hero1-dark.png"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/frontend/hero1-dark.png"
+  alt="Hero Dark"
+/>
 
 ```tsx
 import Hero from "@/features/home/hero1";
 <Hero />
 ```
-{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
+{/* ![Hero1 Screenshot](/images/hero1.png) */}
 
 ### Navigation
 
@@ -33,7 +43,7 @@ import Hero from "@/features/home/hero1";
 import Navigation from "@/features/home/navigation1";
 <Navigation />
 ```
-{/* ![Navigation1 Screenshot](/images/frontend/navigation1.png) */}
+{/* ![Navigation1 Screenshot](/images/navigation1.png) */}
 
 ### Features
 
@@ -41,7 +51,7 @@ import Navigation from "@/features/home/navigation1";
 import Features from "@/features/home/features1";
 <Features />
 ```
-{/* ![Features1 Screenshot](/images/frontend/features1.png) */}
+{/* ![Features1 Screenshot](/images/features1.png) */}
 
 ### Stats
 
@@ -49,7 +59,7 @@ import Features from "@/features/home/features1";
 import Stats from "@/features/home/stats1";
 <Stats />
 ```
-{/* ![Stats1 Screenshot](/images/frontend/stats1.png) */}
+{/* ![Stats1 Screenshot](/images/stats1.png) */}
 
 ### Testimonials
 
@@ -57,7 +67,7 @@ import Stats from "@/features/home/stats1";
 import Testimonials from "@/features/home/testimonials1";
 <Testimonials />
 ```
-{/* ![Testimonials1 Screenshot](/images/frontend/testimonials1.png) */}
+{/* ![Testimonials1 Screenshot](/images/testimonials1.png) */}
 
 ### Pricing
 
@@ -65,7 +75,7 @@ import Testimonials from "@/features/home/testimonials1";
 import { Pricing } from "@/features/home/shared/pricing";
 <Pricing />
 ```
-{/* ![Pricing Screenshot](/images/frontend/pricing.png) */}
+{/* ![Pricing Screenshot](/images/pricing.png) */}
 
 ### Call to Action
 
@@ -73,7 +83,7 @@ import { Pricing } from "@/features/home/shared/pricing";
 import CallToAction from "@/features/home/call-to-action1";
 <CallToAction />
 ```
-{/* ![CallToAction1 Screenshot](/images/frontend/call-to-action1.png) */}
+{/* ![CallToAction1 Screenshot](/images/call-to-action1.png) */}
 
 ### Contact
 
@@ -81,7 +91,7 @@ import CallToAction from "@/features/home/call-to-action1";
 import Contact from "@/features/home/contact1";
 <Contact />
 ```
-{/* ![Contact1 Screenshot](/images/frontend/contact1.png) */}
+{/* ![Contact1 Screenshot](/images/contact1.png) */}
 
 ### Footer
 
@@ -89,7 +99,7 @@ import Contact from "@/features/home/contact1";
 import Footer from "@/features/home/footer1";
 <Footer />
 ```
-{/* ![Footer1 Screenshot](/images/frontend/footer1.png) */}
+{/* ![Footer1 Screenshot](/images/footer1.png) */}
 
 ### Bento Grid
 
@@ -97,7 +107,7 @@ import Footer from "@/features/home/footer1";
 import BentoGrid from "@/features/home/bento-grid1";
 <BentoGrid />
 ```
-{/* ![BentoGrid1 Screenshot](/images/frontend/bento-grid1.png) */}
+{/* ![BentoGrid1 Screenshot](/images/bento-grid1.png) */}
 
 ### FAQs
 
@@ -105,7 +115,7 @@ import BentoGrid from "@/features/home/bento-grid1";
 import FAQs from "@/features/home/faqs1";
 <FAQs />
 ```
-{/* ![FAQs1 Screenshot](/images/frontend/faqs1.png) */}
+{/* ![FAQs1 Screenshot](/images/faqs1.png) */}
 
 ### Logos
 
@@ -113,7 +123,7 @@ import FAQs from "@/features/home/faqs1";
 import Logos from "@/features/home/logos2";
 <Logos />
 ```
-{/* ![Logos2 Screenshot](/images/frontend/logos2.png) */}
+{/* ![Logos2 Screenshot](/images/logos2.png) */}
 
 ---
 
@@ -127,7 +137,7 @@ import Logos from "@/features/home/logos2";
 import { Button } from "ui/button";
 <Button variant="outline">Click me</Button>
 ```
-{/* ![Button Screenshot](/images/frontend/button.png) */}
+{/* ![Button Screenshot](/images/button.png) */}
 
 ---
 
@@ -140,35 +150,60 @@ Below are usage examples for each top-level component (not in `ui/` or any subfo
 ### Testimonials Components
 
 #### TestimonialsSingle
-{/* ![TestimonialsSingle Screenshot](/images/frontend/testimonials-single.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/testimonialssingle.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import TestimonialsSingle from "testimonials-single";
 <TestimonialsSingle />
 ```
 
 #### TestimonialsCarousel
-{/* ![TestimonialsCarousel Screenshot](/images/frontend/testimonials-carousel.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/testimonialscarousel.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import { TestimonialsCarousel } from "testimonials-carousel";
 <TestimonialsCarousel />
 ```
 
 #### TestimonialsAnimated
-{/* ![TestimonialsAnimated Screenshot](/images/frontend/testimonials-animated.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/testimonialsanimated.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import AnimatedTestimonialsDemo from "testimonials-animated";
 <AnimatedTestimonialsDemo />
 ```
 
 #### TestimonialSingle
-{/* ![TestimonialSingle Screenshot](/images/frontend/testimonial-single.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/testimonialsingle.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import { TestimonialSingle } from "testimonial-single";
 <TestimonialSingle />
 ```
 
 #### TestimonialGrid
-{/* ![TestimonialGrid Screenshot](/images/frontend/testimonial-grid.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/testimonialsgrid.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import { TestimonialGrid } from "testimonial-grid";
 <TestimonialGrid />
@@ -179,21 +214,34 @@ import { TestimonialGrid } from "testimonial-grid";
 ### Pricing Components
 
 #### PricingSelector
-{/* ![PricingSelector Screenshot](/images/frontend/pricing-selector.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/pricingselector.png"
+  alt="TestimonialsSingle Light"
+/>
+
 ```tsx
 import { PricingSelector } from "pricing-selector";
 <PricingSelector />
 ```
 
 #### PricingWithModals
-{/* ![PricingWithModals Screenshot](/images/frontend/pricing-with-modals.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/simplepricing.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import PricingPage from "pricing-with-modals";
 <PricingPage />
 ```
 
 #### SimplePricing
-{/* ![SimplePricing Screenshot](/images/frontend/pricing-copy.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/simplepricing.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import SimplePricing from "pricing copy";
 <SimplePricing />
@@ -204,99 +252,93 @@ import SimplePricing from "pricing copy";
 ### Feature/Content Components
 
 #### FeatureGrid
-{/* ![FeatureGrid Screenshot](/images/frontend/feature-grid.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/featuregrid.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import { FeatureGrid } from "feature-grid";
 <FeatureGrid />
 ```
 
 #### FeaturesCirculated
-{/* ![FeaturesCirculated Screenshot](/images/frontend/features-circulated.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/featurescirculated.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import Feature3 from "features-circulated";
 <Feature3 />
 ```
 
 #### FeaturesBentoGrid
-{/* ![FeaturesBentoGrid Screenshot](/images/frontend/features-bento-grid.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/featuresbentogrid.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import BentoGrid from "features-bento-grid";
 <BentoGrid />
 ```
 
 #### FeaturesAccordion
-{/* ![FeaturesAccordion Screenshot](/images/frontend/features-accordion.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/featuresaccordion.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import FeatureSteps from "features-accordion";
 <FeatureSteps />
 ```
-
-#### AnimatedListDemo
-{/* ![AnimatedListDemo Screenshot](/images/frontend/animated-list-demo.png) */}
-```tsx
-import AnimatedListDemo from "animated-list-demo";
-<AnimatedListDemo />
-```
-
 ---
 
 ### Navigation & Layout Components
 
-#### NavMain
-{/* ![NavMain Screenshot](/images/frontend/nav-main.png) */}
-```tsx
-import { NavMain } from "nav-main";
-<NavMain items={[]} />
-```
-
-#### NavUser
-{/* ![NavUser Screenshot](/images/frontend/nav-user.png) */}
-```tsx
-import NavUser from "nav-user";
-<NavUser />
-```
 
 #### NavProjects
-{/* ![NavProjects Screenshot](/images/frontend/nav-projects.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/header.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import NavProjects from "nav-projects";
-<NavProjects />
+import Header from "@/components/header";
+<Header />
 ```
-
-#### AppSidebar
-{/* ![AppSidebar Screenshot](/images/frontend/app-sidebar.png) */}
+#### Footer
+<img
+  className="block dark:hidden"
+  src="/images/frontend/footer.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import AppSidebar from "app-sidebar";
-<AppSidebar />
-```
-
-#### Providers
-{/* ![Providers Screenshot](/images/frontend/providers.png) */}
-```tsx
-import Providers from "providers";
-<Providers>{children}</Providers>
+import Footer from "@/components/footer";
+<Footer />
 ```
 
 ---
 
-### User & Team Components
-
-#### UserMenu
-{/* ![UserMenu Screenshot](/images/frontend/user-menu.png) */}
+#### UsageDashboard
+<img
+  className="block dark:hidden"
+  src="/images/frontend/usagedashboard.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import UserMenu from "user-menu";
-<UserMenu />
-```
-
-#### TeamSwitcher
-{/* ![TeamSwitcher Screenshot](/images/frontend/team-switcher.png) */}
-```tsx
-import TeamSwitcher from "team-switcher";
-<TeamSwitcher />
+import UsageDashboard from "team-switcher";
+<UsageDashboard />
 ```
 
 #### UsageMeter
-{/* ![UsageMeter Screenshot](/images/frontend/usage-meter.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/usagemeter.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
 import { UsageMeter } from "usage-meter";
 <UsageMeter value={75} label="API Usage" quota="750/1000" />
@@ -307,30 +349,47 @@ import { UsageMeter } from "usage-meter";
 ### AI & Prompt Components
 
 #### AIConversation
-{/* ![AIConversation Screenshot](/images/frontend/ai-conversation.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/aiconversation.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import Conversation1 from "ai-conversation";
-<Conversation1 />
+import AIConversation from "ai-conversation";
+<AIConversation />
 ```
 
 #### AIAnimatedChat
-{/* ![AIAnimatedChat Screenshot](/images/frontend/ai-animated-chat.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/aianimatedchat.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import AnimatedAIChat from "ai-animated-chat";
+import AIAnimatedChat from "@/components/ai-animated-chat";
 <AnimatedAIChat />
 ```
 
 #### PromptInput
-{/* ![PromptInput Screenshot](/images/frontend/prompt-input.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/promptinput.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import { PromptInput } from "prompt-input";
+import AIConversation from "@/components/ai-conversation";
 <PromptInput maxTokens={100} onSubmit={val => alert(val)} />
 ```
 
 #### ResponseStream
-{/* ![ResponseStream Screenshot](/images/frontend/response-stream.png) */}
+<img
+  className="block dark:hidden"
+  src="/images/frontend/responsertream.png"
+  alt="TestimonialsSingle Light"
+/>
 ```tsx
-import { ResponseStream } from "response-stream";
+import { ResponseStream } from "@/components/response-stream";
+
 <ResponseStream response="Hello, world!" isStreaming />
 ```
 
@@ -339,17 +398,31 @@ import { ResponseStream } from "response-stream";
 ### Utility & Miscellaneous Components
 
 #### ButtonLead
-{/* ![ButtonLead Screenshot](/images/frontend/button-lead.png) */}
+{/* ![ButtonLead Screenshot](/images/button-lead.png) */}
 ```tsx
 import { ButtonLead } from "button-lead";
 <ButtonLead label="Join Now" />
 ```
 
 #### Loader
-{/* ![Loader Screenshot](/images/frontend/loader.png) */}
+{/* ![Loader Screenshot](/images/loader.png) */}
 ```tsx
 import Loader from "loader";
 <Loader />
+```
+
+#### AppSidebar
+{/* ![AppSidebar Screenshot](/images/app-sidebar.png) */}
+```tsx
+import AppSidebar from "app-sidebar";
+<AppSidebar />
+```
+
+#### Providers
+{/* ![Providers Screenshot](/images/providers.png) */}
+```tsx
+import Providers from "providers";
+<Providers>{children}</Providers>
 ```
 
 ---

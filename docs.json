@@ -85,6 +85,9 @@
               "frontend/index",
               "frontend/getting-started",
               "frontend/environment",
+              "frontend/examples",
+              "frontend/auth",
+              "frontend/dashboard",
               "frontend/landing-pages",
               "frontend/components",
               "frontend/cms-integration",
@@ -97,7 +100,13 @@
             "pages": [
               "seo/index"
             ]
-          }          
+          },
+          {
+            "group": "Theme",
+            "pages": [
+              "theme/theme"
+            ]
+          }             
         ]
       }
     ]

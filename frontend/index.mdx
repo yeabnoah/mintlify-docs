@@ -6,6 +6,22 @@ description: "This guide covers everything you need to get started, customize, a
 
 ---
 
+# Frontend Folder Structure
+
+```
+apps/web/
+│   ├── src/app/
+        ├── page.tsx           # Root landing page
+        ├── layout.tsx         # Root layout (applies to all routes)
+        ├── (auth)/            # Authentication routes (login, signup, etc.)
+        ├── dashboard/         # User dashboard and nested features
+        ├── (content)/         # Content-related routes (e.g., blogs, privacy)
+        ├── ai/                # AI chat example
+        ├── todos/             # Todo app example
+
+```
+> For more details, see the [Architecture](/structure/architecture) and related docs. 
+
 ## Table of Contents
 
 - [Getting Started](/frontend/getting-started)

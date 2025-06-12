@@ -11,11 +11,16 @@ By default you will get two landing pages variants, `@/web/src/app/page.tsx` is 
 
 ## Landing Page 1 (Default Example)
 
-### 📸 Component Screenshots
-
-{/* Add images/screenshots of each component here for visual reference. Example: */}
-{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
-
+<img
+  className="block dark:hidden"
+  src="/images/frontend/hero1-dark.png"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/frontend/hero1-dark.png"
+  alt="Hero Dark"
+/>
 ```tsx
 import BentoGrid from "@/features/home/bento-grid1";
 import CallToAction from "@/features/home/call-to-action1";
@@ -54,11 +59,16 @@ export default function Home() {
 
 ## Landing Page 2 (Alternative)
 
-### 📸 Component Screenshots
-
-{/* Add images/screenshots of each component here for visual reference. Example: */}
-{/* ![Hero2 Screenshot](/images/frontend/hero2.png) */}
-
+<img
+  className="block dark:hidden"
+  src="/images/frontend/hero2-light.png"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/frontend/hero2-dark.png"
+  alt="Hero Dark"
+/>
 ```tsx
 import Navigation from "@/features/home/navigation2";
 import Hero from "@/features/home/hero2";

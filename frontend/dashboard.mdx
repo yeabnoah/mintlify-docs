@@ -1,0 +1,105 @@
+---
+title: 'Dashboard Features'
+description: 'Overview of the main dashboard, its structure, navigation, and all core features and settings for authenticated users in the Ultimate Boilerplate.'
+---
+
+The Dashboard is the central hub for authenticated users, providing access to all major features of the Ultimate Boilerplate: productivity tools, user profile, billing, and subscriptions.
+
+## Table of Contents
+- [Structure & Relationship](#structure-relationship)
+- [Dashboard Landing Page](#dashboard-landing-page)
+- [Shared Layout & Navigation](#shared-layout-navigation)
+- [Settings Subpages](#settings-subpages)
+- [Dashboard Features](#dashboard-features)
+
+## Structure & Relationship 
+- **App Pages:** Thin wrappers in `apps/web/src/app/dashboard/*` that route to features.
+- **Feature Components:** Main logic/UI in `features/dashboard/*`.
+- **Pattern:** Clean separation for maintainability and reusability.
+
+## Dashboard Landing Page (#dashboard-landing-page)
+- **Purpose:** Entry point after login; links to all major features.
+- **Highlights:** Features grid, tech stack, quick start, and welcome hero.
+- **Example:**
+  ```tsx
+  // apps/web/src/app/dashboard/page.tsx
+  export default function Dashboard() { /* ... */ }
+  ```
+
+## Shared Layout & Navigation
+- **Dashboard Layout:** Auth check, navbar, and main content area.
+  ```tsx
+  // apps/web/src/app/dashboard/layout.tsx
+  export default function Layout({ children }) { return <>{children}</>; }
+  ```
+- **DashboardNavbar:** Sticky header with logo, main nav, and user menu.
+  ```tsx
+  import { DashboardNavbar } from '@/layout/navbar/dashboard-navbar';
+  <DashboardNavbar />
+  ```
+- **MainNav:** Links to Profile, Todos, AI, Payments, Subscription.
+  ```tsx
+  import { MainNav } from '@/layout/navbar/main-nav';
+  <MainNav />
+  ```
+- **UserNav:** User dropdown for profile, settings, and logout.
+  ```tsx
+  import { UserNav } from '@/layout/navbar/user-nav';
+  <UserNav />
+  ```
+
+## Settings Subpages 
+- **Account:** Manage user account details.
+  ```tsx
+  // apps/web/src/app/dashboard/settings/account/page.tsx
+  export default function AccountSettings() { /* ... */ }
+  ```
+- **Payment:** Manage payment methods and billing.
+  ```tsx
+  // apps/web/src/app/dashboard/settings/payment/page.tsx
+  export default function PaymentSettings() { /* ... */ }
+  ```
+- **Subscription:** Manage SaaS plans (Polar/Stripe).
+  ```tsx
+  // apps/web/src/app/dashboard/settings/subscription/stripe/page.tsx
+  export default function StripeSubscription() { /* ... */ }
+  // .../polar/page.tsx
+  export default function PolarSubscription() { /* ... */ }
+  ```
+- **Success:** Confirmation after payment/subscription changes.
+  ```tsx
+  // apps/web/src/app/dashboard/settings/success/page.tsx
+  export default function SuccessPage() { /* ... */ }
+  ```
+
+## Dashboard Features 
+- **AIPage:** AI chat interface for user queries.
+  ```tsx
+  import AIPage from '@/features/dashboard/ai/ai-page';
+  export default function Page() { return <AIPage />; }
+  ```
+- **TodosPage:** CRUD todo list for personal tasks.
+  ```tsx
+  import { TodosPage } from '@/features/dashboard/todos/todos-page';
+  export default function Page() { return <TodosPage />; }
+  ```
+- **ProfilePage:** User profile and subscription info.
+  ```tsx
+  import { ProfilePage } from '@/features/dashboard/profile/profile-page';
+  export default function Page() { return <ProfilePage />; }
+  ```
+- **UserAccountsCard:** Linked auth accounts and tokens.
+  ```tsx
+  import { UserAccountsCard } from '@/features/dashboard/settings/user-account-card';
+  <UserAccountsCard accounts={accounts} />
+  ```
+- **UserSessionsCard:** List of active user sessions/devices.
+  ```tsx
+  import { UserSessionsCard } from '@/features/dashboard/settings/user-session-card';
+  <UserSessionsCard sessions={sessions} />
+  ```
+- **UserProfileCard:** Editable user profile card.
+  ```tsx
+  import { UserProfileCard } from '@/features/dashboard/settings/user-profile-card';
+  <UserProfileCard user={user} />
+  ``` 
