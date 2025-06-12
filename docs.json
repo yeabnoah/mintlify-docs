@@ -48,6 +48,12 @@
             ]
           },
           {
+            "group": "Email",
+            "pages": [
+              "email/index"
+            ]
+          },
+          {
             "group": "Auth",
             "pages": [
               "auth/index",
