@@ -1,11 +1,7 @@
 ---
 title: 'Subscribed Routes'
-description: 'Learn how to create and use API routes that require an active subscription'
+description: 'Subscribed routes require both user authentication and an active subscription. These routes are perfect for premium features and subscription-gated content.'
 ---
-
-# Subscribed Routes
-
-Subscribed routes require both user authentication and an active subscription. These routes are perfect for premium features and subscription-gated content.
 
 ## When to Use Subscribed Routes
 
@@ -23,22 +19,24 @@ Use subscribed routes for:
 import { router, subscribedProcedure } from '../lib/trpc';
 import { z } from 'zod';
 
-export const premiumRouter = router({
-  // Get premium content
-  getPremiumContent: subscribedProcedure.query(async ({ ctx }) => {
-    return { content: 'premium data' };
-  }),
+export const yourRouter = router({
 
-  // Access premium feature
-  usePremiumFeature: subscribedProcedure
+  // Your subscribed route
+  yourSubscribedRoute: subscribedProcedure
     .input(z.object({
-      featureId: z.string(),
+      yourInput: z.string(),
+      yourInput2: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      // Implement premium feature logic
+      // Your logic here
       return { success: true };
     }),
 });
+```
+
+
+## Example Subscribed Routes
+```
 ```
 
 ## Subscription Check Flow

@@ -1,15 +1,11 @@
 ---
 title: 'Protected Routes'
-description: 'Learn how to protect routes and handle authentication in your application'
+description: 'The boilerplate provides a robust system for protecting routes and handling authentication using Next.js middleware and BetterAuth.'
 ---
-
-# Protected Routes
-
-The boilerplate provides a robust system for protecting routes and handling authentication using Next.js middleware and BetterAuth.
 
 ## Middleware Setup
 
-### 1. Configure Protected Routes
+### 1. Configure Protected client routes/pages in `apps/web/src/middleware.ts`
 
 ```typescript
 // apps/web/src/middleware.ts
@@ -37,7 +33,7 @@ export function middleware(request: NextRequest) {
 }
 ```
 
-### 2. Protected API Routes
+### 2. Protected API Routes in `apps/server/src/routers/index.ts`
 
 ```typescript
 // apps/server/src/routers/index.ts
@@ -105,7 +101,7 @@ export default async function ProtectedLayout({
   return (
     <div>
       <nav>{/* Navigation */}</nav>
-      {children}
+      {children}  
     </div>
   );
 }
@@ -121,10 +117,8 @@ app/
 │   ├── login/
 │   ├── signup/
 │   └── forgot-password/
-├── (protected)/      # Protected routes
-│   ├── dashboard/
-│   └── settings/
-└── (public)/         # Public routes
+│   ├── dashboard/  # Protected routes
+│
     ├── about/
     └── pricing/
 ```
@@ -240,6 +234,5 @@ export function ProtectedComponent() {
 ## Next Steps
 
 - [Set up Email & Password authentication](/auth/email-password)
-- [Configure Magic Link authentication](/auth/magic-link)
 - [Set up Social authentication](/auth/social)
 - [Configure session management](/auth/sessions) 

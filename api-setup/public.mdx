@@ -1,11 +1,9 @@
 ---
 title: 'Public Routes'
-description: 'Learn how to create and use public API routes'
+description: 'Public routes are accessible without authentication and are perfect for endpoints that need to be available to all users.'
 ---
 
-# Public Routes
 
-Public routes are accessible without authentication and are perfect for endpoints that need to be available to all users.
 
 ## When to Use Public Routes
 
@@ -90,7 +88,7 @@ export const searchRouter = router({
 ```typescript
 // In your React component
 function PublicDataComponent() {
-  const { data, isLoading } = trpc.publicRouter.getPublicData.useQuery({ id: '123' });
+  const { data, isLoading } = trpc.getPublicData.useQuery({ id: '123' });
   
   return (
     <div>
@@ -131,7 +129,5 @@ Even though these routes are public, you should still:
 
 ## Next Steps
 
-- [Protected Routes](/docs/api/protected)
-- [Subscribed Routes](/docs/api/subscribed)
-- [Client Usage](/docs/api/client)
-- [Best Practices](/docs/api/best-practices) 
+- [Protected Routes](./protected)
+- [Subscribed Routes](./subscribed)

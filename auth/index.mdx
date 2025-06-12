@@ -1,32 +1,30 @@
 ---
 title: 'Authentication'
-description: 'Comprehensive guide to authentication in the Ultimate Boilerplate'
+description: 'The Better Boilerplate uses BetterAuth for handling authentication, providing a robust and secure authentication system with multiple sign-in methods and seamless integration with payment providers.'
 ---
 
-# Authentication Overview
 
-The Ultimate Boilerplate uses BetterAuth for handling authentication, providing a robust and secure authentication system with multiple sign-in methods and seamless integration with payment providers.
+  > **Note:** The setup guides below explain how we configured the boilerplate. You don't need to perform these steps yourself.
 
 ## Features
 
 - 🔐 Multiple Authentication Methods
   - Email & Password
-  - Magic Link
   - Social Providers (Google)
   - Email Verification
   - Password Reset Flow
-- 💳 Payment Integration (Polar.sh & Stripe)
+- 💳 Payment Integration (Stripe & Polar.sh)
 - 🛡️ Protected Routes
 - 🔒 Session Management
 
 ## Quick Start
 
-1. Set up environment variables:
+1. Set up environment variables: in the .env file in `apps/server`
 
 ```env
 # Auth Configuration
 AUTH_SECRET="your-auth-secret"
-CORS_ORIGIN="http://localhost:3000"
+CORS_ORIGIN="http://localhost:3001"
 
 # OAuth Providers
 GOOGLE_CLIENT_ID="your-google-client-id"
@@ -35,6 +33,17 @@ GOOGLE_CLIENT_SECRET="your-google-client-secret"
 # Email (Resend)
 RESEND_API_KEY="your-resend-api-key"
 ```
+
+setup in the .env file in `apps/web`
+
+```env
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3001
+```
+
+
+
+
 
 2. Install dependencies:
 
@@ -55,16 +64,6 @@ The boilerplate supports traditional email and password authentication with:
 
 [Learn more about Email & Password authentication](/auth/email-password)
 
-### Magic Link
-
-Passwordless authentication using magic links:
-
-- One-click sign-in
-- Secure token generation
-- Email delivery via Resend
-- Automatic session creation
-
-[Learn more about Magic Link authentication](/auth/magic-link)
 
 ### Social Providers
 
@@ -96,7 +95,6 @@ export const config = {
 
 Sessions are managed securely with:
 
-- JWT-based tokens
 - Secure cookie storage
 - Automatic session refresh
 - Cross-subdomain support
@@ -134,8 +132,7 @@ Authentication is integrated with payment providers:
 
 ## Next Steps
 
-- [Set up Email & Password auth](/auth/email-password)
-- [Configure Magic Link auth](/auth/magic-link)
-- [Set up Social auth](/auth/social)
-- [Configure protected routes](/auth/protected-routes)
-- [Set up session management](/auth/sessions) 
+- [Set up Email & Password auth](./auth/email-pass)
+- [Set up Social auth](./auth/socials)
+- [Configure protected routes](./auth/protected-routes)
+- [Set up session management](./auth/sessions) 

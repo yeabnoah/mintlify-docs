@@ -1,28 +1,21 @@
 ---
 title: 'AI Setup Guide'
-description: 'Learn how to set up AI capabilities in your application'
+description: 'This guide will walk you through setting up AI capabilities in your application using the Better Boilerplate.'
 ---
-
-# AI Setup Guide
-
-This guide will walk you through setting up AI capabilities in your application using the Ultimate Boilerplate.
 
 ## Prerequisites
 
-- Node.js 18+ or Bun
+- Bun installed
 - OpenRouter API key
-- Next.js project with the Ultimate Boilerplate
+- Next.js project with the Better Boilerplate
 
 ## Environment Setup
 
-1. Create a `.env.local` file in your project root:
+1. Create a `.env.local` file in your `apps/server` folder:
 
 ```bash
 # OpenRouter API Key
 OPENROUTER_API_KEY=your_api_key_here
-
-# Optional: Default model to use
-DEFAULT_AI_MODEL=gpt-3.5-turbo
 ```
 
 2. Install required dependencies:
@@ -35,28 +28,14 @@ bun add ai openai @ai-sdk/openrouter
 
 ### 1. OpenRouter Setup
 
-Create a new file at `lib/ai/openrouter.ts`:
+Create a new file at `lib/openrouter.ts`:
 
 ```typescript
 import { OpenRouter } from '@ai-sdk/openrouter';
 
 export const openrouter = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY!,
-  defaultModel: process.env.DEFAULT_AI_MODEL || 'gpt-3.5-turbo',
-});
-```
-
-### 2. AI SDK Setup
-
-Create a new file at `lib/ai/sdk.ts`:
-
-```typescript
-import { AI } from 'ai';
-import { openrouter } from './openrouter';
-
-export const ai = new AI({
-  provider: openrouter,
-  // Add any global configuration here
+  defaultModel: 'gpt-4o-mini',  // or any other model you want to use
 });
 ```
 
@@ -68,23 +47,29 @@ Here's a simple example of using the AI SDK in a server action:
 // app/actions/ai.ts
 'use server';
 
-import { ai } from '@/lib/ai/sdk';
+import { streamText } from 'ai';
+import { openrouter } from '@/lib/openrouter';
 
-export async function generateText(prompt: string) {
-  const response = await ai.complete({
-    prompt,
-    maxTokens: 1000,
-  });
+export async function TextStream(prompt: string) {
 
-  return response.text;
+ const result = streamText({
+		model: openrouter("gemini-1.5-flash"),
+		messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+	}); // streamText is a function from the ai package
+
+  return result;
 }
 ```
 
 ## Next Steps
 
-- Learn about [OpenRouter Integration](/docs/ai/openrouter)
-- Explore [AI Components](/docs/ai/components)
-- Check out [Use Cases](/docs/ai/use-cases)
+- Learn about [OpenRouter Integration](./open-router)
+- Explore [AI Components](./components)
 
 ## Troubleshooting
 

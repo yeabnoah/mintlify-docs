@@ -1,18 +1,15 @@
 ---
 title: 'Architecture'
-description: 'Detailed architecture and structure of the Ultimate Cursor AI Boilerplate'
+description: 'The Better Boilerplate follows a modular, scalable architecture designed for maintainability and rapid development. This document outlines the key architectural decisions and patterns used throughout the project.'
 ---
 
-# Architecture
-
-The Ultimate Cursor AI Boilerplate follows a modular, scalable architecture designed for maintainability and rapid development. This document outlines the key architectural decisions and patterns used throughout the project.
 
 ## Monorepo Structure
 
 ```
 apps/
 ├── web/           # Next.js frontend application
-├── server/        # Backend server with tRPC
+├── server/        # Backend server with tRPC + Hono
 ├── cms/          # Headless CMS
 └── email/        # Email service
 ```
@@ -27,6 +24,7 @@ src/
 ├── components/       # Reusable UI components
 ├── features/         # Feature-specific components and logic
 ├── hooks/           # Custom React hooks
+├── layouts/         # Next.js layouts
 ├── lib/             # Core utilities and configurations
 ├── services/        # API and external service integrations
 ├── stores/          # State management
@@ -73,6 +71,7 @@ src/
 ### Key Components
 
 #### `controllers/`
+- Business logic implementation
 - Handles incoming requests
 - Input validation
 - Response formatting
@@ -83,7 +82,6 @@ src/
 - Middleware configuration
 
 #### `services/`
-- Business logic implementation
 - Database operations
 - External service integrations
 
@@ -97,18 +95,11 @@ prisma/
 └── migrations/      # Database migrations
 ```
 
-### Key Features
-
-- Type-safe database operations
-- Automatic migrations
-- Real-time subscriptions
-- Row-level security
-
 ## Authentication Flow
 
 The authentication system uses BetterAuth:
 
-1. User initiates auth (email, OAuth, magic link)
+1. User initiates auth (email, OAuth)
 2. BetterAuth handles the flow
 3. Session is created and stored
 4. User metadata is synced to database
@@ -134,10 +125,3 @@ The API layer uses tRPC for type-safe communication:
 - shadcn/ui for component library
 - CSS Modules for component-specific styles
 - Dark mode support built-in
-
-## Deployment Architecture
-
-- Vercel for frontend deployment
-- Serverless functions for API
-- Supabase for database and storage
-- GitHub Actions for CI/CD 

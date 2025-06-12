@@ -1,166 +1,43 @@
 ---
 title: 'OpenRouter Integration'
-description: 'Learn how to use OpenRouter to access multiple LLMs through a unified API'
+description: 'OpenRouter provides a unified API to access multiple large language models (LLMs). This guide will show you how to use OpenRouter in your application.'
 ---
 
-# OpenRouter Integration
+## Overview
 
-OpenRouter provides a unified API to access multiple large language models (LLMs). This guide will show you how to use OpenRouter in your application.
+OpenRouter acts as a unified interface to access multiple LLM providers through a single API. This simplifies working with different AI models in your application.
 
 ## Available Models
 
-OpenRouter supports multiple models from various providers:
+OpenRouter supports leading LLM providers:
 
-- GPT-4 (OpenAI)
-- Claude 3 (Anthropic)
-- Gemini Pro (Google)
+- GPT-4 (OpenAI)  
+- Claude 3 (Anthropic)  
+- Gemini Pro (Google)  
 - Mistral
-- And many more...
+- And many more... (see [OpenRouter Models](https://openrouter.ai/models) for the full list)
 
-## Basic Usage
-
-### 1. Text Generation
+## Example Usage
 
 ```typescript
-import { openrouter } from '@/lib/ai/openrouter';
+// app/actions/ai.ts
+'use server';
 
-async function generateText() {
-  const response = await openrouter.complete({
-    model: 'gpt-3.5-turbo',
-    prompt: 'Write a short story about a robot.',
-    maxTokens: 500,
-  });
+import { streamText } from 'ai';
+import { openrouter } from '@/lib/openrouter';
 
-  return response.text;
-}
-```
+export async function TextStream(prompt: string) {
 
-### 2. Chat Completion
-
-```typescript
-import { openrouter } from '@/lib/ai/openrouter';
-
-async function chatCompletion() {
-  const response = await openrouter.chat({
-    model: 'claude-3-opus',
-    messages: [
-      { role: 'system', content: 'You are a helpful assistant.' },
-      { role: 'user', content: 'What is the capital of France?' },
-    ],
-  });
-
-  return response.message;
-}
-```
-
-## Advanced Features
-
-### 1. Streaming Responses
-
-```typescript
-import { openrouter } from '@/lib/ai/openrouter';
-
-async function streamResponse() {
-  const stream = await openrouter.chat({
-    model: 'gpt-4',
-    messages: [{ role: 'user', content: 'Tell me a story.' }],
-    stream: true,
-  });
-
-  for await (const chunk of stream) {
-    console.log(chunk.text);
-  }
-}
-```
-
-### 2. Function Calling
-
-```typescript
-import { openrouter } from '@/lib/ai/openrouter';
-
-async function functionCalling() {
-  const response = await openrouter.chat({
-    model: 'gpt-4',
-    messages: [{ role: 'user', content: 'What is the weather in New York?' }],
-    functions: [
+ const result = streamText({
+		model: openrouter("gemini-1.5-flash"),
+		messages: [
       {
-        name: 'get_weather',
-        description: 'Get the current weather in a location',
-        parameters: {
-          type: 'object',
-          properties: {
-            location: {
-              type: 'string',
-              description: 'The city and state, e.g. San Francisco, CA',
-            },
-          },
-          required: ['location'],
-        },
+        role: "user",
+        content: prompt,
       },
     ],
-  });
+	}); // streamText is a function from the ai package
 
-  return response.function_call;
+  return result;
 }
 ```
-
-## Best Practices
-
-1. **Model Selection**
-   - Choose models based on your specific use case
-   - Consider cost and performance trade-offs
-   - Use the most efficient model for your needs
-
-2. **Error Handling**
-
-```typescript
-import { openrouter } from '@/lib/ai/openrouter';
-
-async function safeGenerate() {
-  try {
-    const response = await openrouter.complete({
-      model: 'gpt-3.5-turbo',
-      prompt: 'Your prompt here',
-    });
-    return response.text;
-  } catch (error) {
-    console.error('AI generation failed:', error);
-    throw new Error('Failed to generate response');
-  }
-}
-```
-
-3. **Rate Limiting**
-
-```typescript
-import { openrouter } from '@/lib/ai/openrouter';
-import { rateLimit } from '@/lib/rate-limit';
-
-const limiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  uniqueTokenPerInterval: 500,
-});
-
-async function rateLimitedGenerate() {
-  await limiter.check(5); // 5 requests per minute
-  return openrouter.complete({
-    model: 'gpt-3.5-turbo',
-    prompt: 'Your prompt here',
-  });
-}
-```
-
-## Model Comparison
-
-| Model | Provider | Best For | Cost |
-|-------|----------|----------|------|
-| GPT-4 | OpenAI | Complex reasoning | High |
-| Claude 3 | Anthropic | Long-form content | Medium |
-| Gemini Pro | Google | General purpose | Low |
-| Mistral | Mistral AI | Code generation | Low |
-
-## Next Steps
-
-- Learn about [AI Components](/docs/ai/components)
-- Explore [Use Cases](/docs/ai/use-cases)
-- Check out [Server Actions](/docs/ai/server-actions) 

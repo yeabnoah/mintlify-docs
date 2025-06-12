@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: "Welcome to the Ultimate Cursor AI Boilerplate - A production-ready, AI-powered Next.js template for modern SaaS applications"
+description: "Welcome to the Better Boilerplate - A production-ready, AI-powered Next.js template for modern SaaS applications"
 ---
 
 <img
@@ -16,15 +16,21 @@ description: "Welcome to the Ultimate Cursor AI Boilerplate - A production-ready
 
 ## 🚀 Overview
 
-The Ultimate Cursor AI Boilerplate is a production-ready, AI-powered Next.js template designed to accelerate the development of modern SaaS applications and web platforms. This boilerplate combines cutting-edge technologies with AI-powered workflows to provide developers with a robust foundation for rapid prototyping and production deployment.
+The Better Boilerplate is a comprehensive, production-ready template that combines the power of Next.js 15+ with cutting-edge technologies to accelerate your SaaS development journey. Built with a focus on developer experience and rapid prototyping, this boilerplate provides everything you need to build modern, AI-powered web applications.
 
-## ✨ Key Features
+## ✨ Why Choose This Boilerplate?
 
-### 🎯 Core Technologies
+- **Modern Tech Stack**: Leverage Next.js 15+ App Router, Tailwind CSS with shadcn/ui, and type-safe APIs with tRPC
+- **AI-First Approach**: Built-in AI workflows and automation capabilities
+- **Production Ready**: Includes authentication, payments, and admin dashboard out of the box
+- **Developer Experience**: Type-safe development with Prisma ORM and tRPC
+- **Scalable Architecture**: Clean folder structure and best practices for maintainable code
+
+## 🎯 Core Technologies
 
 <CardGroup cols={2}>
   <Card
-    title="Next.js 15"
+    title="Next.js 15+"
     icon="code"
     href="/docs/frontend"
   >
@@ -45,7 +51,7 @@ The Ultimate Cursor AI Boilerplate is a production-ready, AI-powered Next.js tem
     Robust data management with Postgres
   </Card>
   <Card
-    title="HonoJS + tRPC + BetterAuth"
+    title="tRPC + BetterAuth"
     icon="shield"
     href="/docs/backend"
   >
@@ -100,13 +106,16 @@ This boilerplate is perfect for:
 The boilerplate follows a modern, scalable architecture:
 
 ```bash
-ultimate-boilerplate-code/
-├── apps/
-│   ├── web/                 # Next.js frontend application
-│   ├── server/             # Backend API and services
-│   ├── email/              # Email service and templates
-│   ├── cms/                # Content management system
-├── packages/               # Shared packages and utilities
+ultimate-boilerplate/
+├── app/                    # Next.js App Router
+├── components/            # UI components (shadcn/custom)
+├── server/
+│   ├── api/              # tRPC routers
+│   ├── auth/             # BetterAuth handlers
+│   └── db/               # Prisma client + helpers
+├── lib/                  # utils, constants, helpers
+├── prisma/              # schema.prisma
+└── styles/              # tailwind.css
 ```
 
 ## 🚀 Getting Started
@@ -192,8 +201,8 @@ ultimate-boilerplate-code/
 
 ## 🔐 Security Features
 
-- Type-safe API routes
-- Secure authentication
+- Type-safe API routes with tRPC
+- Secure authentication via BetterAuth
 - Protected API endpoints
 - Environment variable management
 - Database security best practices
@@ -211,10 +220,9 @@ The boilerplate is optimized for deployment on Vercel with:
 
 - Optimized for Core Web Vitals
 - Server-side rendering where appropriate
-- Efficient data fetching
+- Efficient data fetching with tRPC
 - Optimized images and assets
 - Type-safe API calls
-
 
 ## 🆘 Support
 
@@ -228,4 +236,4 @@ For support, please:
 
 ## Next Steps
 
-Ready to get started? Check out our [Frontend Setup](/docs/frontend) guide to begin your journey with the Ultimate Cursor AI Boilerplate.
+Ready to get started? Check out our [Frontend Setup](/docs/frontend) guide to begin your journey with the Better Boilerplate.

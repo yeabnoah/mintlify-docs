@@ -3,11 +3,7 @@ title: 'Session Management'
 description: 'Learn how to manage user sessions in your application'
 ---
 
-# Session Management
-
-The boilerplate provides a robust session management system using BetterAuth, with support for secure session storage, automatic refresh, and cross-subdomain cookies.
-
-## Server-Side Setup
+## Server-Side Setup in `apps/server/src/lib/auth.ts`
 
 ### 1. Configure BetterAuth
 
@@ -58,85 +54,13 @@ export const authClient = createAuthClient({
 });
 ```
 
-### 2. Session Hook
+### 2. get session 
 
 ```typescript
 // apps/web/src/hooks/use-session.ts
-import { useSession } from "better-auth/react";
-
-export function useSession() {
-  const { data: session, status, update } = useSession();
-
-  return {
-    session,
-    isLoading: status === "loading",
-    isAuthenticated: status === "authenticated",
-    update,
-  };
-}
-```
-
-### 3. Session Provider
-
-```typescript
-// apps/web/src/providers/session-provider.tsx
-"use client";
-
-import { SessionProvider } from "better-auth/react";
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <SessionProvider>
-      {children}
-    </SessionProvider>
-  );
-}
-```
-
-## Session Features
-
-### 1. Session Creation
-
-```typescript
-// Server-side
-const session = await auth.createSession({
-  userId: user.id,
-  expiresIn: 3600, // 1 hour
-});
-
-// Client-side
-const { session } = await authClient.signIn(credentials);
-```
-
-### 2. Session Validation
-
-```typescript
-// Server-side
-const isValid = await auth.validateSession(sessionToken);
-
-// Client-side
-const { isAuthenticated } = useSession();
-```
-
-### 3. Session Refresh
-
-```typescript
-// Automatic refresh
-const { session } = useSession();
-
-// Manual refresh
-const { update } = useSession();
-await update();
-```
-
-### 4. Session Termination
-
-```typescript
-// Server-side
-await auth.deleteSession(sessionToken);
-
-// Client-side
-await authClient.signOut();
+import { authClient } from "@/lib/client"
+ 
+const { data: session } = authClient.useSession()
 ```
 
 ## Security Features
@@ -199,35 +123,9 @@ await authClient.signOut();
    - Update session data
    - Clear old sessions
 
-## Session Lifecycle
-
-1. **Creation**
-   - User authentication
-   - Token generation
-   - Cookie setting
-   - Session storage
-
-2. **Validation**
-   - Token verification
-   - Expiration check
-   - Data validation
-   - Access control
-
-3. **Refresh**
-   - Token refresh
-   - Data update
-   - Cookie update
-   - Session extension
-
-4. **Termination**
-   - User logout
-   - Token invalidation
-   - Cookie clearing
-   - Session deletion
 
 ## Next Steps
 
-- [Set up Email & Password authentication](/auth/email-password)
-- [Configure Magic Link authentication](/auth/magic-link)
-- [Set up Social authentication](/auth/social)
+- [Set up Email & Password authentication](/auth/email-pass)
+- [Set up Social authentication](/auth/socials)
 - [Configure protected routes](/auth/protected-routes) 

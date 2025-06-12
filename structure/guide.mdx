@@ -5,7 +5,7 @@ description: 'Best practices and patterns for development'
 
 # Development Guide
 
-This guide outlines the best practices and patterns to follow when developing with the Ultimate Cursor AI Boilerplate.
+This guide outlines the best practices and patterns to follow when developing with the Better Boilerplate.
 
 ## Code Organization
 
@@ -14,20 +14,17 @@ This guide outlines the best practices and patterns to follow when developing wi
 When adding new features:
 
 1. Create a new directory in `src/features/`
-2. Include all feature-specific components, hooks, and utilities
-3. Keep the feature self-contained
-4. Export only what's necessary
+2. Add feature-specific components and subcomponents
+3. Keep components focused and reusable
 
 Example structure:
+
 ```
 features/
-└── auth/
-    ├── components/
-    ├── hooks/
-    ├── utils/
-    └── index.ts
+├── auth/
+├── chat/
+└── dashboard/
 ```
-
 ### Component Development
 
 Components should follow these guidelines:
@@ -70,7 +67,7 @@ export const Button = ({ className, ...props }: ButtonProps) => {
    - Persistent state
    - Cross-component state
 
-3. **tRPC**
+3. **tRPC + React Query**
    - Server state
    - Data fetching
    - Real-time updates
@@ -158,23 +155,7 @@ Example:
 1. Use CSS Modules for complex styles
 2. Implement dark mode support
 3. Follow accessibility guidelines
-4. Use semantic HTML
 
-## Testing
-
-### Component Testing
-
-1. Test user interactions
-2. Verify accessibility
-3. Check responsive behavior
-4. Test error states
-
-### API Testing
-
-1. Test input validation
-2. Verify error handling
-3. Check authentication
-4. Test edge cases
 
 ## Performance
 
@@ -185,12 +166,6 @@ Example:
 3. Optimize bundle size
 4. Use proper caching strategies
 
-### Monitoring
-
-1. Implement error tracking
-2. Monitor performance metrics
-3. Track user analytics
-4. Set up logging
 
 ## Security
 
@@ -199,20 +174,12 @@ Example:
 1. Implement proper authentication
 2. Use secure headers
 3. Sanitize user input
-4. Follow OWASP guidelines
+4. Follow [OWASP](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/) guidelines
 
-## Deployment
-
-### CI/CD Pipeline
-
-1. Run tests
-2. Build application
-3. Deploy to staging
-4. Deploy to production
 
 ### Environment Variables
 
 1. Use proper secrets management
 2. Implement environment validation
-3. Use different configs per environment
-4. Document all variables 
+3. Use different configs per environment 
+4. Document all variables in .env.example

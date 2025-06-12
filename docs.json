@@ -17,8 +17,7 @@
             "group": "Get Started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "quickstart"
             ]
           },
           {
@@ -26,7 +25,6 @@
             "pages": [
               "structure/index",
               "structure/architecture",
-              "structure/configration",
               "structure/guide"
             ]
           },
@@ -36,8 +34,7 @@
               "ai/index",
               "ai/setup",
               "ai/open-router",
-              "ai/components",
-              "ai/use-case"
+              "ai/components"
             ]
           },
           {

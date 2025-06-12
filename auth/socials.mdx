@@ -1,11 +1,7 @@
 ---
 title: 'Social Authentication'
-description: 'Learn how to set up and use social authentication providers'
+description: 'The boilerplate supports social authentication through various providers, currently including Google OAuth. The system is built to be easily extensible for additional providers.'
 ---
-
-# Social Authentication
-
-The boilerplate supports social authentication through various providers, currently including Google OAuth. The system is built to be easily extensible for additional providers.
 
 ## Server-Side Setup
 
@@ -35,7 +31,7 @@ export const auth = betterAuth({
 });
 ```
 
-### 2. Environment Variables
+### 2. Environment Variables in `apps/server/.env`
 
 ```env
 # OAuth Providers
@@ -70,9 +66,15 @@ import { Button } from "@/components/ui/button";
 export function SocialButtons() {
   const handleGoogleSignIn = async () => {
     try {
-      await authClient.signInWithProvider("google");
-    } catch (error) {
-      // Handle error
+     await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+        fetchOptions: {
+          onError: (ctx) => {
+            console.error(ctx.error.message);
+          },
+        },
+      });
     }
   };
 
@@ -92,42 +94,6 @@ export function SocialButtons() {
 }
 ```
 
-### 3. OAuth Callback Page
-
-```typescript
-// apps/web/src/app/(auth)/oauth/callback/page.tsx
-"use client";
-
-import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
-
-export default function OAuthCallback() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const code = searchParams.get("code");
-  const provider = searchParams.get("provider");
-
-  useEffect(() => {
-    if (code && provider) {
-      authClient.handleOAuthCallback(provider, code)
-        .then(() => {
-          router.push("/dashboard");
-        })
-        .catch((error) => {
-          // Handle error
-        });
-    }
-  }, [code, provider, router]);
-
-  return (
-    <div>
-      <h1>Completing sign in...</h1>
-      {/* Loading state */}
-    </div>
-  );
-}
-```
 
 ## Authentication Flow
 
@@ -229,7 +195,6 @@ const handleGithubSignIn = async () => {
 
 ## Next Steps
 
-- [Set up Email & Password authentication](/auth/email-password)
-- [Configure Magic Link authentication](/auth/magic-link)
+- [Set up Email & Password authentication](/auth/email-pass)
 - [Set up protected routes](/auth/protected-routes)
 - [Configure session management](/auth/sessions) 
