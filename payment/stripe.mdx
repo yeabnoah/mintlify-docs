@@ -100,61 +100,37 @@ export const stripeProduct = [
 ];
 ```
 
+
+// better auth handles webhooks for you already. but if you want to handle them manually, you can do so by creating a webhook handler in `apps/server/src/lib/auth.ts`
+
 ## Webhook Handling
 
-Set up webhook handling for Stripe events:
+The plugin automatically handles common webhook events:
 
+- `checkout.session.completed`: Updates subscription status after checkout
+- `customer.subscription.updated`: Updates subscription details when changed
+- `customer.subscription.deleted`: Marks subscription as canceled
+
+You can also handle custom events:
+
+in `apps/server/src/lib/auth.ts`
 ```typescript
-// src/app/api/webhooks/stripe/route.ts
-import { stripe } from "@/lib/stripe/client";
-import { headers } from "next/headers";
-
-export async function POST(req: Request) {
-  const body = await req.text();
-  const signature = headers().get("stripe-signature");
-
-  try {
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature!,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    );
-
-    switch (event.type) {
-      case "checkout.session.completed":
-        await handleCheckoutSessionCompleted(event.data);
-        break;
-      case "customer.subscription.updated":
-        await handleSubscriptionUpdated(event.data);
-        break;
-      // Handle other events
+stripe({
+    // ... other options
+    onEvent: async (event) => {
+        // Handle any Stripe event
+        switch (event.type) {
+            case "invoice.paid":
+                // Handle paid invoice
+                break;
+            case "payment_intent.succeeded":
+                // Handle successful payment
+                break;
+        }
     }
-
-    return new Response("Webhook processed", { status: 200 });
-  } catch (error) {
-    console.error("Webhook error:", error);
-    return new Response("Webhook error", { status: 400 });
-  }
-}
+})
 ```
 
-## Subscription Management
-
-### Starting a Checkout
-
-```typescript
-await authClient.checkout({
-  products: [productId],
-  slug: productSlug,
-});
-```
-
-### Checking Subscription Status
-
-```typescript
-const paymentDetails = await authClient.getPaymentDetails();
-const stripeSubscription = paymentDetails?.stripe;
-```
 
 ### Managing Subscription
 
@@ -184,13 +160,6 @@ The boilerplate includes pre-built UI components for Stripe integration:
 </Card>
 ```
 
-## Testing
-
-1. Use Stripe's test mode for development
-2. Test webhook handling with the Stripe CLI
-3. Verify subscription status updates
-4. Test the checkout flow end-to-end
-
 ## Common Issues
 
 1. **Webhook Signature Verification**
@@ -207,6 +176,4 @@ The boilerplate includes pre-built UI components for Stripe integration:
 
 ## Next Steps
 
-- [Configure webhooks](/payments/webhooks)
-- [Implement subscription management](/payments/subscriptions)
-- [Set up customer portal](/payments/portal) 
+- [Set up customer portal](/payment/portal)

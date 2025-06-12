@@ -14,226 +14,119 @@ description: "Welcome to the Better Boilerplate - A production-ready, AI-powered
   alt="Hero Dark"
 />
 
-## 🚀 Overview
+## Overview
 
 The Better Boilerplate is a comprehensive, production-ready template that combines the power of Next.js 15+ with cutting-edge technologies to accelerate your SaaS development journey. Built with a focus on developer experience and rapid prototyping, this boilerplate provides everything you need to build modern, AI-powered web applications.
-
-## ✨ Why Choose This Boilerplate?
-
-- **Modern Tech Stack**: Leverage Next.js 15+ App Router, Tailwind CSS with shadcn/ui, and type-safe APIs with tRPC
-- **AI-First Approach**: Built-in AI workflows and automation capabilities
-- **Production Ready**: Includes authentication, payments, and admin dashboard out of the box
-- **Developer Experience**: Type-safe development with Prisma ORM and tRPC
-- **Scalable Architecture**: Clean folder structure and best practices for maintainable code
-
-## 🎯 Core Technologies
+## Key Features
 
 <CardGroup cols={2}>
   <Card
-    title="Next.js 15+"
+    title="Modern Tech Stack"
     icon="code"
-    href="/docs/frontend"
+    href="/technologies"
   >
-    Modern React applications with App Router
+    Next.js 15+ App Router, Tailwind CSS with shadcn/ui, and type-safe APIs with tRPC
   </Card>
   <Card
-    title="Tailwind + shadcn/ui"
-    icon="palette"
-    href="/docs/frontend"
+    title="AI-First Development"
+    icon="robot"
+    href="/ai/index"
   >
-    Beautiful, responsive UIs with consistent design
+    Built-in AI workflows and automation capabilities
   </Card>
   <Card
-    title="Supabase + Prisma"
-    icon="database"
-    href="/docs/database"
-  >
-    Robust data management with Postgres
-  </Card>
-  <Card
-    title="tRPC + BetterAuth"
+    title="Production Ready"
     icon="shield"
-    href="/docs/backend"
+    href="/api-setup/index"
   >
-    Type-safe APIs and secure authentication
+    Authentication, payments, and admin dashboard included
+  </Card>
+  <Card
+    title="Developer Experience"
+    icon="code"
+    href="/structure/guide"
+  >
+    Type-safe development with Prisma ORM and tRPC
   </Card>
 </CardGroup>
 
-### 🛠️ Built-in Capabilities
+## Core Technologies
 
 <CardGroup cols={2}>
   <Card
-    title="AI Workflows"
-    icon="robot"
-    href="/docs/ai-workflows"
+    title="Frontend"
+    icon="code"
+    href="/frontend/index"  
   >
-    AI-powered product workflows and automation
+    Next.js 15+ with App Router and Tailwind CSS
   </Card>
   <Card
-    title="Admin Dashboard"
-    icon="chart-line"
-    href="/docs/admin"
+    title="Backend"
+    icon="server"
+    href="/database/index"
   >
-    Complete admin interface with analytics
+    Supabase, Prisma ORM, and tRPC
   </Card>
   <Card
-    title="Payment Processing"
+    title="Authentication"
+    icon="shield"
+    href="/auth/index"
+  >
+    BetterAuth integration
+  </Card>
+  <Card
+    title="Payments"
     icon="credit-card"
-    href="/docs/payments"
+    href="/payment/index"
   >
-    Polar.sh with Stripe fallback integration
-  </Card>
-  <Card
-    title="SEO & Theming"
-    icon="paint-brush"
-    href="/docs/seo"
-  >
-    Built-in SEO optimization and dark mode
+    Polar.sh with Stripe fallback
   </Card>
 </CardGroup>
 
-## 🎯 Who Is This For?
 
-This boilerplate is perfect for:
+## Quick Start
 
+1. **Setup**: [Frontend Setup](/frontend/index) | [Backend Setup](/database/index)
+2. **Configuration**: [Environment Variables](/frontend/environment) | [Database Setup](/database/index)
+3. **Development**: [Development Guide](/structure/guide) | [Best Practices](/frontend/troubleshooting)
+4. **Deployment**: [Deployment Guide](/deployment/index) | [CI/CD Setup](/deployment/index)
+
+## Documentation
+
+<CardGroup cols={2}>
+  <Card
+    title="Getting Started"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Quick start guide and basic concepts
+  </Card>
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-setup/index"
+  >
+    Detailed API documentation
+  </Card>
+</CardGroup>
+
+## Target Audience
+
+This boilerplate is designed for:
 - Developers building AI-powered SaaS applications
 - Product teams prototyping new ideas
 - Founders launching MVPs quickly
 - Teams needing a production-ready starting point
 
-## 🏗️ Architecture
+## Support
 
-The boilerplate follows a modern, scalable architecture:
-
-```bash
-ultimate-boilerplate/
-├── app/                    # Next.js App Router
-├── components/            # UI components (shadcn/custom)
-├── server/
-│   ├── api/              # tRPC routers
-│   ├── auth/             # BetterAuth handlers
-│   └── db/               # Prisma client + helpers
-├── lib/                  # utils, constants, helpers
-├── prisma/              # schema.prisma
-└── styles/              # tailwind.css
-```
-
-## 🚀 Getting Started
-
-<CardGroup cols={2}>
-  <Card
-    title="Frontend Setup"
-    icon="code"
-    href="/docs/frontend"
-  >
-    Set up your Next.js frontend with Tailwind and shadcn/ui
-  </Card>
-  <Card
-    title="Backend Setup"
-    icon="server"
-    href="/docs/backend"
-  >
-    Configure tRPC, Prisma, and Supabase
-  </Card>
-  <Card
-    title="Authentication"
-    icon="key"
-    href="/docs/auth"
-  >
-    Set up BetterAuth for secure authentication
-  </Card>
-  <Card
-    title="Payments"
-    icon="credit-card"
-    href="/docs/payments"
-  >
-    Integrate Polar.sh and Stripe
-  </Card>
-</CardGroup>
-
-## 📚 Documentation
-
-<CardGroup cols={2}>
-  <Card
-    title="Architecture"
-    icon="sitemap"
-    href="/docs/architecture"
-  >
-    Detailed overview of the system architecture
-  </Card>
-  <Card
-    title="Development"
-    icon="code"
-    href="/docs/development"
-  >
-    Frontend and backend development guides
-  </Card>
-  <Card
-    title="Database"
-    icon="database"
-    href="/docs/database"
-  >
-    Database management and Prisma setup
-  </Card>
-  <Card
-    title="Example Projects"
-    icon="book"
-    href="/docs/examples"
-  >
-    Real-world examples and tutorials
-  </Card>
-</CardGroup>
-
-## 🔧 Development Workflow
-
-1. **Planning**: Review requirements and architecture
-2. **Development**: Use the provided templates and components
-3. **Testing**: Implement features with type safety
-4. **Deployment**: Deploy to Vercel with CI/CD
-
-## 🎨 UI/UX Features
-
-- Modern, responsive design
-- Dark mode by default
-- Accessible components
-- Consistent styling with shadcn/ui
-- Customizable themes
-
-## 🔐 Security Features
-
-- Type-safe API routes with tRPC
-- Secure authentication via BetterAuth
-- Protected API endpoints
-- Environment variable management
-- Database security best practices
-
-## 🚀 Deployment
-
-The boilerplate is optimized for deployment on Vercel with:
-
-- Automatic CI/CD
-- Environment variable management
-- Database migrations
-- API route optimization
-
-## 📈 Performance
-
-- Optimized for Core Web Vitals
-- Server-side rendering where appropriate
-- Efficient data fetching with tRPC
-- Optimized images and assets
-- Type-safe API calls
-
-## 🆘 Support
-
-For support, please:
-
-1. Check the documentation
-2. Review existing issues
-3. Create a new issue if needed
+For support and assistance:
+- [Documentation](/index)
+- [GitHub Issues](https://github.com/your-repo/issues)
+- [Community Discord](https://discord.gg/your-server)
 
 ---
 
 ## Next Steps
 
-Ready to get started? Check out our [Frontend Setup](/docs/frontend) guide to begin your journey with the Better Boilerplate.
+Ready to begin? Start with our [Getting Started Guide](/quickstart) or explore our [Example Projects](/frontend/index) to see the boilerplate in action.

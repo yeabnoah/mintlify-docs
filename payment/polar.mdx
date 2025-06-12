@@ -1,20 +1,20 @@
 ---
 title: 'Polar.sh Setup'
-description: 'Learn how to set up and configure Polar.sh payments in your application'
+description: 'This guide will walk you through setting up Polar.sh as a payment provider in your application.'
 ---
-
-# Polar.sh Setup Guide
-
-This guide will walk you through setting up Polar.sh as a payment provider in your application.
 
 ## Prerequisites
 
-1. A Polar.sh account (Sign up at [polar.sh](https://polar.sh))
-2. Required environment variables:
+1. go to sandbox.polar.sh and create an organization.
+2. go to your organization and create a product.
+3. get the product id and set it in the environment variables.
+3. Required environment variables: in `apps/server/.env`
    ```env
    POLAR_ACCESS_TOKEN=your_polar_access_token
    POLAR_WEBHOOK_SECRET=your_webhook_secret
    POLAR_SUCCESS_URL=your_success_url
+
+   POLAR_PRODUCT1_PRODUCT_ID=your_product_id // this is the product id of the product you created in the dashboard
    ```
 
 ## Installation
@@ -27,7 +27,7 @@ bun add @polar-sh/sdk @polar-sh/better-auth
 
 ## Server-Side Configuration
 
-1. Initialize the Polar client:
+1. Initialize the Polar client: in `apps/server/src/lib/polar.ts`
 
 ```typescript
 import { Polar } from "@polar-sh/sdk";
@@ -91,18 +91,39 @@ export const authClient = createAuthClient({
 
 Define your products in a configuration file:
 
+in `apps/web/src/src/products.ts`
+
 ```typescript
-// src/utils/products-list.ts
 export const products = [
   {
-    productId: "prod_basic",
+    productId: process.env.POLAR_PRODUCT1_PRODUCT_ID,
     slug: "basic",
     name: "Basic Plan",
     price: "$10/month",
     features: ["Feature 1", "Feature 2"],
   },
   {
-    productId: "prod_pro",
+    productId: process.env.POLAR_PRODUCT2_PRODUCT_ID,
+    slug: "pro",
+    name: "Pro Plan",
+    price: "$20/month",
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+  },
+];
+```
+in `apps/server/src/utils/products-list.ts`
+
+```typescript
+export const products = [
+  {
+    productId: process.env.POLAR_PRODUCT1_PRODUCT_ID,
+    slug: "basic",
+    name: "Basic Plan",
+    price: "$10/month",
+    features: ["Feature 1", "Feature 2"],
+  },
+  {
+    productId: process.env.POLAR_PRODUCT2_PRODUCT_ID,
     slug: "pro",
     name: "Pro Plan",
     price: "$20/month",
@@ -161,59 +182,6 @@ await authClient.checkout({
 });
 ```
 
-### Checking Subscription Status
-
-```typescript
-const paymentDetails = await authClient.getPaymentDetails();
-const polarSubscription = paymentDetails?.polar;
-```
-
-### Managing Subscription
-
-Users can manage their subscription through the Polar portal:
-
-```typescript
-const portalUrl = await authClient.createPortalSession();
-window.location.href = portalUrl;
-```
-
-## UI Components
-
-The boilerplate includes pre-built UI components for Polar integration:
-
-```typescript
-// Example subscription status display
-<Card>
-  <CardHeader>
-    <CardTitle>Polar Subscription</CardTitle>
-    <CardDescription>
-      Your current subscription details
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <div className="space-y-4">
-      <div className="flex items-center space-x-2">
-        <CalendarDays className="w-4 h-4" />
-        <div>
-          <p className="font-medium">Current Period</p>
-          <p className="text-muted-foreground">
-            {new Date(subscription.periodStart).toLocaleDateString()} -{" "}
-            {new Date(subscription.periodEnd).toLocaleDateString()}
-          </p>
-        </div>
-      </div>
-      {/* More subscription details */}
-    </div>
-  </CardContent>
-</Card>
-```
-
-## Testing
-
-1. Use Polar's sandbox environment for development
-2. Test webhook handling with sample events
-3. Verify subscription status updates
-4. Test the checkout flow end-to-end
 
 ## Common Issues
 
@@ -228,9 +196,3 @@ The boilerplate includes pre-built UI components for Polar integration:
 3. **Checkout Session**
    - Set correct success and cancel URLs
    - Handle failed payments gracefully
-
-## Next Steps
-
-- [Configure webhooks](/payments/webhooks)
-- [Implement subscription management](/payments/subscriptions)
-- [Set up customer portal](/payments/portal) 
