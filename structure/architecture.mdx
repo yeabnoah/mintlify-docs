@@ -1,8 +1,7 @@
 ---
 title: 'Architecture'
-description: 'The Better Boilerplate follows a modular, scalable architecture designed for maintainability and rapid development. This document outlines the key architectural decisions and patterns used throughout the project.'
+description: 'The BetterBoilerplate follows a modular, scalable architecture designed for maintainability and rapid development. This document outlines the key architectural decisions and patterns used throughout the project.'
 ---
-
 
 ## Monorepo Structure
 
@@ -85,6 +84,22 @@ src/
 - Database operations
 - External service integrations
 
+## CMS Architecture
+
+The CMS (`apps/cms`) is powered by Payload CMS and is structured for extensibility and integration with the rest of the monorepo. Only the essential structure is shown below:
+
+```
+apps/cms/
+├── src/
+│   ├── collections/      # Collection definitions (Posts, Media, Users, etc.)
+│   └── payload.config.ts # Main Payload CMS configuration
+```
+
+- `collections/`: Contains all collection schemas for Payload (e.g., Posts, Media, Users, Privacy).
+- `payload.config.ts`: The entry point for configuring Payload CMS, plugins, adapters, and collections.
+
+> For detailed configuration and customization, refer to the [Payload CMS documentation](https://payloadcms.com/docs/).
+
 ## Database Architecture
 
 The project uses Prisma with Supabase (PostgreSQL):
@@ -116,7 +131,6 @@ The API layer uses tRPC for type-safe communication:
 ## State Management
 
 - React Context for global state
-- Zustand for complex state management
 - Server state handled by tRPC
 
 ## Styling Architecture
