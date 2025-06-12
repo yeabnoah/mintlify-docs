@@ -24,7 +24,7 @@ The Ultimate Cursor AI Boilerplate is a production-ready, AI-powered Next.js tem
 
 <CardGroup cols={2}>
   <Card
-    title="Next.js 14+"
+    title="Next.js 15"
     icon="code"
     href="/docs/frontend"
   >
@@ -45,7 +45,7 @@ The Ultimate Cursor AI Boilerplate is a production-ready, AI-powered Next.js tem
     Robust data management with Postgres
   </Card>
   <Card
-    title="tRPC + BetterAuth"
+    title="HonoJS + tRPC + BetterAuth"
     icon="shield"
     href="/docs/backend"
   >
@@ -100,15 +100,26 @@ This boilerplate is perfect for:
 The boilerplate follows a modern, scalable architecture:
 
 ```bash
-/app           → Next.js App Router
-/components    → UI components (shadcn/custom)
-/server
-  └── api      → tRPC routers
-  └── auth     → BetterAuth handlers
-  └── db       → Prisma client + helpers
-/lib           → utils, constants, helpers
-/prisma        → schema.prisma
-/styles        → tailwind.css
+/web         → Next.js App Router ( frontend )
+  └── src      → Next.js App Router source code
+    └── components → UI components ( shadcn/custom ) ( frontend )
+    └── hooks      → custom hooks ( frontend )
+    └── lib        → utils, constants, helpers ( frontend )
+    └── types      → types for the frontend ( frontend )
+    └── utils      → utils for the frontend ( frontend )
+  └── public   → public assets ( frontend )
+  
+/server        → HonoJS server ( backend )
+  └── lib      → configs for better auth and tRPC
+  └── src      → HonoJS server source code
+  └── prisma   → Prisma schema + helpers  ( database )
+  └── routers  → tRPC routers ( backend )
+  └── types    → tRPC types ( backend )
+  └── services → bd calls and other services ( backend )
+  └── middlewares → middlewares for the server ( backend )
+  └── utils    → utils for the server
+/web/lib       → utils, constants, helpers
+/web/prisma   → schema.prisma ( database )
 ```
 
 ## 🚀 Getting Started
