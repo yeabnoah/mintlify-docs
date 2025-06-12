@@ -75,7 +75,7 @@
             "group": "Database",
             "pages": [
               "database/index",
-              "database/cms-setup"
+              "database/cms-setup",
               "database/supabase-setup"
             ]
           },
