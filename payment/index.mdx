@@ -1,11 +1,7 @@
 ---
 title: 'Payments Overview'
-description: 'Learn how to handle payments in your application using Stripe and Polar.sh'
+description: 'The Better Boilerplate provides a robust payment system that supports both Stripe and Polar.sh as payment providers. This guide will help you understand the payment architecture and how to implement it in your application.'
 ---
-
-# Payments Overview
-
-The Better Boilerplate provides a robust payment system that supports both Stripe and Polar.sh as payment providers. This guide will help you understand the payment architecture and how to implement it in your application.
 
 ## Architecture
 
@@ -107,7 +103,7 @@ export const auth = betterAuth({
 ## Subscription Management
 
 The system provides a unified interface for managing subscriptions:
-
+`polar.sh checkout`
 ```typescript
 // Get subscription status
 const paymentDetails = await authClient.getPaymentDetails();
@@ -117,6 +113,18 @@ const isSubscribed = paymentDetails?.polar || paymentDetails?.stripe;
 await authClient.checkout({
   products: [productId],
   slug: productSlug,
+});
+```
+`stripe checkout`
+
+```typescript
+// Get subscription status
+const paymentDetails = await authClient.getPaymentDetails();
+const isSubscribed = paymentDetails?.polar || paymentDetails?.stripe;
+
+// Start checkout
+await authClient.checkout({
+  plan: productSlug,
 });
 ```
 
@@ -138,7 +146,5 @@ The boilerplate includes pre-built UI components for:
 
 ## Next Steps
 
-- [Set up Stripe](/payments/stripe)
-- [Set up Polar.sh](/payments/polar)
-- [Configure webhooks](/payments/webhooks)
-- [Implement subscription management](/payments/subscriptions) 
+- [Set up Stripe](/payment/stripe)
+- [Set up Polar.sh](/payment/polar)

@@ -1,33 +1,31 @@
 ---
 title: 'Stripe Setup'
-description: 'Learn how to set up and configure Stripe payments in your application'
+description: 'This guide will walk you through setting up Stripe as a payment provider in your application.'
 ---
 
-# Stripe Setup Guide
-
-This guide will walk you through setting up Stripe as a payment provider in your application.
+> Note: This guide walks you how we setup stripe in the boilerplate. you don't need to implement it in the boiler plate since its already implemented.
 
 ## Prerequisites
 
 1. A Stripe account (Sign up at [stripe.com](https://stripe.com))
-2. Required environment variables:
+2. Go to your dashboard top right corner and turn on test mode
+3. Create a product in the dashboard
+4. Required environment variables: in `apps/server/.env`
    ```env
    STRIPE_SECRET_KEY=your_stripe_secret_key
-   STRIPE_WEBHOOK_SECRET=your_webhook_secret
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
+   NEXT_PUBLIC_STRIPE_PRODUCT_PRICE_ID=your_product_price_id
    ```
-
 ## Installation
 
 Install the required dependencies:
 
 ```bash
-bun add @better-auth/stripe stripe @stripe/stripe-js
+bun add @better-auth/stripe stripe @stripe
 ```
 
 ## Server-Side Configuration
 
-1. Initialize the Stripe client:
+1. Initialize the Stripe client: in `apps/server/src/lib/stripe.ts`
 
 ```typescript
 import Stripe from "stripe";
@@ -36,8 +34,7 @@ export const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2023-10-16",
 });
 ```
-
-2. Configure BetterAuth with Stripe plugin:
+2. Configure BetterAuth with Stripe plugin: in `apps/server/src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -85,7 +82,7 @@ export const authClient = createAuthClient({
 
 ## Product Configuration
 
-Define your products in a configuration file:
+Define your products in a configuration file: in `apps/server/src/utils/stripeProduct.ts`
 
 ```typescript
 // src/utils/stripeProduct.ts
