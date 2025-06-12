@@ -1,9 +1,15 @@
 ---
 title: "Component Library & Usage"
-description: "Catalog and usage of all available frontend components."
 ---
 
-# Component Library & Usage
+## Table of Contents
+
+- [Component Structure](#component-structure)
+- [Home/Landing Components (`@/features`)](#homelanding-components-features)
+- [General & UI Components (`ui/`)](#general--ui-components-ui)
+- [Top-Level Components & Usage](#top-level-components-usage)
+
+---
 
 > **Component Structure:**
 > - Most landing and feature components are in `@/features` (e.g., `@/features/home/`, `@/features/content/`).
@@ -113,13 +119,7 @@ import Logos from "@/features/home/logos2";
 
 ## General & UI Components (`ui/`)
 
-- **Navigation:** `nav-main`, `nav-user`, `nav-projects`, `app-sidebar`
-- **Dashboard:** `usage-dashboard`, `usage-meter`, `team-switcher`, `user-menu`
-- **Forms:** `login-form`, `prompt-input`
 - **UI Primitives:** All components in `ui/` (e.g., `button`, `input`, `card`, `dialog`, `dropdown-menu`, `tabs`, `table`, `badge`, `avatar`, etc.)
-- **Skeletons/Loaders:** `page-loading`, `skeleton`, `loader`
-- **Content:** `faq`, `cta`, `footer`, `header`, `blog`, `privacy-policy`
-- **AI:** `ai-conversation`, `ai-animated-chat`, `ai-chat`
 
 **Usage Example:**
 
@@ -131,6 +131,225 @@ import { Button } from "ui/button";
 
 ---
 
-## Top-Level Components
+## Top-Level Components & Usage
 
-{/* Repeat the same pattern for each top-level component, with code and image placeholder. */}
+Below are usage examples for each top-level component (not in `ui/` or any subfolder), organized by use case. Each component preview image appears before its code example.
+
+---
+
+### Testimonials Components
+
+#### TestimonialsSingle
+{/* ![TestimonialsSingle Screenshot](/images/frontend/testimonials-single.png) */}
+```tsx
+import TestimonialsSingle from "testimonials-single";
+<TestimonialsSingle />
+```
+
+#### TestimonialsCarousel
+{/* ![TestimonialsCarousel Screenshot](/images/frontend/testimonials-carousel.png) */}
+```tsx
+import { TestimonialsCarousel } from "testimonials-carousel";
+<TestimonialsCarousel />
+```
+
+#### TestimonialsAnimated
+{/* ![TestimonialsAnimated Screenshot](/images/frontend/testimonials-animated.png) */}
+```tsx
+import AnimatedTestimonialsDemo from "testimonials-animated";
+<AnimatedTestimonialsDemo />
+```
+
+#### TestimonialSingle
+{/* ![TestimonialSingle Screenshot](/images/frontend/testimonial-single.png) */}
+```tsx
+import { TestimonialSingle } from "testimonial-single";
+<TestimonialSingle />
+```
+
+#### TestimonialGrid
+{/* ![TestimonialGrid Screenshot](/images/frontend/testimonial-grid.png) */}
+```tsx
+import { TestimonialGrid } from "testimonial-grid";
+<TestimonialGrid />
+```
+
+---
+
+### Pricing Components
+
+#### PricingSelector
+{/* ![PricingSelector Screenshot](/images/frontend/pricing-selector.png) */}
+```tsx
+import { PricingSelector } from "pricing-selector";
+<PricingSelector />
+```
+
+#### PricingWithModals
+{/* ![PricingWithModals Screenshot](/images/frontend/pricing-with-modals.png) */}
+```tsx
+import PricingPage from "pricing-with-modals";
+<PricingPage />
+```
+
+#### SimplePricing
+{/* ![SimplePricing Screenshot](/images/frontend/pricing-copy.png) */}
+```tsx
+import SimplePricing from "pricing copy";
+<SimplePricing />
+```
+
+---
+
+### Feature/Content Components
+
+#### FeatureGrid
+{/* ![FeatureGrid Screenshot](/images/frontend/feature-grid.png) */}
+```tsx
+import { FeatureGrid } from "feature-grid";
+<FeatureGrid />
+```
+
+#### FeaturesCirculated
+{/* ![FeaturesCirculated Screenshot](/images/frontend/features-circulated.png) */}
+```tsx
+import Feature3 from "features-circulated";
+<Feature3 />
+```
+
+#### FeaturesBentoGrid
+{/* ![FeaturesBentoGrid Screenshot](/images/frontend/features-bento-grid.png) */}
+```tsx
+import BentoGrid from "features-bento-grid";
+<BentoGrid />
+```
+
+#### FeaturesAccordion
+{/* ![FeaturesAccordion Screenshot](/images/frontend/features-accordion.png) */}
+```tsx
+import FeatureSteps from "features-accordion";
+<FeatureSteps />
+```
+
+#### AnimatedListDemo
+{/* ![AnimatedListDemo Screenshot](/images/frontend/animated-list-demo.png) */}
+```tsx
+import AnimatedListDemo from "animated-list-demo";
+<AnimatedListDemo />
+```
+
+---
+
+### Navigation & Layout Components
+
+#### NavMain
+{/* ![NavMain Screenshot](/images/frontend/nav-main.png) */}
+```tsx
+import { NavMain } from "nav-main";
+<NavMain items={[]} />
+```
+
+#### NavUser
+{/* ![NavUser Screenshot](/images/frontend/nav-user.png) */}
+```tsx
+import NavUser from "nav-user";
+<NavUser />
+```
+
+#### NavProjects
+{/* ![NavProjects Screenshot](/images/frontend/nav-projects.png) */}
+```tsx
+import NavProjects from "nav-projects";
+<NavProjects />
+```
+
+#### AppSidebar
+{/* ![AppSidebar Screenshot](/images/frontend/app-sidebar.png) */}
+```tsx
+import AppSidebar from "app-sidebar";
+<AppSidebar />
+```
+
+#### Providers
+{/* ![Providers Screenshot](/images/frontend/providers.png) */}
+```tsx
+import Providers from "providers";
+<Providers>{children}</Providers>
+```
+
+---
+
+### User & Team Components
+
+#### UserMenu
+{/* ![UserMenu Screenshot](/images/frontend/user-menu.png) */}
+```tsx
+import UserMenu from "user-menu";
+<UserMenu />
+```
+
+#### TeamSwitcher
+{/* ![TeamSwitcher Screenshot](/images/frontend/team-switcher.png) */}
+```tsx
+import TeamSwitcher from "team-switcher";
+<TeamSwitcher />
+```
+
+#### UsageMeter
+{/* ![UsageMeter Screenshot](/images/frontend/usage-meter.png) */}
+```tsx
+import { UsageMeter } from "usage-meter";
+<UsageMeter value={75} label="API Usage" quota="750/1000" />
+```
+
+---
+
+### AI & Prompt Components
+
+#### AIConversation
+{/* ![AIConversation Screenshot](/images/frontend/ai-conversation.png) */}
+```tsx
+import Conversation1 from "ai-conversation";
+<Conversation1 />
+```
+
+#### AIAnimatedChat
+{/* ![AIAnimatedChat Screenshot](/images/frontend/ai-animated-chat.png) */}
+```tsx
+import AnimatedAIChat from "ai-animated-chat";
+<AnimatedAIChat />
+```
+
+#### PromptInput
+{/* ![PromptInput Screenshot](/images/frontend/prompt-input.png) */}
+```tsx
+import { PromptInput } from "prompt-input";
+<PromptInput maxTokens={100} onSubmit={val => alert(val)} />
+```
+
+#### ResponseStream
+{/* ![ResponseStream Screenshot](/images/frontend/response-stream.png) */}
+```tsx
+import { ResponseStream } from "response-stream";
+<ResponseStream response="Hello, world!" isStreaming />
+```
+
+---
+
+### Utility & Miscellaneous Components
+
+#### ButtonLead
+{/* ![ButtonLead Screenshot](/images/frontend/button-lead.png) */}
+```tsx
+import { ButtonLead } from "button-lead";
+<ButtonLead label="Join Now" />
+```
+
+#### Loader
+{/* ![Loader Screenshot](/images/frontend/loader.png) */}
+```tsx
+import Loader from "loader";
+<Loader />
+```
+
+---

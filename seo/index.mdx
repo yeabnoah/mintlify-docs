@@ -1,4 +1,115 @@
 ---
 title: 'SEO Page'
-description: 'Preview changes locally to update your docs'
+description: 'Metadata Configuration in The BetterBoilerplate Codebase'
 ---
+
+## 1. Static Metadata Export
+
+Most layouts and pages define metadata by exporting a `metadata` object. This object typically includes at least a `title` and `description`.
+
+### Example: `app/layout.tsx`
+```ts
+import type { Metadata } from "next";
+// ...other imports
+
+export const metadata: Metadata = {
+  title: "ultimate-boilerplate-code",
+  description: "ultimate-boilerplate-code",
+};
+```
+
+
+### Example: `app/main/layout.tsx`
+```ts
+export const metadata = {
+  title: "Main | Boilerplate",
+  description: "Main section of the Boilerplate app.",
+};
+```
+
+
+### Example: `app/(content)/blogs/page.tsx`
+```ts
+export const metadata = {
+  title: "Blog | Boilerplate",
+  description: "Read the latest blog posts and updates from Boilerplate.",
+};
+```
+
+### Example: `app/(content)/privacy-policy/page.tsx`
+```ts
+export const metadata = {
+  title: "Privacy Policy | Boilerplate",
+  description: "Read our privacy policy to understand how we handle your data.",
+};
+```
+
+## 2. Dynamic Metadata with `generateMetadata`
+
+For dynamic routes, metadata can be generated at runtime using the `generateMetadata` async function. This is useful for pages where the title, description, or OpenGraph data depend on fetched content.
+
+### Example: `app/(content)/blogs/[id]/page.tsx`
+```ts
+import type { Metadata } from "next";
+// ...other imports
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const blog = await cmsService.blogs.getById(params.id);
+  if (!blog) {
+    return {
+      title: "Blog Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+  return {
+    title: `${blog.title} | Your Blog Name`,
+    description: blog.description,
+    openGraph: {
+      title: blog.title,
+      description: blog.description,
+      type: "article",
+      publishedTime: blog.publishedDate,
+      images:
+        typeof blog.featuredImage === "string"
+          ? [blog.featuredImage]
+          : blog.featuredImage?.url
+            ? [blog.featuredImage.url]
+            : [],
+    },
+  };
+}
+```
+
+---
+
+## 🔄 How to Change or Update Metadata
+
+To update the metadata for any page or layout, simply edit the `metadata` export or the `generateMetadata` function in the corresponding file.
+
+### To update static metadata:
+1. Open the relevant file (e.g., `app/layout.tsx`).
+2. Edit the `metadata` object:
+
+```ts
+export const metadata = {
+  title: "New Page Title",
+  description: "A new description for this page.",
+};
+```
+
+### To update dynamic metadata:
+1. Open the file with a `generateMetadata` function (e.g., `app/(content)/blogs/[id]/page.tsx`).
+2. Edit the logic or returned values as needed:
+
+```ts
+export async function generateMetadata({ params }) {
+  // ...fetch or compute new metadata
+  return {
+    title: "Updated Title",
+    description: "Updated description.",
+    // ...other fields
+  };
+}
+```
+
+> **Note:** Only fields and patterns already present in the codebase are supported. For more options, refer to the [Next.js Metadata docs](https://nextjs.org/docs/app/building-your-application/optimizing/metadata). 

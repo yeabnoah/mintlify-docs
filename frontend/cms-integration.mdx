@@ -1,13 +1,31 @@
 ---
 title: "CMS & Content Integration"
-description: "How to integrate and use CMS/content features in the frontend."
+description: "The web app supports dynamic content through CMS integration and content components."
 ---
 
-# CMS & Content Integration
+## Folder Structure
 
-The web app supports dynamic content through CMS integration and content components.
+```text
+apps/web/src/app/(content)/
+├── blogs/           # Blog post pages (dynamic routes)
+├── privacy-policy/  # Privacy policy pages
+└── layout.tsx       # Layout for content section
 
----
+apps/web/src/features/content/
+├── blog/    # Blog-related feature logic/components
+├── privacy/ # Privacy policy feature logic/components
+└── shared/  # Shared content utilities/components
+```
+
+**Folder Descriptions:**
+
+- **apps/web/src/app/(content)/blogs/**: Contains the dynamic route pages for individual blog posts, rendering content fetched from the CMS or local sources.
+- **apps/web/src/app/(content)/privacy-policy/**: Holds the privacy policy pages, allowing for easy updates and dynamic rendering of legal content.
+- **apps/web/src/app/(content)/layout.tsx**: Provides the layout wrapper for all content-related pages, ensuring consistent structure and styling.
+
+- **apps/web/src/features/content/blog/**: Contains feature logic, components, and utilities specifically for blog functionality (e.g., fetching, displaying, and managing blog posts).
+- **apps/web/src/features/content/privacy/**: Handles privacy policy logic and components, such as fetching and rendering privacy-related content.
+- **apps/web/src/features/content/shared/**: Houses shared utilities and components used across different content features (e.g., markdown renderers, content formatters).
 
 ## CMS Service (`@/services/cms/cms.ts`)
 
@@ -42,6 +60,35 @@ import Blog from "@/features/content/blog/blog";
 
 ---
 
+### Rich Text Rendering Utility (`render-rich-text.tsx`)
+
+Your CMS uses a custom utility at `apps/web/src/lib/render-rich-text.tsx` to render rich text content from a Lexical-compatible JSON structure into React components.
+
+**Key Features:**
+- Supports headings, paragraphs, lists, links, and inline text formatting (bold, italic, underline, strikethrough).
+- Input: Expects a tree of `LexicalNode` objects (see the `LexicalNode` type in the file).
+- Output: Returns React elements with Tailwind CSS classes for consistent styling.
+
+**Usage Example:**
+```tsx
+import { renderRichText } from "@/lib/render-rich-text";
+
+// `content` is a Lexical JSON node tree (from your CMS/editor)
+export default function ArticleBody({ content }) {
+  return <div>{renderRichText(content)}</div>;
+}
+```
+
+**How It Works:**
+- Text nodes: Rendered as `<span>` with formatting classes.
+- Headings: Rendered as `<h1>`, `<h2>`, `<h3>` with anchor IDs for linking.
+- Paragraphs: Rendered as `<p>` with spacing and leading.
+- Lists: Rendered as `<ul>`/`<li>` with proper indentation.
+- Links: Rendered as `<a>` with external link handling.
+- Empty nodes: Skipped or rendered as empty divs for spacing.
+
+>**See the file for full details and customization.**
+---
 ## Content Pages (`(content)/`)
 
 - **Blogs:** `/blogs` and `/blogs/[id]` for blog listings and detail pages.

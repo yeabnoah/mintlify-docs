@@ -1,19 +1,20 @@
 ---
 title: "Landing Page Variants"
-description: "How to use and customize landing page variants."
+description: "Most landing page and feature components are located in `@/features`, while general-purpose and UI components are in `ui/`."
 ---
 
 # Landing Page Variants
 
-:::info
-Most landing page and feature components are located in `@/features`, while general-purpose and UI components are in `ui/`.
-:::
-
-By default, `@/web/src/app/page.tsx` is a minimal placeholder. You can easily set up a full-featured landing page using the provided component variants from `@/features/home`.
+By default you will get two landing pages variants, `@/web/src/app/page.tsx` is a minimal placeholder. You can easily switch up between full-featured landing pages using the provided component variants from `@/features/home`.
 
 ---
 
 ## Landing Page 1 (Default Example)
+
+### 📸 Component Screenshots
+
+{/* Add images/screenshots of each component here for visual reference. Example: */}
+{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
 
 ```tsx
 import BentoGrid from "@/features/home/bento-grid1";
@@ -49,14 +50,14 @@ export default function Home() {
 }
 ```
 
-### 📸 Component Screenshots
-
-{/* Add images/screenshots of each component here for visual reference. Example: */}
-{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
-
 ---
 
 ## Landing Page 2 (Alternative)
+
+### 📸 Component Screenshots
+
+{/* Add images/screenshots of each component here for visual reference. Example: */}
+{/* ![Hero2 Screenshot](/images/frontend/hero2.png) */}
 
 ```tsx
 import Navigation from "@/features/home/navigation2";
@@ -89,14 +90,6 @@ export default function Home() {
   );
 }
 ```
-
-### 📸 Component Screenshots
-
-{/* Add images/screenshots of each component here for visual reference. Example: */}
-{/* ![Hero2 Screenshot](/images/frontend/hero2.png) */}
-
 ---
 
-:::tip
-Mix and match any components from `@/features/home/` to create your own custom landing page.
-:::
+> **Tip:** Mix and match any components from `@/features/home/` to create your own custom landing page.
