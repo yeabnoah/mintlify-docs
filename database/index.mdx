@@ -1,15 +1,12 @@
 ---
 title: 'Database'
-description: 'Learn about our database setup, schema, and how to extend it'
+description: 'Our application uses Supabase as the primary database provider, which is built on top of PostgreSQL. We use Prisma as our ORM to interact with the database.'
 ---
-
-# Database
-
-Our application uses Supabase as the primary database provider, which is built on top of PostgreSQL. We use Prisma as our ORM to interact with the database.
 
 ## Schema Overview
 
-Our database schema is designed to support authentication, user management, and subscription handling. Here's a detailed breakdown of our models:
+Our database schema is designed to support authentication, user management, and subscription handling.
+
 
 ### User Model
 
@@ -112,56 +109,12 @@ The subscription model manages user subscriptions with support for both Stripe a
 
 ## Setting Up the Database
 
-### Local Development Setup
+For detailed instructions on setting up and configuring your database, please refer to:
 
-1. Install Supabase CLI:
-```bash
-npm install -g supabase
-```
+- Local development setup: [Local setup Guide](/database/supabase-setup)
+- Cloud deployment: [Cloud setup Guide](/database/supabase-setup)
 
-2. Initialize Supabase locally:
-```bash
-supabase init
-```
-
-3. Start the local Supabase instance:
-```bash
-supabase start
-```
-
-4. Apply the database schema:
-```bash
-npx prisma db push
-```
-
-### Cloud Setup
-
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-
-2. Get your database connection strings from the Supabase dashboard:
-   - Database URL
-   - Direct URL
-
-3. Add these to your `.env` file:
-```env
-DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
-DIRECT_URL="postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
-```
-
-4. Apply the schema:
-```bash
-npx prisma db push
-```
-
-## Extending the Schema
-
-To add new features to the database:
-
-1. Modify the schema in `prisma/schema.prisma`
-2. Create a new migration:
-```bash
-npx prisma migrate dev --name your_migration_name
-```
+These guides provide step-by-step instructions for installing dependencies, initializing Supabase, configuring environment variables, and managing database schema changes.
 
 ### Best Practices
 

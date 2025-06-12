@@ -5,8 +5,6 @@ description: 'Get started with the Better Boilerplate in minutes'
 
 ## 🚀 Prerequisites
 
-Before you begin, ensure you have the following installed:
-
 <CardGroup cols={2}>
   <Card title="Bun 1.0+" icon="code">
     Required for running the development environment
@@ -14,10 +12,7 @@ Before you begin, ensure you have the following installed:
   <Card title="Git" icon="code-branch">
     For version control and collaboration
   </Card>
-  <Card title="Cursor/ VS Code / preferred IDE" icon="code">
-    Recommended code editor with excellent TypeScript support
-  </Card>
-  <Card title="Supabase Account / local setup" icon="database">
+  <Card title="Supabase Account" icon="database">
     Required for database and authentication
   </Card>
   <Card title="Stripe Account" icon="credit-card">
@@ -27,101 +22,66 @@ Before you begin, ensure you have the following installed:
 
 ## ⚡ Quick Setup
 
-### 1. Clone the Repository
+### 1. Clone & Install
 
 <CodeGroup>
 ```bash bash
 git clone https://github.com/your-org/ultimate-cursor-ai-boilerplate.git
 cd ultimate-cursor-ai-boilerplate
-```
-</CodeGroup>
-
-### 2. Install Dependencies
-
-<CodeGroup>
-
-
-```bash bun
 bun install
 ```
 </CodeGroup>
 
-### 3. Environment Setup
+### 2. Environment Setup
 
-Create two `.env` files in your project:
-#### Frontend [apps/web] (.env)
+Create `.env` files in both `apps/web` and `apps/server` directories:
 
-Copy the example environment file and update with your values:
-
-```bash
-cd apps/web && cp .env.example .env
-```
-
-
-<CodeGroup>
-```env .env
-# Core
+#### Frontend [apps/web/.env]
+```env
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3001
-NEXT_PUBLIC_API_URL=http://localhost:3000
+
+NEXT_PUBLIC_POLAR_PRODUCT_ID=example_value // If you choose polar as payment provider
 ```
-</CodeGroup>
 
-#### Backend [apps/server] (.env)
+#### Backend [apps/server/.env]
+```env
+CORS_ORIGIN=http://localhost:3001
 
-Copy the example environment file and update with your values:
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_GENERATIVE_AI_API_KEY=
+
+
+DATABASE_URL=
+DIRECT_URL=
+
+
+POLAR_ACCESS_TOKEN= // If you choose polar as payment provider
+POLAR_SUCCESS_URL= // If you choose polar as payment provider
+
+RESEND_API_KEY= // If you choose resend as email provider
+
+STRIPE_SECRET_KEY=
+
+STRIPE_WEBHOOK_SECRET=
+
+STRIPE_EXAMPLE_PRODUCT=
+
+OPENROUTER_API_KEY=
+```
+
+For detailed configuration of each feature, see the corresponding sections in Next Steps.
+
+### 3. Database Setup
 
 ```bash
-cd apps/server && cp .env.example .env
-```
-
-
-<CodeGroup>
-```env .env
-# Core
-CORS_ORIGIN=your_frontend_url
-
-# Database
-
-DATABASE_URL=your_supabase_database_url (transa)
-DIRECT_URL=your_supabase_direct_url
-
-# Auth
-BETTER_AUTH_SECRET=your_better_auth_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# Services
-STRIPE_SECRET_KEY=your_stripe_secret_key
-GOOGLE_AI_API_KEY=your_google_ai_api_key
-STRIPE_PRODUCT1_PRICE_ID=your_stripe_product_id
-
-# email
-RESEND_API_KEY=your_resend_api_key
-
-# OPEN ROUTER AI
-OPENROUTER_API_KEY=your_openrouter_api_key
-
-```
-</CodeGroup>
-
-### 4. Database Setup
-
-```bash
- cd apps/server
-```
-
-
-<CodeGroup>
-```bash bun
-# Generate Prisma client
+cd apps/server
 npx prisma generate
-
-# Run migrations
 npx prisma db push
 ```
-</CodeGroup>
 
-### 5. Start Development Server
+### 4. Start Development
 
 <CodeGroup>
 ```bash bun
@@ -129,129 +89,41 @@ bun dev
 ```
 </CodeGroup>
 
-Visit `http://localhost:3001` to see your frontend application. <br />
-Visit `http://localhost:3000` to see your backend application. <br />
-Visit `http://localhost:3002` to see your email application. <br />
-Visit `http://localhost:3003` to see your cms application. <br />
+Visit `http://localhost:3001` for the frontend application.
 
 
-## 🎯 Key Commands
+### 4. Start Development
 
-<AccordionGroup>
-  <Accordion title="Development Commands" icon="code">
-    <CodeGroup>
+<CodeGroup>
+```bash bun
+bun dev
+```
+</CodeGroup>
 
-    ```bash bun
-    bun dev          # Start development server
-    bun build        # Build for production
-    bun start        # Start production server
-    ```
-    </CodeGroup>
-  </Accordion>
-
-  <Accordion title="Database Commands" icon="database">
-    <CodeGroup>
-    ```bash npm
-    npm prisma generate    # Generate Prisma client
-    npm prisma migrate dev # Run migrations
-    npm prisma studio     # Open Prisma Studio
-    ```
-    ```bash bun
-    bun prisma generate    # Generate Prisma client
-    bun prisma migrate dev # Run migrations
-    bun prisma studio     # Open Prisma Studio
-    ```
-    </CodeGroup>
-  </Accordion>
-</AccordionGroup>
-
-## 📁 Project Structure
-
-<CardGroup cols={1}>
-  <Card title="Frontend" icon="code">
-    ```bash
-    apps/web/
-    ├── src/
-    │   ├── app/                    # App Router pages and layouts
-    │   ├── (auth)/            # Authentication routes
-    │   ├── (dashboard)/       # Dashboard routes
-    │   └── layout.tsx         # Root layout
-    │   ├── components/            # Reusable components
-    │   ├── ui/               # shadcn/ui components
-    │   ├── forms/            # Form components
-    │   └── shared/           # Shared components
-    │   ├── lib/             # Utility functions
-    │   ├── utils/           # Helper functions
-    │   ├── hooks/           # Custom hooks
-    │   └── constants/       # Constants and configs
-    │   ├── styles/          # Global styles
-    │   └── types/           # TypeScript types
-    ├── .env                 # Environment variables
-    ├── .env.example         # Environment variable example
-    ```
-  </Card>
-  <Card title="Backend" icon="server">
-    ```bash
-    apps/server/
-    ├── src/
-    │   ├── libs/  # auth trpc,configs  ,db,utils
-    │   ├── routers/  # API routers
-    │   ├── services/        # Business logic 
-    │   ├── controllers/     # business logic controllers 
-    │   ├── email-templates/     # email templates
-    │   └── utils/           # Utility functions
-    ├── prisma/              # Prisma schema
-    ├── .env                 # Environment variables
-    ├── .env.example         # Environment variable example
-    ```
-  </Card>
-</CardGroup>
-
-## ⚠️ Common Issues
-
-<AccordionGroup>
-  <Accordion title="Database Connection Issues" icon="database">
-    - Ensure DATABASE_URL is correct
-    - Check if Supabase is running
-    - Verify network connectivity
-  </Accordion>
-
-  <Accordion title="Authentication Problems" icon="key">
-    - Confirm BETTER_AUTH_SECRET is set
-    - Check callback URLs
-  </Accordion>
-
-  <Accordion title="Build Errors" icon="code">
-    - Clear `.next` folder
-    - Run `bun install` again
-  </Accordion>
-</AccordionGroup>
+Visit `http://localhost:3001` for the frontend application.
 
 ## 📚 Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Architecture Overview" icon="sitemap" href="/architecture">
-    Learn about the system architecture
+  <Card title="Database Setup" icon="database" href="/database/index">
+    Configure Supabase and database settings
   </Card>
-  <Card title="Authentication Setup" icon="key" href="/auth">
-    Set up authentication
+  <Card title="Authentication" icon="key" href="/auth/index">
+    Set up BetterAuth and OAuth providers
   </Card>
-  <Card title="Payments Configuration" icon="credit-card" href="/payments">
-    Configure payment processing
+  <Card title="Payments" icon="credit-card" href="/payment/index">
+    Configure Stripe and payment processing
   </Card>
-  <Card title="Example Projects" icon="book" href="/examples">
-    Explore example projects
+  <Card title="Email" icon="mail" href="/email/index">
+    Set up Resend for email functionality
   </Card>
 </CardGroup>
 
 ## 🆘 Need Help?
 
 <CardGroup cols={2}>
-  <Card title="Documentation" icon="book" href="">
-    Check the full documentation
-  </Card>
-  <Card title="Discord Community" icon="discord" href="https://discord.gg/your-discord">
-    Join our community
+  <Card title="Documentation" icon="book" href="/index">
+    Full documentation
   </Card>
   <Card title="GitHub Issues" icon="github" href="https://github.com/your-org/ultimate-cursor-ai-boilerplate/issues">
     Report issues
@@ -259,5 +131,5 @@ Visit `http://localhost:3003` to see your cms application. <br />
 </CardGroup>
 
 <Note>
-  This is a quick start guide. For detailed information, refer to the full documentation in each respective section.
+  For detailed information about any step, click the corresponding link in the Next Steps section.
 </Note>

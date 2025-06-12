@@ -17,6 +17,7 @@
             "group": "Get Started",
             "pages": [
               "index",
+              "technologies",
               "quickstart"
             ]
           },
@@ -44,6 +45,12 @@
               "api-setup/public",
               "api-setup/protected",
               "api-setup/subscribed"
+            ]
+          },
+          {
+            "group": "Email",
+            "pages": [
+              "email/index"
             ]
           },
           {
