@@ -123,25 +123,6 @@ app/
     └── pricing/
 ```
 
-## Authentication Hooks
-
-### 1. Use Auth Hook
-
-```typescript
-// apps/web/src/hooks/use-auth.ts
-import { useSession } from "better-auth/react";
-
-export function useAuth() {
-  const { data: session, status } = useSession();
-
-  return {
-    user: session?.user,
-    isLoading: status === "loading",
-    isAuthenticated: status === "authenticated",
-  };
-}
-```
-
 ### 2. Protected Component
 
 ```typescript
@@ -233,6 +214,6 @@ export function ProtectedComponent() {
 
 ## Next Steps
 
-- [Set up Email & Password authentication](/auth/email-password)
-- [Set up Social authentication](/auth/social)
+- [Set up Email & Password authentication](/auth/email-pass)
+- [Set up Social authentication](/auth/socials)
 - [Configure session management](/auth/sessions) 

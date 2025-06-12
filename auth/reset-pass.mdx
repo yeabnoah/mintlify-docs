@@ -1,11 +1,7 @@
 ---
 title: 'Password Reset'
-description: 'Learn how to implement forgot password and reset password functionality'
+description: 'The boilerplate provides a complete password reset flow with forgot password and reset password functionality.'
 ---
-
-# Password Reset
-
-The boilerplate provides a complete password reset flow with forgot password and reset password functionality.
 
 ## Server-Side Setup
 
@@ -60,7 +56,7 @@ export function ForgotPasswordForm() {
 
   const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
     try {
-      await authClient.forgotPassword(data.email);
+      await authClient.resetPassword(data.email);
       // Handle success
     } catch (error) {
       // Handle error
