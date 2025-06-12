@@ -1,0 +1,202 @@
+---
+title: 'Password Reset'
+description: 'Learn how to implement forgot password and reset password functionality'
+---
+
+# Password Reset
+
+The boilerplate provides a complete password reset flow with forgot password and reset password functionality.
+
+## Server-Side Setup
+
+### 1. Configure BetterAuth
+
+```typescript
+// apps/server/src/lib/auth.ts
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+
+  emailAndPassword: {
+    enabled: true,
+    sendResetPassword: async ({ user, url, token }) => {
+      const userName = user?.name || user?.email?.split("@")[0] || "User";
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        from: "onboarding@resend.dev",
+        html: getResetPasswordEmailHtml(userName, url),
+      });
+    },
+  },
+});
+```
+
+## Client-Side Implementation
+
+### 1. Forgot Password Form
+
+```typescript
+// apps/web/src/features/auth/forgot-password-form.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export function ForgotPasswordForm() {
+  const form = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
+    try {
+      await authClient.forgotPassword(data.email);
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      {/* Form fields */}
+    </form>
+  );
+}
+```
+
+### 2. Reset Password Form
+
+```typescript
+// apps/web/src/features/auth/reset-password-form.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const resetPasswordSchema = z.object({
+  password: z.string().min(8),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+export function ResetPasswordForm() {
+  const form = useForm({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof resetPasswordSchema>) => {
+    try {
+      await authClient.resetPassword(data.password);
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      {/* Form fields */}
+    </form>
+  );
+}
+```
+
+## Password Reset Flow
+
+### 1. Forgot Password Flow
+
+1. User clicks "Forgot Password" link
+2. User enters email address
+3. System validates email
+4. Send reset password email
+5. User receives email with reset link
+
+### 2. Reset Password Flow
+
+1. User clicks reset link in email
+2. User enters new password
+3. System validates password
+4. Update password
+5. Sign in user with new password
+6. Redirect to dashboard
+
+## Security Features
+
+1. **Token Security**
+   - Secure token generation
+   - Token expiration (1 hour)
+   - One-time use tokens
+   - Rate limiting
+
+2. **Password Security**
+   - Password complexity requirements
+   - Password confirmation
+   - Secure password hashing
+   - Rate limiting
+
+3. **Email Security**
+   - Secure email delivery
+   - Email verification
+   - Spam protection
+
+## Best Practices
+
+1. **Error Handling**
+   - Show user-friendly error messages
+   - Log password reset attempts
+   - Handle edge cases
+   - Provide clear feedback
+
+2. **User Experience**
+   - Clear form validation
+   - Loading states
+   - Success/error feedback
+   - Clear instructions
+
+3. **Security**
+   - HTTPS in production
+   - Rate limiting
+   - Input validation
+   - Token validation
+
+## Common Issues & Solutions
+
+1. **Email Not Received**
+   - Check spam folder
+   - Verify email address
+   - Check rate limits
+   - Resend reset email
+
+2. **Link Expired**
+   - Request new reset link
+   - Clear browser cache
+   - Check system time
+   - Handle expired tokens
+
+3. **Invalid Token**
+   - Request new reset link
+   - Clear browser cache
+   - Check URL encoding
+   - Handle invalid tokens
+
+## Next Steps
+
+- [Set up Email & Password authentication](/auth/email-password)
+- [Configure Magic Link authentication](/auth/magic-link)
+- [Set up Social authentication](/auth/social)
+- [Configure protected routes](/auth/protected-routes) 

@@ -1,0 +1,300 @@
+---
+title: 'Email & Password Authentication'
+description: 'Learn how to set up and use email and password authentication'
+---
+
+# Email & Password Authentication
+
+The boilerplate provides a complete email and password authentication system with email verification and password reset capabilities.
+
+## Server-Side Setup
+
+### 1. Configure BetterAuth
+
+```typescript
+// apps/server/src/lib/auth.ts
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email",
+        from: "onboarding@resend.dev",
+        html: getVerifyEmailHtml(
+          user.name || user.email?.split("@")[0] || "User",
+          "Better Boilerplate",
+          process.env.CORS_ORIGIN as string,
+          token,
+        ),
+      });
+    },
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    expiresIn: 3600,
+  },
+
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url, token }) => {
+      const userName = user?.name || user?.email?.split("@")[0] || "User";
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        from: "onboarding@resend.dev",
+        html: getResetPasswordEmailHtml(userName, url),
+      });
+    },
+  },
+});
+```
+
+### 2. Database Schema
+
+The authentication system uses the following Prisma schema:
+
+```prisma
+model User {
+  id            String    @id @map("_id")
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+}
+
+model Session {
+  id        String   @id @map("_id")
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+}
+```
+
+## Client-Side Implementation
+
+### 1. Auth Client Setup
+
+```typescript
+// apps/web/src/lib/auth-client.ts
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+});
+```
+
+### 2. Sign Up Form
+
+```typescript
+// apps/web/src/features/auth/signup-form.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const signUpSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+export function SignUpForm() {
+  const form = useForm({
+    resolver: zodResolver(signUpSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+    try {
+      await authClient.signUp(data);
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      {/* Form fields */}
+    </form>
+  );
+}
+```
+
+### 3. Login Form
+
+```typescript
+// apps/web/src/features/auth/login-form.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+export function LoginForm() {
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    try {
+      await authClient.signIn(data);
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      {/* Form fields */}
+    </form>
+  );
+}
+```
+
+### 4. Password Reset Flow
+
+```typescript
+// apps/web/src/features/auth/forgot-password-form.tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export function ForgotPasswordForm() {
+  const form = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
+    try {
+      await authClient.forgotPassword(data.email);
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      {/* Form fields */}
+    </form>
+  );
+}
+```
+
+## Authentication Flows
+
+### 1. Sign Up Flow
+
+1. User enters name, email, and password
+2. Form validation
+3. Create user account
+4. Send verification email
+5. User verifies email
+6. Auto sign-in after verification
+
+### 2. Login Flow
+
+1. User enters email and password
+2. Form validation
+3. Verify credentials
+4. Create session
+5. Redirect to dashboard
+
+### 3. Password Reset Flow
+
+1. User requests password reset
+2. Send reset email
+3. User clicks reset link
+4. Enter new password
+5. Update password
+6. Sign in with new password
+
+## Security Features
+
+1. **Password Security**
+   - Secure password hashing
+   - Password complexity requirements
+   - Rate limiting for failed attempts
+
+2. **Email Verification**
+   - Secure token generation
+   - Token expiration
+   - One-time use tokens
+
+3. **Session Security**
+   - Secure session storage
+   - Session timeout
+   - IP and user agent tracking
+
+## Best Practices
+
+1. **Error Handling**
+   - Show user-friendly error messages
+   - Log authentication errors
+   - Handle edge cases
+
+2. **User Experience**
+   - Clear form validation
+   - Loading states
+   - Success/error feedback
+
+3. **Security**
+   - HTTPS in production
+   - Rate limiting
+   - Input validation
+
+## Next Steps
+
+- [Set up Magic Link authentication](/auth/magic-link)
+- [Configure Social authentication](/auth/social)
+- [Set up protected routes](/auth/protected-routes)
+- [Configure session management](/auth/sessions) 

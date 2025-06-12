@@ -1,4 +1,61 @@
 ---
-title: 'API Page'
-description: 'Preview changes locally to update your docs'
+title: 'API Overview'
+description: 'Learn about the Ultimate Boilerplate API structure and types'
 ---
+
+# API Overview
+
+The Ultimate Boilerplate uses tRPC for type-safe API communication between the client and server. This documentation will guide you through setting up, using, and extending the API.
+
+## API Types
+
+Our API is organized into three main types of routes:
+
+<CardGroup cols={3}>
+  <Card
+    title="Public Routes"
+    icon="globe"
+    href="/docs/api/public"
+  >
+    Routes accessible without authentication for public data access, health checks, and authentication endpoints.
+  </Card>
+  <Card
+    title="Protected Routes"
+    icon="lock"
+    href="/docs/api/protected"
+  >
+    Routes requiring user authentication for user-specific data, profile management, and personal settings.
+  </Card>
+  <Card
+    title="Subscribed Routes"
+    icon="star"
+    href="/docs/api/subscribed"
+  >
+    Routes requiring an active subscription for premium features and subscription-gated content.
+  </Card>
+</CardGroup>
+
+## Key Features
+
+- Full type safety between client and server
+- Automatic API documentation
+- Built-in request validation
+- Easy error handling
+- Support for real-time subscriptions
+
+## Getting Started
+
+To start using the API, you'll need to:
+
+1. Set up the tRPC client in your frontend
+2. Choose the appropriate route type for your needs
+3. Implement your API endpoints
+4. Call your endpoints from the client
+
+## Next Steps
+
+- [Public Routes](/docs/api/public)
+- [Protected Routes](/docs/api/protected)
+- [Subscribed Routes](/docs/api/subscribed)
+- [Client Usage](/docs/api/client)
+- [Best Practices](/docs/api/best-practices) 

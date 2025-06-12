@@ -1,0 +1,215 @@
+---
+title: 'Stripe Setup'
+description: 'Learn how to set up and configure Stripe payments in your application'
+---
+
+# Stripe Setup Guide
+
+This guide will walk you through setting up Stripe as a payment provider in your application.
+
+## Prerequisites
+
+1. A Stripe account (Sign up at [stripe.com](https://stripe.com))
+2. Required environment variables:
+   ```env
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_webhook_secret
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
+   ```
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+bun add @better-auth/stripe stripe @stripe/stripe-js
+```
+
+## Server-Side Configuration
+
+1. Initialize the Stripe client:
+
+```typescript
+import Stripe from "stripe";
+
+export const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
+```
+
+2. Configure BetterAuth with Stripe plugin:
+
+```typescript
+import { betterAuth } from "better-auth";
+import { stripe } from "@better-auth/stripe";
+
+export const auth = betterAuth({
+  plugins: [
+    stripe({
+      stripeClient,
+      createCustomerOnSignUp: true,
+      subscription: {
+        enabled: true,
+        plans: stripeProduct.map((product) => ({
+          name: product.plan,
+          priceId: product.priceId,
+        })),
+        getCheckoutSessionParams: () => ({
+          params: {
+            allow_promotion_codes: true,
+          },
+        }),
+      },
+    }),
+  ],
+});
+```
+
+## Client-Side Configuration
+
+Set up the auth client with Stripe support:
+
+```typescript
+import { createAuthClient } from "better-auth/react";
+import { stripeClient } from "@better-auth/stripe/client";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+  plugins: [
+    stripeClient({
+      subscription: true,
+    }),
+  ],
+});
+```
+
+## Product Configuration
+
+Define your products in a configuration file:
+
+```typescript
+// src/utils/stripeProduct.ts
+export const stripeProduct = [
+  {
+    plan: "Basic",
+    priceId: "price_basic",
+    features: ["Feature 1", "Feature 2"],
+  },
+  {
+    plan: "Pro",
+    priceId: "price_pro",
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+  },
+];
+```
+
+## Webhook Handling
+
+Set up webhook handling for Stripe events:
+
+```typescript
+// src/app/api/webhooks/stripe/route.ts
+import { stripe } from "@/lib/stripe/client";
+import { headers } from "next/headers";
+
+export async function POST(req: Request) {
+  const body = await req.text();
+  const signature = headers().get("stripe-signature");
+
+  try {
+    const event = stripe.webhooks.constructEvent(
+      body,
+      signature!,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+
+    switch (event.type) {
+      case "checkout.session.completed":
+        await handleCheckoutSessionCompleted(event.data);
+        break;
+      case "customer.subscription.updated":
+        await handleSubscriptionUpdated(event.data);
+        break;
+      // Handle other events
+    }
+
+    return new Response("Webhook processed", { status: 200 });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return new Response("Webhook error", { status: 400 });
+  }
+}
+```
+
+## Subscription Management
+
+### Starting a Checkout
+
+```typescript
+await authClient.checkout({
+  products: [productId],
+  slug: productSlug,
+});
+```
+
+### Checking Subscription Status
+
+```typescript
+const paymentDetails = await authClient.getPaymentDetails();
+const stripeSubscription = paymentDetails?.stripe;
+```
+
+### Managing Subscription
+
+Users can manage their subscription through the Stripe Customer Portal:
+
+```typescript
+const portalUrl = await authClient.createPortalSession();
+window.location.href = portalUrl;
+```
+
+## UI Components
+
+The boilerplate includes pre-built UI components for Stripe integration:
+
+```typescript
+// Example subscription status display
+<Card>
+  <CardHeader>
+    <CardTitle>Stripe Subscription</CardTitle>
+    <CardDescription>
+      Your current subscription details
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    {/* Subscription details */}
+  </CardContent>
+</Card>
+```
+
+## Testing
+
+1. Use Stripe's test mode for development
+2. Test webhook handling with the Stripe CLI
+3. Verify subscription status updates
+4. Test the checkout flow end-to-end
+
+## Common Issues
+
+1. **Webhook Signature Verification**
+   - Ensure the webhook secret is correctly set
+   - Verify the signature in the webhook handler
+
+2. **Subscription Status Sync**
+   - Implement proper webhook handling
+   - Update the database on subscription changes
+
+3. **Checkout Session**
+   - Set correct success and cancel URLs
+   - Handle failed payments gracefully
+
+## Next Steps
+
+- [Configure webhooks](/payments/webhooks)
+- [Implement subscription management](/payments/subscriptions)
+- [Set up customer portal](/payments/portal) 

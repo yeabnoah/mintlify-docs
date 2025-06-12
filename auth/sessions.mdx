@@ -1,0 +1,233 @@
+---
+title: 'Session Management'
+description: 'Learn how to manage user sessions in your application'
+---
+
+# Session Management
+
+The boilerplate provides a robust session management system using BetterAuth, with support for secure session storage, automatic refresh, and cross-subdomain cookies.
+
+## Server-Side Setup
+
+### 1. Configure BetterAuth
+
+```typescript
+// apps/server/src/lib/auth.ts
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+  },
+});
+```
+
+### 2. Session Schema
+
+```prisma
+model Session {
+  id        String   @id @map("_id")
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+```
+
+## Client-Side Implementation
+
+### 1. Auth Client Setup
+
+```typescript
+// apps/web/src/lib/auth-client.ts
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+});
+```
+
+### 2. Session Hook
+
+```typescript
+// apps/web/src/hooks/use-session.ts
+import { useSession } from "better-auth/react";
+
+export function useSession() {
+  const { data: session, status, update } = useSession();
+
+  return {
+    session,
+    isLoading: status === "loading",
+    isAuthenticated: status === "authenticated",
+    update,
+  };
+}
+```
+
+### 3. Session Provider
+
+```typescript
+// apps/web/src/providers/session-provider.tsx
+"use client";
+
+import { SessionProvider } from "better-auth/react";
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      {children}
+    </SessionProvider>
+  );
+}
+```
+
+## Session Features
+
+### 1. Session Creation
+
+```typescript
+// Server-side
+const session = await auth.createSession({
+  userId: user.id,
+  expiresIn: 3600, // 1 hour
+});
+
+// Client-side
+const { session } = await authClient.signIn(credentials);
+```
+
+### 2. Session Validation
+
+```typescript
+// Server-side
+const isValid = await auth.validateSession(sessionToken);
+
+// Client-side
+const { isAuthenticated } = useSession();
+```
+
+### 3. Session Refresh
+
+```typescript
+// Automatic refresh
+const { session } = useSession();
+
+// Manual refresh
+const { update } = useSession();
+await update();
+```
+
+### 4. Session Termination
+
+```typescript
+// Server-side
+await auth.deleteSession(sessionToken);
+
+// Client-side
+await authClient.signOut();
+```
+
+## Security Features
+
+1. **Session Storage**
+   - Secure cookie storage
+   - HTTP-only cookies
+   - SameSite policy
+   - CSRF protection
+
+2. **Session Validation**
+   - Token verification
+   - Expiration checks
+   - IP validation
+   - User agent validation
+
+3. **Session Refresh**
+   - Automatic refresh
+   - Sliding expiration
+   - Refresh token rotation
+   - Concurrent session handling
+
+## Best Practices
+
+1. **Session Security**
+   - Use secure cookies
+   - Implement CSRF protection
+   - Validate session data
+   - Monitor session activity
+
+2. **Error Handling**
+   - Handle expired sessions
+   - Manage invalid tokens
+   - Clear invalid sessions
+   - Log session errors
+
+3. **User Experience**
+   - Smooth session refresh
+   - Clear session states
+   - Handle session loss
+   - Provide feedback
+
+## Common Issues & Solutions
+
+1. **Session Expiry**
+   - Implement refresh logic
+   - Handle expired sessions
+   - Clear invalid sessions
+   - Update session data
+
+2. **Cross-Domain Issues**
+   - Configure CORS
+   - Set cookie domains
+   - Handle subdomains
+   - Validate origins
+
+3. **Concurrent Sessions**
+   - Manage multiple sessions
+   - Handle conflicts
+   - Update session data
+   - Clear old sessions
+
+## Session Lifecycle
+
+1. **Creation**
+   - User authentication
+   - Token generation
+   - Cookie setting
+   - Session storage
+
+2. **Validation**
+   - Token verification
+   - Expiration check
+   - Data validation
+   - Access control
+
+3. **Refresh**
+   - Token refresh
+   - Data update
+   - Cookie update
+   - Session extension
+
+4. **Termination**
+   - User logout
+   - Token invalidation
+   - Cookie clearing
+   - Session deletion
+
+## Next Steps
+
+- [Set up Email & Password authentication](/auth/email-password)
+- [Configure Magic Link authentication](/auth/magic-link)
+- [Set up Social authentication](/auth/social)
+- [Configure protected routes](/auth/protected-routes) 

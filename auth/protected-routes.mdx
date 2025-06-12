@@ -1,0 +1,245 @@
+---
+title: 'Protected Routes'
+description: 'Learn how to protect routes and handle authentication in your application'
+---
+
+# Protected Routes
+
+The boilerplate provides a robust system for protecting routes and handling authentication using Next.js middleware and BetterAuth.
+
+## Middleware Setup
+
+### 1. Configure Protected Routes
+
+```typescript
+// apps/web/src/middleware.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
+
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/settings/:path*",
+    "/api/protected/:path*",
+  ],
+};
+
+export function middleware(request: NextRequest) {
+  const sessionCookie = getSessionCookie(request);
+  const isAuthenticated = sessionCookie !== null;
+
+  if (!isAuthenticated) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return NextResponse.next();
+}
+```
+
+### 2. Protected API Routes
+
+```typescript
+// apps/server/src/routers/index.ts
+import { protectedProcedure, publicProcedure, router } from "../lib/trpc";
+
+export const appRouter = router({
+  // Public routes
+  healthCheck: publicProcedure.query(() => {
+    return { message: "OK" };
+  }),
+
+  // Protected routes
+  privateData: protectedProcedure.query(({ ctx }) => {
+    return {
+      message: "This is private",
+      user: ctx.session.userId,
+    };
+  }),
+});
+```
+
+## Client-Side Protection
+
+### 1. Protected Page Component
+
+```typescript
+// apps/web/src/app/dashboard/page.tsx
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+
+export default async function DashboardPage() {
+  const session = await authClient.getSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome {session.user.name}</p>
+    </div>
+  );
+}
+```
+
+### 2. Protected Layout
+
+```typescript
+// apps/web/src/app/(protected)/layout.tsx
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+
+export default async function ProtectedLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await authClient.getSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  return (
+    <div>
+      <nav>{/* Navigation */}</nav>
+      {children}
+    </div>
+  );
+}
+```
+
+## Route Groups
+
+The boilerplate uses Next.js route groups to organize protected and public routes:
+
+```
+app/
+├── (auth)/           # Authentication routes
+│   ├── login/
+│   ├── signup/
+│   └── forgot-password/
+├── (protected)/      # Protected routes
+│   ├── dashboard/
+│   └── settings/
+└── (public)/         # Public routes
+    ├── about/
+    └── pricing/
+```
+
+## Authentication Hooks
+
+### 1. Use Auth Hook
+
+```typescript
+// apps/web/src/hooks/use-auth.ts
+import { useSession } from "better-auth/react";
+
+export function useAuth() {
+  const { data: session, status } = useSession();
+
+  return {
+    user: session?.user,
+    isLoading: status === "loading",
+    isAuthenticated: status === "authenticated",
+  };
+}
+```
+
+### 2. Protected Component
+
+```typescript
+// apps/web/src/components/protected-component.tsx
+"use client";
+
+import { useAuth } from "@/hooks/use-auth";
+import { redirect } from "next/navigation";
+
+export function ProtectedComponent() {
+  const { user, isLoading, isAuthenticated } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    redirect("/login");
+  }
+
+  return (
+    <div>
+      <h1>Protected Content</h1>
+      <p>Welcome {user.name}</p>
+    </div>
+  );
+}
+```
+
+## Security Features
+
+1. **Route Protection**
+   - Middleware-based protection
+   - Server-side session validation
+   - Client-side session checks
+   - Automatic redirects
+
+2. **Session Management**
+   - Secure session storage
+   - Session timeout
+   - Automatic session refresh
+   - Cross-subdomain support
+
+3. **Access Control**
+   - Role-based access
+   - Permission checks
+   - Resource ownership
+   - API route protection
+
+## Best Practices
+
+1. **Route Organization**
+   - Use route groups
+   - Separate public/protected routes
+   - Consistent naming
+   - Clear structure
+
+2. **Error Handling**
+   - Handle loading states
+   - Show error messages
+   - Provide fallbacks
+   - Log errors
+
+3. **Security**
+   - Validate sessions
+   - Check permissions
+   - Handle edge cases
+   - Monitor access
+
+## Common Issues & Solutions
+
+1. **Session Issues**
+   - Check cookie settings
+   - Verify session storage
+   - Handle session expiry
+   - Clear invalid sessions
+
+2. **Redirect Loops**
+   - Check middleware matchers
+   - Verify redirect logic
+   - Handle edge cases
+   - Monitor redirects
+
+3. **Permission Issues**
+   - Verify role checks
+   - Check resource access
+   - Handle missing permissions
+   - Log access attempts
+
+## Next Steps
+
+- [Set up Email & Password authentication](/auth/email-password)
+- [Configure Magic Link authentication](/auth/magic-link)
+- [Set up Social authentication](/auth/social)
+- [Configure session management](/auth/sessions) 

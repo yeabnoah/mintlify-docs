@@ -1,4 +1,88 @@
 ---
-title: 'AI SDK Page'
-description: 'Preview changes locally to update your docs'
+title: 'AI Integration Overview'
+description: 'Learn how to leverage AI capabilities in your SaaS application using the Ultimate Boilerplate'
 ---
+
+# AI Integration Overview
+
+The Ultimate Boilerplate provides a powerful AI integration layer that makes it easy to build AI-powered features in your SaaS application. This documentation will guide you through setting up and using AI capabilities in your application.
+
+## Key Features
+
+- **Unified AI SDK**: Built on top of Vercel's AI SDK for consistent AI interactions
+- **OpenRouter Integration**: Access multiple LLMs through a single API
+- **Server Actions**: Type-safe AI operations with Next.js server actions
+- **Streaming Support**: Real-time AI responses with streaming capabilities
+- **Type Safety**: Full TypeScript support for AI operations
+- **RAG Support**: Built-in Retrieval Augmented Generation capabilities
+- **Embeddings**: Text embeddings and semantic search functionality
+- **Custom Models**: Extensible model registry for custom AI providers
+
+## Getting Started
+
+To start using AI features in your application:
+
+1. Set up your environment variables
+2. Configure OpenRouter
+3. Use the AI SDK components
+4. Implement server actions for AI operations
+
+## Available AI Features
+
+### Basic Features
+- Chat interfaces
+- Text generation
+- Image generation
+- Structured data extraction
+
+### Advanced Features
+- RAG (Retrieval Augmented Generation)
+- Semantic search with embeddings
+- Custom model integration
+- Advanced streaming with progress tracking
+- Circuit breaker and retry patterns
+
+## Architecture
+
+The AI integration follows a modular architecture:
+
+```
+lib/ai/
+├── openrouter.ts     # OpenRouter client
+├── sdk.ts           # AI SDK configuration
+├── embeddings.ts    # Text embeddings
+├── rag.ts          # RAG implementation
+├── vector-store.ts  # Vector storage
+└── models/         # Custom model implementations
+```
+
+## Best Practices
+
+1. **Model Selection**
+   - Choose models based on your use case
+   - Consider cost and performance trade-offs
+   - Use the most efficient model for your needs
+
+2. **Error Handling**
+   - Implement proper error boundaries
+   - Use retry logic for transient failures
+   - Monitor API usage and errors
+
+3. **Performance**
+   - Use streaming for long-running operations
+   - Implement proper caching strategies
+   - Monitor response times and costs
+
+4. **Security**
+   - Validate all inputs and outputs
+   - Implement proper access controls
+   - Monitor for abuse and rate limiting
+
+## Next Steps
+
+- [Setup Guide](/docs/ai/setup)
+- [OpenRouter Integration](/docs/ai/openrouter)
+- [AI Components](/docs/ai/components)
+- [Server Actions](/docs/ai/server-actions)
+- [Use Cases](/docs/ai/use-cases)
+- [Advanced Features](/docs/ai/advanced) 

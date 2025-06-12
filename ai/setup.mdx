@@ -1,0 +1,111 @@
+---
+title: 'AI Setup Guide'
+description: 'Learn how to set up AI capabilities in your application'
+---
+
+# AI Setup Guide
+
+This guide will walk you through setting up AI capabilities in your application using the Ultimate Boilerplate.
+
+## Prerequisites
+
+- Node.js 18+ or Bun
+- OpenRouter API key
+- Next.js project with the Ultimate Boilerplate
+
+## Environment Setup
+
+1. Create a `.env.local` file in your project root:
+
+```bash
+# OpenRouter API Key
+OPENROUTER_API_KEY=your_api_key_here
+
+# Optional: Default model to use
+DEFAULT_AI_MODEL=gpt-3.5-turbo
+```
+
+2. Install required dependencies:
+
+```bash
+bun add ai openai @ai-sdk/openrouter
+```
+
+## Configuration
+
+### 1. OpenRouter Setup
+
+Create a new file at `lib/ai/openrouter.ts`:
+
+```typescript
+import { OpenRouter } from '@ai-sdk/openrouter';
+
+export const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY!,
+  defaultModel: process.env.DEFAULT_AI_MODEL || 'gpt-3.5-turbo',
+});
+```
+
+### 2. AI SDK Setup
+
+Create a new file at `lib/ai/sdk.ts`:
+
+```typescript
+import { AI } from 'ai';
+import { openrouter } from './openrouter';
+
+export const ai = new AI({
+  provider: openrouter,
+  // Add any global configuration here
+});
+```
+
+## Usage Example
+
+Here's a simple example of using the AI SDK in a server action:
+
+```typescript
+// app/actions/ai.ts
+'use server';
+
+import { ai } from '@/lib/ai/sdk';
+
+export async function generateText(prompt: string) {
+  const response = await ai.complete({
+    prompt,
+    maxTokens: 1000,
+  });
+
+  return response.text;
+}
+```
+
+## Next Steps
+
+- Learn about [OpenRouter Integration](/docs/ai/openrouter)
+- Explore [AI Components](/docs/ai/components)
+- Check out [Use Cases](/docs/ai/use-cases)
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Key Not Found**
+   - Ensure your `.env.local` file is in the correct location
+   - Verify the API key is correctly set
+
+2. **Model Not Available**
+   - Check if the model is supported by OpenRouter
+   - Verify your API key has access to the model
+
+3. **Rate Limiting**
+   - Monitor your API usage
+   - Implement rate limiting in your application
+
+## Support
+
+If you encounter any issues, please:
+
+1. Check the [OpenRouter Documentation](https://openrouter.ai/docs)
+2. Review the [Vercel AI SDK Documentation](https://sdk.vercel.ai/docs)
+3. Open an issue in our GitHub repository 

@@ -1,0 +1,334 @@
+---
+title: 'Advanced AI Features'
+description: 'Learn about advanced AI features like RAG, embeddings, and custom integrations'
+---
+
+# Advanced AI Features
+
+This guide covers advanced AI features and integrations available in the Ultimate Boilerplate.
+
+## 1. RAG (Retrieval Augmented Generation)
+
+RAG combines retrieval-based and generation-based approaches to provide more accurate and contextual responses.
+
+### Basic RAG Implementation
+
+```typescript
+// app/lib/ai/rag.ts
+import { openrouter } from '@/lib/ai/openrouter';
+import { createEmbedding } from '@/lib/ai/embeddings';
+import { searchDocuments } from '@/lib/ai/vector-store';
+
+export async function ragQuery(query: string) {
+  // 1. Create query embedding
+  const queryEmbedding = await createEmbedding(query);
+
+  // 2. Search for relevant documents
+  const relevantDocs = await searchDocuments(queryEmbedding);
+
+  // 3. Create context from documents
+  const context = relevantDocs
+    .map((doc) => doc.content)
+    .join('\n\n');
+
+  // 4. Generate response with context
+  const response = await openrouter.chat({
+    model: 'gpt-4',
+    messages: [
+      {
+        role: 'system',
+        content: `Use the following context to answer the question. If you don't know the answer, say so.\n\nContext: ${context}`,
+      },
+      { role: 'user', content: query },
+    ],
+  });
+
+  return response.message;
+}
+```
+
+### Document Processing
+
+```typescript
+// app/lib/ai/document-processor.ts
+import { createEmbedding } from '@/lib/ai/embeddings';
+import { storeDocument } from '@/lib/ai/vector-store';
+
+export async function processDocument(content: string, metadata: any) {
+  // 1. Split content into chunks
+  const chunks = splitIntoChunks(content);
+
+  // 2. Create embeddings for each chunk
+  const embeddings = await Promise.all(
+    chunks.map((chunk) => createEmbedding(chunk))
+  );
+
+  // 3. Store chunks with embeddings
+  await Promise.all(
+    chunks.map((chunk, i) =>
+      storeDocument({
+        content: chunk,
+        embedding: embeddings[i],
+        metadata,
+      })
+    )
+  );
+}
+```
+
+## 2. Embeddings
+
+### Text Embeddings
+
+```typescript
+// app/lib/ai/embeddings.ts
+import { openrouter } from '@/lib/ai/openrouter';
+
+export async function createEmbedding(text: string) {
+  const response = await openrouter.createEmbedding({
+    model: 'text-embedding-ada-002',
+    input: text,
+  });
+
+  return response.embedding;
+}
+```
+
+### Semantic Search
+
+```typescript
+// app/lib/ai/semantic-search.ts
+import { createEmbedding } from './embeddings';
+import { searchDocuments } from './vector-store';
+
+export async function semanticSearch(query: string, limit = 5) {
+  const queryEmbedding = await createEmbedding(query);
+  const results = await searchDocuments(queryEmbedding, limit);
+  return results;
+}
+```
+
+## 3. Custom Model Integration
+
+### Custom Model Wrapper
+
+```typescript
+// app/lib/ai/custom-model.ts
+import { BaseModel } from '@/lib/ai/base-model';
+
+export class CustomModel extends BaseModel {
+  constructor(private apiKey: string) {
+    super();
+  }
+
+  async complete(params: {
+    prompt: string;
+    maxTokens?: number;
+    temperature?: number;
+  }) {
+    const response = await fetch('https://api.custom-model.com/complete', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (!response.ok) {
+      throw new Error('Custom model request failed');
+    }
+
+    const data = await response.json();
+    return { text: data.completion };
+  }
+}
+```
+
+### Model Registry
+
+```typescript
+// app/lib/ai/model-registry.ts
+import { openrouter } from './openrouter';
+import { CustomModel } from './custom-model';
+
+export const modelRegistry = {
+  'gpt-4': openrouter,
+  'claude-3': openrouter,
+  'custom-model': new CustomModel(process.env.CUSTOM_MODEL_API_KEY!),
+};
+
+export function getModel(modelId: string) {
+  const model = modelRegistry[modelId];
+  if (!model) {
+    throw new Error(`Model ${modelId} not found`);
+  }
+  return model;
+}
+```
+
+## 4. Advanced Streaming
+
+### Custom Stream Handler
+
+```typescript
+// app/lib/ai/stream-handler.ts
+import { StreamingTextResponse } from 'ai';
+
+export class CustomStreamHandler {
+  private buffer: string[] = [];
+  private onChunk: (chunk: string) => void;
+
+  constructor(onChunk: (chunk: string) => void) {
+    this.onChunk = onChunk;
+  }
+
+  async *processStream(stream: AsyncIterable<any>) {
+    for await (const chunk of stream) {
+      this.buffer.push(chunk.text);
+      this.onChunk(chunk.text);
+      yield chunk;
+    }
+  }
+
+  getBuffer() {
+    return this.buffer.join('');
+  }
+}
+```
+
+### Streaming with Progress
+
+```typescript
+// app/actions/ai.ts
+'use server';
+
+import { openrouter } from '@/lib/ai/openrouter';
+import { StreamingTextResponse } from 'ai';
+import { CustomStreamHandler } from '@/lib/ai/stream-handler';
+
+export async function streamWithProgress(prompt: string) {
+  const stream = await openrouter.complete({
+    model: 'gpt-4',
+    prompt,
+    stream: true,
+  });
+
+  const handler = new CustomStreamHandler((chunk) => {
+    // Handle progress updates
+    console.log('Progress:', chunk);
+  });
+
+  return new StreamingTextResponse(handler.processStream(stream));
+}
+```
+
+## 5. Advanced Error Handling
+
+### Retry Logic
+
+```typescript
+// app/lib/ai/retry.ts
+import { AIError } from '@/lib/errors';
+
+export async function withRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3,
+  delay = 1000
+): Promise<T> {
+  let lastError: Error;
+
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error as Error;
+      if (error instanceof AIError && error.status === 429) {
+        // Rate limit hit, wait longer
+        await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
+      } else {
+        // Other errors, retry immediately
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  throw lastError!;
+}
+```
+
+### Circuit Breaker
+
+```typescript
+// app/lib/ai/circuit-breaker.ts
+export class CircuitBreaker {
+  private failures = 0;
+  private lastFailureTime = 0;
+  private readonly threshold = 5;
+  private readonly resetTimeout = 60000; // 1 minute
+
+  async execute<T>(operation: () => Promise<T>): Promise<T> {
+    if (this.isOpen()) {
+      throw new Error('Circuit breaker is open');
+    }
+
+    try {
+      const result = await operation();
+      this.reset();
+      return result;
+    } catch (error) {
+      this.recordFailure();
+      throw error;
+    }
+  }
+
+  private isOpen(): boolean {
+    if (this.failures >= this.threshold) {
+      const now = Date.now();
+      if (now - this.lastFailureTime < this.resetTimeout) {
+        return true;
+      }
+      this.reset();
+    }
+    return false;
+  }
+
+  private recordFailure() {
+    this.failures++;
+    this.lastFailureTime = Date.now();
+  }
+
+  private reset() {
+    this.failures = 0;
+    this.lastFailureTime = 0;
+  }
+}
+```
+
+## Best Practices
+
+1. **RAG Implementation**
+   - Use appropriate chunk sizes
+   - Implement proper document preprocessing
+   - Consider metadata for better retrieval
+
+2. **Embeddings**
+   - Choose the right embedding model
+   - Implement proper vector storage
+   - Consider dimensionality reduction
+
+3. **Custom Models**
+   - Implement proper error handling
+   - Add retry logic
+   - Monitor performance
+
+4. **Streaming**
+   - Handle backpressure
+   - Implement proper error handling
+   - Consider progress tracking
+
+## Next Steps
+
+- Learn about [AI Components](/docs/ai/components)
+- Check out [Server Actions](/docs/ai/server-actions)
+- Explore [Use Cases](/docs/ai/use-cases) 

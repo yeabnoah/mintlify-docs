@@ -30,19 +30,39 @@
           {
             "group": "AI",
             "pages": [
-              "ai/index"
+              "ai/index",
+              "ai/setup",
+              "ai/open-router",
+              "ai/components",
+              "ai/use-case"
             ]
           },
           {
             "group": "API",
             "pages": [
-              "api-setup/index"
+              "api-setup/index",
+              "api-setup/public",
+              "api-setup/protected",
+              "api-setup/subscribed"
             ]
           },
           {
             "group": "Auth",
             "pages": [
-              "auth/index"
+              "auth/index",
+              "auth/email-pass",
+              "auth/socials",
+              "auth/sessions",
+              "auth/protected-routes",
+              "auth/reset-pass"
+            ]
+          },
+          {
+            "group": "Payment",
+            "pages": [
+              "payment/index",
+              "payment/stripe",
+              "payment/polar"
             ]
           },
           {
@@ -54,7 +74,8 @@
           {
             "group": "Database",
             "pages": [
-              "database/index"
+              "database/index",
+              "database/supabase-setup"
             ]
           },
           {
@@ -71,26 +92,7 @@
           }          
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

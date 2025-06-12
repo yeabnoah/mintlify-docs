@@ -1,0 +1,236 @@
+---
+title: 'Polar.sh Setup'
+description: 'Learn how to set up and configure Polar.sh payments in your application'
+---
+
+# Polar.sh Setup Guide
+
+This guide will walk you through setting up Polar.sh as a payment provider in your application.
+
+## Prerequisites
+
+1. A Polar.sh account (Sign up at [polar.sh](https://polar.sh))
+2. Required environment variables:
+   ```env
+   POLAR_ACCESS_TOKEN=your_polar_access_token
+   POLAR_WEBHOOK_SECRET=your_webhook_secret
+   POLAR_SUCCESS_URL=your_success_url
+   ```
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+bun add @polar-sh/sdk @polar-sh/better-auth
+```
+
+## Server-Side Configuration
+
+1. Initialize the Polar client:
+
+```typescript
+import { Polar } from "@polar-sh/sdk";
+
+export const polarClient = new Polar({
+  accessToken: process.env.POLAR_ACCESS_TOKEN,
+  server: "sandbox", // or "production"
+});
+```
+
+2. Configure BetterAuth with Polar plugin:
+
+```typescript
+import { betterAuth } from "better-auth";
+import { polar } from "@polar-sh/better-auth";
+
+export const auth = betterAuth({
+  plugins: [
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      use: [
+        checkout({
+          products: products.map((product) => ({
+            productId: product.productId,
+            slug: product.slug,
+          })),
+          successUrl: `${process.env.POLAR_SUCCESS_URL}`,
+          authenticatedUsersOnly: true,
+        }),
+        portal(),
+        webhooks({
+          secret: process.env.POLAR_WEBHOOK_SECRET,
+          onPayload: async ({ data, type }) => {
+            // Handle webhook events
+          },
+        }),
+      ],
+    }),
+  ],
+});
+```
+
+## Client-Side Configuration
+
+Set up the auth client with Polar support:
+
+```typescript
+import { createAuthClient } from "better-auth/react";
+import { polarClient } from "@polar-sh/better-auth";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+  plugins: [
+    polarClient(),
+  ],
+});
+```
+
+## Product Configuration
+
+Define your products in a configuration file:
+
+```typescript
+// src/utils/products-list.ts
+export const products = [
+  {
+    productId: "prod_basic",
+    slug: "basic",
+    name: "Basic Plan",
+    price: "$10/month",
+    features: ["Feature 1", "Feature 2"],
+  },
+  {
+    productId: "prod_pro",
+    slug: "pro",
+    name: "Pro Plan",
+    price: "$20/month",
+    features: ["Feature 1", "Feature 2", "Feature 3"],
+  },
+];
+```
+
+## Webhook Handling
+
+Set up webhook handling for Polar events:
+
+```typescript
+// src/app/api/webhooks/polar/route.ts
+import { polar } from "@/lib/polar/client";
+import { headers } from "next/headers";
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const signature = headers().get("polar-signature");
+
+  try {
+    const event = polar.webhooks.constructEvent(
+      body,
+      signature!,
+      process.env.POLAR_WEBHOOK_SECRET!
+    );
+
+    switch (event.type) {
+      case "subscription.created":
+      case "subscription.active":
+      case "subscription.canceled":
+      case "subscription.revoked":
+      case "subscription.uncanceled":
+      case "subscription.updated":
+        await handleSubscriptionEvent(event.data);
+        break;
+    }
+
+    return new Response("Webhook processed", { status: 200 });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return new Response("Webhook error", { status: 400 });
+  }
+}
+```
+
+## Subscription Management
+
+### Starting a Checkout
+
+```typescript
+await authClient.checkout({
+  products: [productId],
+  slug: productSlug,
+});
+```
+
+### Checking Subscription Status
+
+```typescript
+const paymentDetails = await authClient.getPaymentDetails();
+const polarSubscription = paymentDetails?.polar;
+```
+
+### Managing Subscription
+
+Users can manage their subscription through the Polar portal:
+
+```typescript
+const portalUrl = await authClient.createPortalSession();
+window.location.href = portalUrl;
+```
+
+## UI Components
+
+The boilerplate includes pre-built UI components for Polar integration:
+
+```typescript
+// Example subscription status display
+<Card>
+  <CardHeader>
+    <CardTitle>Polar Subscription</CardTitle>
+    <CardDescription>
+      Your current subscription details
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-4">
+      <div className="flex items-center space-x-2">
+        <CalendarDays className="w-4 h-4" />
+        <div>
+          <p className="font-medium">Current Period</p>
+          <p className="text-muted-foreground">
+            {new Date(subscription.periodStart).toLocaleDateString()} -{" "}
+            {new Date(subscription.periodEnd).toLocaleDateString()}
+          </p>
+        </div>
+      </div>
+      {/* More subscription details */}
+    </div>
+  </CardContent>
+</Card>
+```
+
+## Testing
+
+1. Use Polar's sandbox environment for development
+2. Test webhook handling with sample events
+3. Verify subscription status updates
+4. Test the checkout flow end-to-end
+
+## Common Issues
+
+1. **Webhook Signature Verification**
+   - Ensure the webhook secret is correctly set
+   - Verify the signature in the webhook handler
+
+2. **Subscription Status Sync**
+   - Implement proper webhook handling
+   - Update the database on subscription changes
+
+3. **Checkout Session**
+   - Set correct success and cancel URLs
+   - Handle failed payments gracefully
+
+## Next Steps
+
+- [Configure webhooks](/payments/webhooks)
+- [Implement subscription management](/payments/subscriptions)
+- [Set up customer portal](/payments/portal) 
