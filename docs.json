@@ -24,7 +24,10 @@
           {
             "group": "Structure",
             "pages": [
-              "structure/index"
+              "structure/index",
+              "structure/architecture",
+              "structure/configration",
+              "structure/guide"
             ]
           },
           {

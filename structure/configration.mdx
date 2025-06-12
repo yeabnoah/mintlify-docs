@@ -1,0 +1,302 @@
+---
+title: 'Configuration'
+description: 'Configuration and setup guide for the Ultimate Cursor AI Boilerplate'
+---
+
+# Configuration Guide
+
+This guide covers all configuration aspects of the Ultimate Cursor AI Boilerplate.
+
+## Environment Setup
+
+### Required Environment Variables
+
+Create a `.env` file in the root of each application:
+
+```bash
+# Web App (.env)
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_BETTERAUTH_URL=your-betterauth-url
+
+# Server (.env)
+DATABASE_URL=your-database-url
+JWT_SECRET=your-jwt-secret
+BETTERAUTH_SECRET=your-betterauth-secret
+OPENROUTER_API_KEY=your-openrouter-key
+
+# CMS (.env)
+NEXT_PUBLIC_CMS_URL=your-cms-url
+CMS_API_KEY=your-cms-api-key
+
+# Email (.env)
+RESEND_API_KEY=your-resend-key
+EMAIL_FROM=noreply@yourdomain.com
+```
+
+## Database Configuration
+
+### Prisma Setup
+
+1. Initialize Prisma:
+```bash
+cd apps/server
+pnpm prisma init
+```
+
+2. Configure schema in `prisma/schema.prisma`:
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Your models here
+```
+
+3. Run migrations:
+```bash
+pnpm prisma migrate dev
+```
+
+## Authentication Setup
+
+### BetterAuth Configuration
+
+1. Set up BetterAuth project
+2. Configure OAuth providers
+3. Set up email templates
+4. Configure redirect URLs
+
+### Session Configuration
+
+```typescript
+// lib/auth.ts
+import { createTRPCContext } from './trpc'
+
+export const authConfig = {
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  callbacks: {
+    session: async ({ session, token }) => {
+      // Custom session handling
+    },
+  },
+}
+```
+
+## API Configuration
+
+### tRPC Setup
+
+```typescript
+// lib/trpc.ts
+import { initTRPC } from '@trpc/server'
+import { Context } from './context'
+
+const t = initTRPC.context<Context>().create()
+
+export const router = t.router
+export const publicProcedure = t.procedure
+export const middleware = t.middleware
+```
+
+### API Routes
+
+```typescript
+// app/api/trpc/[trpc]/route.ts
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
+import { appRouter } from '@/server/api/root'
+
+export const runtime = 'edge'
+
+export async function GET(req: Request) {
+  return fetchRequestHandler({
+    endpoint: '/api/trpc',
+    req,
+    router: appRouter,
+    createContext: () => ({}),
+  })
+}
+```
+
+## Styling Configuration
+
+### Tailwind Setup
+
+```typescript
+// tailwind.config.ts
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Your custom colors
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default config
+```
+
+### shadcn/ui Setup
+
+```typescript
+// components.json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/styles/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
+  }
+}
+```
+
+## CMS Configuration
+
+### Headless CMS Setup
+
+1. Configure content types
+2. Set up API endpoints
+3. Configure preview mode
+4. Set up webhooks
+
+## Email Configuration
+
+### Resend Setup
+
+```typescript
+// lib/email.ts
+import { Resend } from 'resend'
+
+export const resend = new Resend(process.env.RESEND_API_KEY)
+
+export const emailConfig = {
+  from: process.env.EMAIL_FROM,
+  replyTo: process.env.EMAIL_REPLY_TO,
+}
+```
+
+## Deployment Configuration
+
+### Vercel Setup
+
+1. Connect repository
+2. Configure build settings
+3. Set up environment variables
+4. Configure domains
+
+### CI/CD Configuration
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Add your deployment steps
+```
+
+## Monitoring Setup
+
+### Error Tracking
+
+```typescript
+// lib/error.ts
+import * as Sentry from '@sentry/nextjs'
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  tracesSampleRate: 1.0,
+})
+```
+
+### Analytics
+
+```typescript
+// lib/analytics.ts
+import { Analytics } from '@vercel/analytics/react'
+
+export function AnalyticsWrapper({ children }) {
+  return (
+    <>
+      {children}
+      <Analytics />
+    </>
+  )
+}
+```
+
+## Security Configuration
+
+### CORS Setup
+
+```typescript
+// middleware.ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  const response = NextResponse.next()
+  
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  
+  return response
+}
+```
+
+### Security Headers
+
+```typescript
+// next.config.ts
+const nextConfig = {
+  headers: async () => [
+    {
+      source: '/:path*',
+      headers: [
+        {
+          key: 'X-Frame-Options',
+          value: 'DENY',
+        },
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+      ],
+    },
+  ],
+}
+``` 

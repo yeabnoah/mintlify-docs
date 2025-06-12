@@ -1,0 +1,218 @@
+---
+title: 'Development Guide'
+description: 'Best practices and patterns for development'
+---
+
+# Development Guide
+
+This guide outlines the best practices and patterns to follow when developing with the Ultimate Cursor AI Boilerplate.
+
+## Code Organization
+
+### Feature Development
+
+When adding new features:
+
+1. Create a new directory in `src/features/`
+2. Include all feature-specific components, hooks, and utilities
+3. Keep the feature self-contained
+4. Export only what's necessary
+
+Example structure:
+```
+features/
+└── auth/
+    ├── components/
+    ├── hooks/
+    ├── utils/
+    └── index.ts
+```
+
+### Component Development
+
+Components should follow these guidelines:
+
+1. Use TypeScript for all components
+2. Implement proper prop types
+3. Use shadcn/ui components when possible
+4. Follow atomic design principles
+
+Example:
+```tsx
+// components/ui/Button.tsx
+import { ButtonProps } from '@/types'
+import { cn } from '@/utils'
+
+export const Button = ({ className, ...props }: ButtonProps) => {
+  return (
+    <button
+      className={cn(
+        'rounded-md bg-primary px-4 py-2 text-white',
+        className
+      )}
+      {...props}
+    />
+  )
+}
+```
+
+## State Management
+
+### When to Use What
+
+1. **React Context**
+   - Global UI state
+   - Theme preferences
+   - Auth state
+
+2. **Zustand**
+   - Complex state logic
+   - Persistent state
+   - Cross-component state
+
+3. **tRPC**
+   - Server state
+   - Data fetching
+   - Real-time updates
+
+## API Development
+
+### tRPC Router Structure
+
+```typescript
+// routers/user.ts
+import { z } from 'zod'
+import { publicProcedure, router } from '../trpc'
+
+export const userRouter = router({
+  getProfile: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      // Implementation
+    }),
+})
+```
+
+### Error Handling
+
+1. Use custom error classes
+2. Implement proper error boundaries
+3. Handle API errors gracefully
+
+## Database Operations
+
+### Prisma Best Practices
+
+1. Use transactions for related operations
+2. Implement proper error handling
+3. Use type-safe queries
+4. Follow naming conventions
+
+Example:
+```typescript
+// services/user.ts
+import { prisma } from '@/lib/prisma'
+
+export const userService = {
+  async createUser(data: CreateUserInput) {
+    return prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          ...data,
+          profile: {
+            create: {
+              // Profile data
+            }
+          }
+        }
+      })
+      return user
+    })
+  }
+}
+```
+
+## Styling Guidelines
+
+### Tailwind CSS
+
+1. Use utility classes
+2. Follow the design system
+3. Use CSS variables for theming
+4. Implement responsive design
+
+Example:
+```tsx
+<div className="
+  flex flex-col
+  space-y-4
+  p-4
+  md:flex-row md:space-x-4 md:space-y-0
+">
+  {/* Content */}
+</div>
+```
+
+### Component Styling
+
+1. Use CSS Modules for complex styles
+2. Implement dark mode support
+3. Follow accessibility guidelines
+4. Use semantic HTML
+
+## Testing
+
+### Component Testing
+
+1. Test user interactions
+2. Verify accessibility
+3. Check responsive behavior
+4. Test error states
+
+### API Testing
+
+1. Test input validation
+2. Verify error handling
+3. Check authentication
+4. Test edge cases
+
+## Performance
+
+### Optimization Techniques
+
+1. Use proper image optimization
+2. Implement code splitting
+3. Optimize bundle size
+4. Use proper caching strategies
+
+### Monitoring
+
+1. Implement error tracking
+2. Monitor performance metrics
+3. Track user analytics
+4. Set up logging
+
+## Security
+
+### Best Practices
+
+1. Implement proper authentication
+2. Use secure headers
+3. Sanitize user input
+4. Follow OWASP guidelines
+
+## Deployment
+
+### CI/CD Pipeline
+
+1. Run tests
+2. Build application
+3. Deploy to staging
+4. Deploy to production
+
+### Environment Variables
+
+1. Use proper secrets management
+2. Implement environment validation
+3. Use different configs per environment
+4. Document all variables 

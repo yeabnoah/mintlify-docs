@@ -1,0 +1,143 @@
+---
+title: 'Architecture'
+description: 'Detailed architecture and structure of the Ultimate Cursor AI Boilerplate'
+---
+
+# Architecture
+
+The Ultimate Cursor AI Boilerplate follows a modular, scalable architecture designed for maintainability and rapid development. This document outlines the key architectural decisions and patterns used throughout the project.
+
+## Monorepo Structure
+
+```
+apps/
+├── web/           # Next.js frontend application
+├── server/        # Backend server with tRPC
+├── cms/          # Headless CMS
+└── email/        # Email service
+```
+
+## Web Application Structure
+
+The web application (`apps/web`) follows a feature-based architecture:
+
+```
+src/
+├── app/              # Next.js App Router pages
+├── components/       # Reusable UI components
+├── features/         # Feature-specific components and logic
+├── hooks/           # Custom React hooks
+├── lib/             # Core utilities and configurations
+├── services/        # API and external service integrations
+├── stores/          # State management
+├── styles/          # Global styles and Tailwind config
+├── types/           # TypeScript type definitions
+└── utils/           # Helper functions and utilities
+```
+
+### Key Directories
+
+#### `app/`
+- Contains all Next.js pages and layouts
+- Follows the App Router convention
+- Includes route handlers and API endpoints
+
+#### `components/`
+- Shared UI components
+- Organized by type (ui, layout, forms, etc.)
+- Includes shadcn/ui components
+
+#### `features/`
+- Feature-specific components and logic
+- Each feature is self-contained
+- Includes business logic and UI components
+
+#### `services/`
+- API client configurations
+- External service integrations
+- tRPC client setup
+
+## Server Structure
+
+The server application (`apps/server`) follows a clean architecture pattern:
+
+```
+src/
+├── controllers/     # Request handlers
+├── lib/            # Core utilities
+├── routers/        # tRPC routers
+├── services/       # Business logic
+└── utils/          # Helper functions
+```
+
+### Key Components
+
+#### `controllers/`
+- Handles incoming requests
+- Input validation
+- Response formatting
+
+#### `routers/`
+- tRPC router definitions
+- API endpoint organization
+- Middleware configuration
+
+#### `services/`
+- Business logic implementation
+- Database operations
+- External service integrations
+
+## Database Architecture
+
+The project uses Prisma with Supabase (PostgreSQL):
+
+```
+prisma/
+├── schema.prisma    # Database schema
+└── migrations/      # Database migrations
+```
+
+### Key Features
+
+- Type-safe database operations
+- Automatic migrations
+- Real-time subscriptions
+- Row-level security
+
+## Authentication Flow
+
+The authentication system uses BetterAuth:
+
+1. User initiates auth (email, OAuth, magic link)
+2. BetterAuth handles the flow
+3. Session is created and stored
+4. User metadata is synced to database
+
+## API Architecture
+
+The API layer uses tRPC for type-safe communication:
+
+1. Frontend makes type-safe API calls
+2. tRPC router processes the request
+3. Controller handles the business logic
+4. Response is returned to the client
+
+## State Management
+
+- React Context for global state
+- Zustand for complex state management
+- Server state handled by tRPC
+
+## Styling Architecture
+
+- Tailwind CSS for utility-first styling
+- shadcn/ui for component library
+- CSS Modules for component-specific styles
+- Dark mode support built-in
+
+## Deployment Architecture
+
+- Vercel for frontend deployment
+- Serverless functions for API
+- Supabase for database and storage
+- GitHub Actions for CI/CD 
