@@ -1,0 +1,37 @@
+---
+title: "🗄️ CMS Database Setup"
+description: "Your CMS requires a PostgreSQL database. You can use a free cloud database with Supabase or set up Postgres locally.
+"
+---
+
+
+
+## Option 1: Supabase (Recommended, Free Cloud Postgres)
+
+1. Go to [Supabase](https://app.supabase.com/) and create a new project.
+2. Copy your database connection string (Session Pooler) from Project Settings → Database.
+3. Paste it into your `.env` file as `DATABASE_URL`.
+
+---
+
+## Option 2: Local Postgres
+
+1. [Install Postgres](https://www.postgresql.org/download/)
+2. Create a database:
+
+   ```bash
+   createdb my_cms
+   ```
+
+3. Update `.env`:
+
+   ```
+   DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/my_cms
+   ```
+
+---
+
+## Next Steps
+
+- Return to the [CMS Setup Guide](/cms) to continue configuration.
+- For advanced database options, see the [Prisma documentation](https://www.prisma.io/docs/concepts/database-connectors/postgresql).

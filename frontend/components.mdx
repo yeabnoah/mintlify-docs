@@ -1,0 +1,136 @@
+---
+title: "Component Library & Usage"
+description: "Catalog and usage of all available frontend components."
+---
+
+# Component Library & Usage
+
+> **Component Structure:**
+> - Most landing and feature components are in `@/features` (e.g., `@/features/home/`, `@/features/content/`).
+> - General-purpose, UI, and utility components are in `ui/` (e.g., `ui/button`, `ui/card`).
+
+---
+
+## Home/Landing Components (`@/features`)
+
+### Hero Sections
+
+```tsx
+import Hero from "@/features/home/hero1";
+<Hero />
+```
+{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
+
+### Navigation
+
+```tsx
+import Navigation from "@/features/home/navigation1";
+<Navigation />
+```
+{/* ![Navigation1 Screenshot](/images/frontend/navigation1.png) */}
+
+### Features
+
+```tsx
+import Features from "@/features/home/features1";
+<Features />
+```
+{/* ![Features1 Screenshot](/images/frontend/features1.png) */}
+
+### Stats
+
+```tsx
+import Stats from "@/features/home/stats1";
+<Stats />
+```
+{/* ![Stats1 Screenshot](/images/frontend/stats1.png) */}
+
+### Testimonials
+
+```tsx
+import Testimonials from "@/features/home/testimonials1";
+<Testimonials />
+```
+{/* ![Testimonials1 Screenshot](/images/frontend/testimonials1.png) */}
+
+### Pricing
+
+```tsx
+import { Pricing } from "@/features/home/shared/pricing";
+<Pricing />
+```
+{/* ![Pricing Screenshot](/images/frontend/pricing.png) */}
+
+### Call to Action
+
+```tsx
+import CallToAction from "@/features/home/call-to-action1";
+<CallToAction />
+```
+{/* ![CallToAction1 Screenshot](/images/frontend/call-to-action1.png) */}
+
+### Contact
+
+```tsx
+import Contact from "@/features/home/contact1";
+<Contact />
+```
+{/* ![Contact1 Screenshot](/images/frontend/contact1.png) */}
+
+### Footer
+
+```tsx
+import Footer from "@/features/home/footer1";
+<Footer />
+```
+{/* ![Footer1 Screenshot](/images/frontend/footer1.png) */}
+
+### Bento Grid
+
+```tsx
+import BentoGrid from "@/features/home/bento-grid1";
+<BentoGrid />
+```
+{/* ![BentoGrid1 Screenshot](/images/frontend/bento-grid1.png) */}
+
+### FAQs
+
+```tsx
+import FAQs from "@/features/home/faqs1";
+<FAQs />
+```
+{/* ![FAQs1 Screenshot](/images/frontend/faqs1.png) */}
+
+### Logos
+
+```tsx
+import Logos from "@/features/home/logos2";
+<Logos />
+```
+{/* ![Logos2 Screenshot](/images/frontend/logos2.png) */}
+
+---
+
+## General & UI Components (`ui/`)
+
+- **Navigation:** `nav-main`, `nav-user`, `nav-projects`, `app-sidebar`
+- **Dashboard:** `usage-dashboard`, `usage-meter`, `team-switcher`, `user-menu`
+- **Forms:** `login-form`, `prompt-input`
+- **UI Primitives:** All components in `ui/` (e.g., `button`, `input`, `card`, `dialog`, `dropdown-menu`, `tabs`, `table`, `badge`, `avatar`, etc.)
+- **Skeletons/Loaders:** `page-loading`, `skeleton`, `loader`
+- **Content:** `faq`, `cta`, `footer`, `header`, `blog`, `privacy-policy`
+- **AI:** `ai-conversation`, `ai-animated-chat`, `ai-chat`
+
+**Usage Example:**
+
+```tsx
+import { Button } from "ui/button";
+<Button variant="outline">Click me</Button>
+```
+{/* ![Button Screenshot](/images/frontend/button.png) */}
+
+---
+
+## Top-Level Components
+
+{/* Repeat the same pattern for each top-level component, with code and image placeholder. */}

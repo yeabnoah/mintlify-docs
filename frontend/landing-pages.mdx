@@ -1,0 +1,102 @@
+---
+title: "Landing Page Variants"
+description: "How to use and customize landing page variants."
+---
+
+# Landing Page Variants
+
+:::info
+Most landing page and feature components are located in `@/features`, while general-purpose and UI components are in `ui/`.
+:::
+
+By default, `@/web/src/app/page.tsx` is a minimal placeholder. You can easily set up a full-featured landing page using the provided component variants from `@/features/home`.
+
+---
+
+## Landing Page 1 (Default Example)
+
+```tsx
+import BentoGrid from "@/features/home/bento-grid1";
+import CallToAction from "@/features/home/call-to-action1";
+import Contact from "@/features/home/contact1";
+import FAQs from "@/features/home/faqs1";
+import Features from "@/features/home/features1";
+import Footer from "@/features/home/footer1";
+import Hero from "@/features/home/hero1";
+import Navigation from "@/features/home/navigation1";
+import { Pricing } from "@/features/home/shared/pricing";
+import Stats from "@/features/home/stats1";
+import Testimonials from "@/features/home/testimonials1";
+
+export default function Home() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navigation />
+      <main className="flex-1">
+        <Hero />
+        <Features />
+        <BentoGrid />
+        <Stats />
+        <Pricing />
+        <Testimonials />
+        <FAQs />
+        <Contact />
+        <CallToAction />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+```
+
+### 📸 Component Screenshots
+
+{/* Add images/screenshots of each component here for visual reference. Example: */}
+{/* ![Hero1 Screenshot](/images/frontend/hero1.png) */}
+
+---
+
+## Landing Page 2 (Alternative)
+
+```tsx
+import Navigation from "@/features/home/navigation2";
+import Hero from "@/features/home/hero2";
+import Features from "@/features/home/features2";
+import Stats from "@/features/home/stats2";
+import { Pricing } from "@/features/home/shared/pricing";
+import { Testimonials } from "@/features/home/testimonials2";
+import FAQs from "@/features/home/faqs2";
+import Footer from "@/features/home/footer2";
+import CallToAction from "@/features/home/call-to-action2";
+import Logos from "@/features/home/logos2";
+
+export default function Home() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navigation />
+      <main className="flex-1 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Hero />
+        <Features />
+        <Stats />
+        <Pricing />
+        <Testimonials />
+        <FAQs />
+        <Logos />
+        <CallToAction />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+```
+
+### 📸 Component Screenshots
+
+{/* Add images/screenshots of each component here for visual reference. Example: */}
+{/* ![Hero2 Screenshot](/images/frontend/hero2.png) */}
+
+---
+
+:::tip
+Mix and match any components from `@/features/home/` to create your own custom landing page.
+:::

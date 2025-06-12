@@ -54,13 +54,21 @@
           {
             "group": "Database",
             "pages": [
-              "database/index"
+              "database/index",
+              "database/cms-setup"
             ]
           },
           {
             "group": "Frontend",
             "pages": [
-              "frontend/index"
+              "frontend/index",
+              "frontend/getting-started",
+              "frontend/environment",
+              "frontend/landing-pages",
+              "frontend/components",
+              "frontend/cms-integration",
+              "frontend/customization",
+              "frontend/troubleshooting"
             ]
           },
           {

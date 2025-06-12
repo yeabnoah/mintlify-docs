@@ -1,4 +1,109 @@
 ---
-title: 'CMS Page'
-description: 'Preview changes locally to update your docs'
+title: "CMS Setup & Usage"
+description: "How to set up, configure, and use the Content Management System (CMS) in your project."
 ---
+
+# 🚀 Get Started with Your CMS
+
+Welcome to the **CMS** section of our project! 👋
+
+This guide will walk you through setting up the Content Management System (CMS). Out of the box, your CMS comes pre-configured with **Posts** and a **Privacy Policy**—so you can start managing content immediately. For instructions on running the rest of the project, please refer to the main documentation. Let's get your CMS up and running quickly.
+
+---
+
+## ⚡️ Setting Up the CMS
+
+1. **Install Dependencies**
+
+   ```bash
+   cd apps/cms
+   bun install # or: pnpm install
+   cp .env.example .env
+   ```
+
+2. **Set Up Your Database**
+
+   :::tip
+   The CMS requires a PostgreSQL database. We recommend [Supabase](https://app.supabase.com/) (free), but you can use any Postgres instance.
+   :::
+
+   - [Database setup instructions →](/database/cms-setup)
+
+3. **Configure Database Connection**
+
+   Open `.env` and set the `DATABASE_URL` to your Supabase or Postgres connection string.
+
+4. **Start the CMS**
+
+   ```bash
+   bun turbo run dev --filter cms
+   # or: pnpm turbo run dev --filter cms
+   ```
+
+5. **Access the CMS**
+
+   Open [http://localhost:3003](http://localhost:3003) in your browser.
+
+   Your CMS will be live on port 3003! 🎉
+
+---
+
+## 🛠 Prerequisites
+
+| Tool         | Purpose              | Check/Install Command         |
+|--------------|----------------------|------------------------------|
+| Node.js 18+  | Runs your app        | `node -v`                    |
+| Bun or pnpm  | Installs packages    | `bun -v` or `pnpm -v`        |
+| PostgreSQL   | Stores CMS data      | Use Supabase or local setup  |
+| Git          | Downloads codebase   | `git --version`              |
+
+*Need to install something? Get it here: [Node.js](https://nodejs.org/), [Bun](https://bun.sh/), [pnpm](https://pnpm.io/), [Supabase](https://supabase.com/).*
+
+---
+
+## ⚙️ CMS Configuration
+
+- Open `.env` in your code editor.
+- Set your `DATABASE_URL` to your database connection string.
+- For enhanced security, set `PAYLOAD_SECRET` to a random string. You can run the following command and paste the result in `PAYLOAD_SECRET`:
+
+  ```bash
+  openssl rand -hex 32
+  ```
+
+---
+
+## 🏁 Starting the CMS
+
+```bash
+bun turbo run dev --filter cms
+# or: pnpm turbo run dev --filter cms
+```
+
+Then, open [http://localhost:3003](http://localhost:3003) in your browser to access the CMS.
+
+---
+
+## 🧭 Next Steps
+
+- Log in or create an account to explore your CMS.
+- **Posts** and a **Privacy Policy** are already set up for you—just click into the relevant sections to view, edit, or add new content.
+- Want to add more pages, posts, or users?  
+  See the [Payload CMS Documentation](https://payloadcms.com/docs/) for more features and customization options.
+
+---
+
+## 🆘 Troubleshooting
+
+- **Database errors:**  
+  Double-check your `DATABASE_URL` in `.env` and ensure your database is running.
+
+- **Installation issues:**  
+  Confirm you have Node.js 18+ and either Bun or pnpm installed.
+
+- **Still need help?**  
+  Reach out on our [Discord](https://discord.com/invite/payload) or consult the [Payload FAQ](https://payloadcms.com/docs/faq).
+
+---
+
+**Ready to manage your content? Posts and a Privacy Policy are already waiting for you. Let's go! 🚀**

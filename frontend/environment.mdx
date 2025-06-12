@@ -1,0 +1,19 @@
+---
+title: "Environment Variables"
+description: "How to configure environment variables for the frontend."
+---
+
+# Environment Variables
+
+:::info
+The `@/web` app typically only requires public environment variables (prefixed with `NEXT_PUBLIC_`). For backend or sensitive variables, refer to the main project documentation or consult your backend team.
+:::
+
+- In most cases, you do **not** need to add custom `.env` variables for `@/web` unless integrating with external APIs or services directly from the frontend.
+- If needed, create a `.env.local` file in `apps/web/` and add variables such as:
+
+  ```env
+  NEXT_PUBLIC_API_URL=https://api.example.com
+  ```
+
+- For backend or advanced configuration, refer to the main environment guide ([see here](../ENV_GUIDE.md)).

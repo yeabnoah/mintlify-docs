@@ -1,0 +1,48 @@
+---
+title: "CMS & Content Integration"
+description: "How to integrate and use CMS/content features in the frontend."
+---
+
+# CMS & Content Integration
+
+The web app supports dynamic content through CMS integration and content components.
+
+---
+
+## CMS Service (`@/services/cms/cms.ts`)
+
+Provides utilities for fetching blog posts and privacy policy content.
+
+**Usage Example:**
+
+```ts
+import { cmsService } from "@/services/cms/cms";
+
+// Fetch latest blogs
+const blogs = await cmsService.blogs.getLatest(3);
+
+// Fetch privacy policy
+const policy = await cmsService.privacy.getPolicy();
+```
+
+---
+
+## Content Components (`@/features/content/`)
+
+- **Blog:** Render blog posts and lists.
+- **Privacy:** Render privacy policy content.
+- **Shared:** Typography, skeletons, and more.
+
+**Example:**
+
+```tsx
+import Blog from "@/features/content/blog/blog";
+<Blog post={post} />
+```
+
+---
+
+## Content Pages (`(content)/`)
+
+- **Blogs:** `/blogs` and `/blogs/[id]` for blog listings and detail pages.
+- **Privacy Policy:** `/privacy-policy` for privacy content.
