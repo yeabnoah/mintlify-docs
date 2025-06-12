@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "willow",
+  "name": "BetterBoileplate",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#f59e0b",
+    "light": "#f59e0b",
+    "dark": "#f59e0b"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -22,36 +22,53 @@
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Structure",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
+              "structure/index"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "AI",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "ai/index"
             ]
-          }
+          },
+          {
+            "group": "API",
+            "pages": [
+              "api-setup/index"
+            ]
+          },
+          {
+            "group": "Auth",
+            "pages": [
+              "auth/index"
+            ]
+          },
+          {
+            "group": "CMS",
+            "pages": [
+              "cms/index"
+            ]
+          },
+          {
+            "group": "Database",
+            "pages": [
+              "database/index"
+            ]
+          },
+          {
+            "group": "Frontend",
+            "pages": [
+              "frontend/index"
+            ]
+          },
+          {
+            "group": "SEO",
+            "pages": [
+              "seo/index"
+            ]
+          }          
         ]
       }
     ],
