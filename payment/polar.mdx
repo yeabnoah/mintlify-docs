@@ -71,6 +71,119 @@ export const auth = betterAuth({
 });
 ```
 
+## Webhook Handling
+
+```typescript
+import { webhooks } from "@polar-sh/better-auth";
+
+export const auth = betterAuth({
+  plugins: [
+    webhooks({
+      secret: process.env.POLAR_WEBHOOK_SECRET ||
+		(() => {
+			throw new Error("POLAR_WEBHOOK_SECRET environment variable is required",);})(),
+					onPayload: async ({ data, type }) => {
+						if (
+							type === "subscription.created" ||
+							type === "subscription.active" ||
+							type === "subscription.canceled" ||
+							type === "subscription.revoked" ||
+							type === "subscription.uncanceled" ||
+							type === "subscription.updated"
+						) {
+							console.log(
+								"🎯 Processing subscription webhook:",
+								type,
+							);
+							console.log(
+								"📦 Payload data:",
+								JSON.stringify(data, null, 2),
+							);
+
+							try {
+								const userId = data.customer?.externalId;
+
+								const subscriptionData = {
+									id: data.id,
+									provider: Provider.POLAR,
+									providerSubscriptionId: data.id,
+									providerCustomerId: data.customerId,
+									userId: userId as string,
+									plan: products.find(
+										(p) => p.productId === data.productId,
+									)?.slug ?? "default",
+									amount: data.amount,
+									currency: data.currency,
+									status: data.status,
+									cancelAtPeriodEnd: data.cancelAtPeriodEnd,
+									currentPeriodStart: new Date(
+										data.currentPeriodStart,
+									),
+									currentPeriodEnd: data.currentPeriodEnd
+										? new Date(data.currentPeriodEnd)
+										: undefined,
+									createdAt: new Date(data.createdAt),
+									updatedAt: data.modifiedAt
+										? new Date(data.modifiedAt)
+										: undefined,
+									metadata: data.metadata ?? {},
+								};
+
+								console.log("💾 Final subscription data:", {
+									id: subscriptionData.id,
+									status: subscriptionData.status,
+									userId: subscriptionData.userId,
+									amount: subscriptionData.amount,
+								});
+
+								console.log(
+									"🔍 Checking for existing subscription:",
+									data.id,
+								);
+								const existingSubscription = await prisma
+									.subscription.findUnique({
+										where: {
+											id: data.id,
+										},
+									});
+
+								if (existingSubscription) {
+									console.log(
+										"🔄 Updating existing subscription:",
+										data.id,
+									);
+									await prisma.subscription.update({
+										where: {
+											id: data.id,
+										},
+										data: subscriptionData,
+									});
+								} else {
+									console.log(
+										"🆕 Creating new subscription:",
+										data.id,
+									);
+									await prisma.subscription.create({
+										data: subscriptionData,
+									});
+								}
+
+								console.log(
+									"✅ Subscription processed:",
+									data.id,
+								);
+							} catch (error) {
+								console.error(
+									"💥 Error processing subscription webhook:",
+									error,
+								);
+							}
+						}
+					},
+				}),
+
+```
+
 ## Client-Side Configuration
 
 Set up the auth client with Polar support:
