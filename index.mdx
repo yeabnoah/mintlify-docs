@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: "Welcome to the home of your new documentation"
+description: "Welcome to the Ultimate Cursor AI Boilerplate - A production-ready, AI-powered Next.js template for modern SaaS applications"
 ---
 
 <img
@@ -14,58 +14,227 @@ description: "Welcome to the home of your new documentation"
   alt="Hero Dark"
 />
 
-## Setting up
+## 🚀 Overview
 
-The first step to world-class documentation is setting up your editing environments.
+The Ultimate Cursor AI Boilerplate is a production-ready, AI-powered Next.js template designed to accelerate the development of modern SaaS applications and web platforms. This boilerplate combines cutting-edge technologies with AI-powered workflows to provide developers with a robust foundation for rapid prototyping and production deployment.
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
+## ✨ Key Features
 
-## Make it yours
-
-Update your docs to your brand and add valuable content for the best user conversion.
+### 🎯 Core Technologies
 
 <CardGroup cols={2}>
   <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
+    title="Next.js 14+"
     icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
+    href="/docs/frontend"
   >
-    Automatically generate endpoints from an OpenAPI spec
+    Modern React applications with App Router
   </Card>
   <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/content/components/accordions"
+    title="Tailwind + shadcn/ui"
+    icon="palette"
+    href="/docs/frontend"
   >
-    Build interactive features and designs to guide your users
+    Beautiful, responsive UIs with consistent design
   </Card>
   <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
+    title="Supabase + Prisma"
+    icon="database"
+    href="/docs/database"
   >
-    Check out our showcase of our favorite documentation
+    Robust data management with Postgres
+  </Card>
+  <Card
+    title="tRPC + BetterAuth"
+    icon="shield"
+    href="/docs/backend"
+  >
+    Type-safe APIs and secure authentication
   </Card>
 </CardGroup>
+
+### 🛠️ Built-in Capabilities
+
+<CardGroup cols={2}>
+  <Card
+    title="AI Workflows"
+    icon="robot"
+    href="/docs/ai-workflows"
+  >
+    AI-powered product workflows and automation
+  </Card>
+  <Card
+    title="Admin Dashboard"
+    icon="chart-line"
+    href="/docs/admin"
+  >
+    Complete admin interface with analytics
+  </Card>
+  <Card
+    title="Payment Processing"
+    icon="credit-card"
+    href="/docs/payments"
+  >
+    Polar.sh with Stripe fallback integration
+  </Card>
+  <Card
+    title="SEO & Theming"
+    icon="paint-brush"
+    href="/docs/seo"
+  >
+    Built-in SEO optimization and dark mode
+  </Card>
+</CardGroup>
+
+## 🎯 Who Is This For?
+
+This boilerplate is perfect for:
+
+- Developers building AI-powered SaaS applications
+- Product teams prototyping new ideas
+- Founders launching MVPs quickly
+- Teams needing a production-ready starting point
+
+## 🏗️ Architecture
+
+The boilerplate follows a modern, scalable architecture:
+
+```bash
+/app           → Next.js App Router
+/components    → UI components (shadcn/custom)
+/server
+  └── api      → tRPC routers
+  └── auth     → BetterAuth handlers
+  └── db       → Prisma client + helpers
+/lib           → utils, constants, helpers
+/prisma        → schema.prisma
+/styles        → tailwind.css
+```
+
+## 🚀 Getting Started
+
+<CardGroup cols={2}>
+  <Card
+    title="Frontend Setup"
+    icon="code"
+    href="/docs/frontend"
+  >
+    Set up your Next.js frontend with Tailwind and shadcn/ui
+  </Card>
+  <Card
+    title="Backend Setup"
+    icon="server"
+    href="/docs/backend"
+  >
+    Configure tRPC, Prisma, and Supabase
+  </Card>
+  <Card
+    title="Authentication"
+    icon="key"
+    href="/docs/auth"
+  >
+    Set up BetterAuth for secure authentication
+  </Card>
+  <Card
+    title="Payments"
+    icon="credit-card"
+    href="/docs/payments"
+  >
+    Integrate Polar.sh and Stripe
+  </Card>
+</CardGroup>
+
+## 📚 Documentation
+
+<CardGroup cols={2}>
+  <Card
+    title="Architecture"
+    icon="sitemap"
+    href="/docs/architecture"
+  >
+    Detailed overview of the system architecture
+  </Card>
+  <Card
+    title="Development"
+    icon="code"
+    href="/docs/development"
+  >
+    Frontend and backend development guides
+  </Card>
+  <Card
+    title="Database"
+    icon="database"
+    href="/docs/database"
+  >
+    Database management and Prisma setup
+  </Card>
+  <Card
+    title="Example Projects"
+    icon="book"
+    href="/docs/examples"
+  >
+    Real-world examples and tutorials
+  </Card>
+</CardGroup>
+
+## 🔧 Development Workflow
+
+1. **Planning**: Review requirements and architecture
+2. **Development**: Use the provided templates and components
+3. **Testing**: Implement features with type safety
+4. **Deployment**: Deploy to Vercel with CI/CD
+
+## 🎨 UI/UX Features
+
+- Modern, responsive design
+- Dark mode by default
+- Accessible components
+- Consistent styling with shadcn/ui
+- Customizable themes
+
+## 🔐 Security Features
+
+- Type-safe API routes
+- Secure authentication
+- Protected API endpoints
+- Environment variable management
+- Database security best practices
+
+## 🚀 Deployment
+
+The boilerplate is optimized for deployment on Vercel with:
+
+- Automatic CI/CD
+- Environment variable management
+- Database migrations
+- API route optimization
+
+## 📈 Performance
+
+- Optimized for Core Web Vitals
+- Server-side rendering where appropriate
+- Efficient data fetching
+- Optimized images and assets
+- Type-safe API calls
+
+## 🤝 Contributing
+
+We welcome contributions! Please refer to our contribution guidelines for more information.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support, please:
+
+1. Check the documentation
+2. Review existing issues
+3. Create a new issue if needed
+
+---
+
+## Next Steps
+
+Ready to get started? Check out our [Frontend Setup](/docs/frontend) guide to begin your journey with the Ultimate Cursor AI Boilerplate.
