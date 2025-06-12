@@ -1,13 +1,15 @@
 ---
 title: 'AI Integration Overview'
-description: 'The Ultimate Boilerplate provides a powerful AI integration layer that makes it easy to build AI-powered features in your SaaS application. This documentation will guide you through setting up and using AI capabilities in your application.
+description: 'The BetterBoilerplate provides a powerful AI integration layer that makes it easy to build AI-powered features in your SaaS application. This documentation will guide you through setting up and using AI capabilities in your application.
 '
 ---
+
 
 ## Key Features
 
 - **Unified AI SDK**: Built on top of Vercel's AI SDK for consistent AI interactions
 - **OpenRouter Integration**: Access multiple LLMs through a single API
+- **Server Actions**: Type-safe AI operations with Next.js server actions
 - **Streaming Support**: Real-time AI responses with streaming capabilities
 - **Type Safety**: Full TypeScript support for AI operations
 - **RAG Support**: Built-in Retrieval Augmented Generation capabilities
@@ -19,8 +21,9 @@ description: 'The Ultimate Boilerplate provides a powerful AI integration layer 
 To start using AI features in your application:
 
 1. Set up your environment variables
-2. Configure [OpenRouter](https://openrouter.ai/docs)
-3. Use the [AI SDK](https://ai-sdk.dev/docs/introduction) components
+2. Configure OpenRouter
+3. Use the AI SDK components
+4. Implement server actions for AI operations
 
 ## Available AI Features
 
@@ -34,13 +37,15 @@ To start using AI features in your application:
 - RAG (Retrieval Augmented Generation)
 - Semantic search with embeddings
 - Custom model integration
+- Advanced streaming with progress tracking
+- Circuit breaker and retry patterns
 
 ## Architecture
 
 The AI integration follows a modular architecture:
 
 ```
-lib/
+lib/ai/
 ├── openrouter.ts     # OpenRouter client
 ├── sdk.ts           # AI SDK configuration
 ├── embeddings.ts    # Text embeddings
@@ -73,7 +78,9 @@ lib/
 
 ## Next Steps
 
-- [Setup Guide](../ai/setup)
-- [OpenRouter Integration](../ai/open-router)
-- [AI Components](../ai/components)
-- [Advanced Features](../ai/advanced) 
+- [Setup Guide](/docs/ai/setup)
+- [OpenRouter Integration](/docs/ai/openrouter)
+- [AI Components](/docs/ai/components)
+- [Server Actions](/docs/ai/server-actions)
+- [Use Cases](/docs/ai/use-cases)
+- [Advanced Features](/docs/ai/advanced) 
