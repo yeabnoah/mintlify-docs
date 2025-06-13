@@ -2,8 +2,6 @@
 title: Authentication Components
 ---
 
-# Authentication (`features/auth`)
-
 This module provides all authentication-related UI and logic for the boilerplate, including sign up, login, password reset, and forgot password flows. It is designed to work with BetterAuth and integrates with the rest of the app using React hooks, zod validation, and UI primitives from shadcn/ui.
 
 ## Overview
@@ -80,5 +78,5 @@ export default function SignupPage() {
 
 ## Extending
 - Add more providers by extending the social login/signup button logic.
-- Customize validation by editing the zod schemas in `@app/validators`.
+- Customize validation by editing the zod schemas in `@app/packages/validators`.
 - Adjust UI by modifying the shadcn/ui components or adding new ones.

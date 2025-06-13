@@ -1,0 +1,132 @@
+---
+title: Global Styles & Theming Overview
+---
+
+This guide gives you the essentials on how global styles and themes work in the **Ultimate Cursor AI Boilerplate**. We keep things simple, modern, and fully customizable.
+
+---
+
+## 🎯 Why `index.css` Exists
+
+Our `index.css` file:
+
+- Sets up **base styles** (font, spacing, resets)
+- Defines **design tokens** (colors, radii, fonts) as CSS variables
+- Enables **dark mode** with one toggle
+- Supports **custom animations** (like marquees)
+- Powers all Tailwind utility classes
+
+---
+
+## 🔧 How It Works (Core Concepts)
+
+### 1. Tailwind + Custom Layers
+
+We start by importing the basics:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css"; /* optional animations */
+````
+
+---
+
+### 2. CSS Variables (Design Tokens)
+
+Global theme variables live under `:root`, like:
+
+```css
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.27 0 0);
+  --primary: oklch(0.76 0.16 70);
+  --radius: 6px;
+  --font-sans: Inter, sans-serif;
+  .
+  .
+}
+```
+
+Then they’re reused like:
+
+```css
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+```
+or
+
+```tsx
+    <Button classes="bg-primary">
+    Click me
+    <Button/>
+```
+
+---
+
+### 3. Dark Mode = `.dark` Class
+
+Dark theme overrides the same variables:
+
+```css
+.dark {
+  --background: oklch(0.2 0 0);
+  --foreground: oklch(0.92 0 0);
+  .
+  .
+  .
+}
+```
+
+Just toggle the `.dark` class on `<html>` or `<body>`.
+
+---
+
+### 4. Custom Animations (Optional)
+
+Extras like marquee animations:
+
+```css
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.marquee {
+  animation: marquee 20s linear infinite;
+}
+```
+
+---
+
+## 💡 Want Your Own Theme?
+
+Use [TweakCN](https://tweakcn.com/ai?utm_source=chatgpt.com) to generate your own Tailwind-compatible themes. Just copy the variables into `:root` and `.dark` blocks.
+
+---
+
+## ✅ Component Example
+
+```tsx
+<div className="bg-background text-foreground p-6 rounded-lg shadow">
+  This adapts to your global theme!
+</div>
+```
+
+---
+
+## 🧠 Final Notes
+
+* Use `bg-*`, `text-*`, `shadow-*`—they all reflect your theme
+* All design tokens live in `index.css`
+* Tailwind config is extended to reference them
+* Dark mode? Just toggle `.dark`
+
+If you want to add or change your design system, start in `index.css`.
+
+---
+
+For more, check the [Tailwind theming docs](https://tailwindcss.com/docs/theme) or try [TweakCN](https://tweakcn.com/ai?utm_source=chatgpt.com) to craft your palette.
+

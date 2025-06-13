@@ -2,22 +2,17 @@
 title: "Component Library & Usage"
 ---
 
-## Table of Contents
-
-- [Component Structure](#component-structure)
-- [Home/Landing Components (`@/features`)](#homelanding-components-features)
-- [General & UI Components (`ui/`)](#general--ui-components-ui)
-- [Top-Level Components & Usage](#top-level-components-usage)
 
 ---
 
 > **Component Structure:**
 > - Most landing and feature components are in `@/features` (e.g., `@/features/home/`, `@/features/content/`).
 > - General-purpose, UI, and utility components are in `ui/` (e.g., `ui/button`, `ui/card`).
+> - Usecase Based Components are in `@/components/` (e.g., `pricing-selector`, `testimonialscarousel`).
 
 ---
 
-## Home/Landing Components (`@/features`)
+## Home/Landing Components (`@/features/home`)
 
 ### Hero Sections
 <img
@@ -35,9 +30,18 @@ title: "Component Library & Usage"
 import Hero from "@/features/home/hero1";
 <Hero />
 ```
-{/* ![Hero1 Screenshot](/images/hero1.png) */}
 
 ### Navigation
+<img
+  className="block dark:hidden"
+  src="/images/frontend/navigation1-light.png"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/frontend/navigation-dark.png"
+  alt="Hero Dark"
+/>
 
 ```tsx
 import Navigation from "@/features/home/navigation1";
@@ -157,7 +161,7 @@ Below are usage examples for each top-level component (not in `ui/` or any subfo
 />
 
 ```tsx
-import TestimonialsSingle from "testimonials-single";
+import TestimonialsSingle from "@/components/testimonials-single";
 <TestimonialsSingle />
 ```
 
@@ -169,7 +173,7 @@ import TestimonialsSingle from "testimonials-single";
 />
 
 ```tsx
-import { TestimonialsCarousel } from "testimonials-carousel";
+import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 <TestimonialsCarousel />
 ```
 
@@ -181,7 +185,7 @@ import { TestimonialsCarousel } from "testimonials-carousel";
 />
 
 ```tsx
-import AnimatedTestimonialsDemo from "testimonials-animated";
+import AnimatedTestimonialsDemo from "@/components/testimonials-animated";
 <AnimatedTestimonialsDemo />
 ```
 
@@ -193,7 +197,7 @@ import AnimatedTestimonialsDemo from "testimonials-animated";
 />
 
 ```tsx
-import { TestimonialSingle } from "testimonial-single";
+import { TestimonialSingle } from "@/components/testimonial-single";
 <TestimonialSingle />
 ```
 
@@ -205,7 +209,7 @@ import { TestimonialSingle } from "testimonial-single";
 />
 
 ```tsx
-import { TestimonialGrid } from "testimonial-grid";
+import { TestimonialGrid } from "@/components/testimonial-grid";
 <TestimonialGrid />
 ```
 
@@ -221,7 +225,7 @@ import { TestimonialGrid } from "testimonial-grid";
 />
 
 ```tsx
-import { PricingSelector } from "pricing-selector";
+import { PricingSelector } from "@/components/pricing-selector";
 <PricingSelector />
 ```
 
@@ -232,7 +236,7 @@ import { PricingSelector } from "pricing-selector";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import PricingPage from "pricing-with-modals";
+import PricingPage from "@/components/pricing-with-modals";
 <PricingPage />
 ```
 
@@ -243,7 +247,7 @@ import PricingPage from "pricing-with-modals";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import SimplePricing from "pricing copy";
+import SimplePricing from "@/components/pricing copy";
 <SimplePricing />
 ```
 
@@ -258,7 +262,7 @@ import SimplePricing from "pricing copy";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import { FeatureGrid } from "feature-grid";
+import { FeatureGrid } from "@/components/feature-grid";
 <FeatureGrid />
 ```
 
@@ -269,7 +273,7 @@ import { FeatureGrid } from "feature-grid";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import Feature3 from "features-circulated";
+import Feature3 from "@/components/features-circulated";
 <Feature3 />
 ```
 
@@ -280,7 +284,7 @@ import Feature3 from "features-circulated";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import BentoGrid from "features-bento-grid";
+import BentoGrid from "@/components/features-bento-grid";
 <BentoGrid />
 ```
 
@@ -291,7 +295,7 @@ import BentoGrid from "features-bento-grid";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import FeatureSteps from "features-accordion";
+import FeatureSteps from "@/components/features-accordion";
 <FeatureSteps />
 ```
 ---
@@ -329,18 +333,18 @@ import Footer from "@/components/footer";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import UsageDashboard from "team-switcher";
+import UsageDashboard from "@/components/team-switcher";
 <UsageDashboard />
 ```
 
 #### UsageMeter
 <img
   className="block "
-  src="/images/frontend/usagemeter.png"
-  alt="TestimonialsSingle Light"
+  src="/images/frontend/usemeter.png"
+  alt="Use Meter"
 />
 ```tsx
-import { UsageMeter } from "usage-meter";
+import { UsageMeter } from "@/components/usage-meter";
 <UsageMeter value={75} label="API Usage" quota="750/1000" />
 ```
 
@@ -355,7 +359,7 @@ import { UsageMeter } from "usage-meter";
   alt="TestimonialsSingle Light"
 />
 ```tsx
-import AIConversation from "ai-conversation";
+import AIConversation from "@/components/ai-conversation";
 <AIConversation />
 ```
 
@@ -384,7 +388,7 @@ import AIConversation from "@/components/ai-conversation";
 #### ResponseStream
 <img
   className="block "
-  src="/images/frontend/responsertream.png"
+  src="/images/frontend/responsestream.png"
   alt="TestimonialsSingle Light"
 />
 ```tsx
@@ -400,28 +404,28 @@ import { ResponseStream } from "@/components/response-stream";
 #### ButtonLead
 {/* ![ButtonLead Screenshot](/images/button-lead.png) */}
 ```tsx
-import { ButtonLead } from "button-lead";
+import { ButtonLead } from "@/components/button-lead";
 <ButtonLead label="Join Now" />
 ```
 
 #### Loader
 {/* ![Loader Screenshot](/images/loader.png) */}
 ```tsx
-import Loader from "loader";
+import Loader from "@/components/loader";
 <Loader />
 ```
 
 #### AppSidebar
 {/* ![AppSidebar Screenshot](/images/app-sidebar.png) */}
 ```tsx
-import AppSidebar from "app-sidebar";
+import AppSidebar from "@/components/app-sidebar";
 <AppSidebar />
 ```
 
 #### Providers
 {/* ![Providers Screenshot](/images/providers.png) */}
 ```tsx
-import Providers from "providers";
+import Providers from "@/components/providers";
 <Providers>{children}</Providers>
 ```
 

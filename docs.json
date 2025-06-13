@@ -111,7 +111,7 @@
           {
             "group": "Theme",
             "pages": [
-              "theme/theme"
+              "theme/index"
             ]
           }             
         ]
