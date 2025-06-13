@@ -90,8 +90,7 @@
           {
             "group": "Storage",
             "pages": [
-              "storage/index",
-              "storage/supabase-setup"
+              "storage/index"
             ]
           },
           {
