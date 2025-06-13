@@ -5,9 +5,13 @@ description: "How to configure environment variables for the frontend."
 
 # Environment Variables
 
-> **Info:** The `@/web` app typically only requires public environment variables (prefixed with `NEXT_PUBLIC_`). For backend or sensitive variables, refer to the main project documentation or consult your backend team.
+> **Info:** The `@/web` app typically only requires public environment variables (prefixed with `NEXT_PUBLIC_`). For backend or sensitive variables, refer to [Quickstart](/quickstart).
+ 
 
 - In most cases, you do **not** need to add custom `.env` variables for `@/web` unless integrating with external APIs or services directly from the frontend.
+
+> **Info:** If you want to add, you do **not** need to add custom `.env` variables for `@/web` unless integrating with external APIs or services directly from the frontend.
+
 - To set up environment variables, copy the `.env.example` file in `apps/web/` to a new file named `.env`:
   ```bash
   cp apps/web/.env.example apps/web/.env
@@ -15,12 +19,13 @@ description: "How to configure environment variables for the frontend."
 - Edit `.env` to include variables such as:
   ```env
       NEXT_PUBLIC_APP_URL=http://localhost:3001
-      NEXT_PUBLIC_API_URL=http://localhost:3000
+      NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+      PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
   ```
 
 - **Note:** If your CMS is running on a different route or port (by default it runs on [http://localhost:3003](http://localhost:3003)), you must set `PAYLOAD_PUBLIC_SERVER_URL` in your `.env` file to the correct URL. For example:
   ```env
-  PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
+  PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3004
   ```
 
-- For backend or advanced configuration, refer to the main environment guide.
+- For backend or advanced configuration, refer to the main environment [Guide](/quickstart).
