@@ -1,0 +1,276 @@
+---
+title: 'Supabase Storage'
+description: 'Learn how to use Supabase Storage for file uploads and management in your application.'
+---
+
+# Supabase Storage
+
+Supabase Storage provides a simple and secure way to store and serve files in your application. It's built on top of PostgreSQL and provides a RESTful API for file operations.
+
+## Features
+
+- File upload and download
+- Public and private buckets
+- File transformations
+- Image resizing
+- Access control
+- CDN integration
+
+## Setup
+
+### 1. Enable Storage in Supabase
+
+1. Go to your Supabase project dashboard
+2. Navigate to Storage in the sidebar
+3. Create a new bucket or use the default `public` bucket
+
+### 2. Configure Environment Variables
+
+Add these variables to your `.env` file:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 3. Install Dependencies
+
+```bash
+bun add @supabase/supabase-js
+```
+
+## Usage
+
+### Initialize Supabase Client
+
+```typescript
+// apps/web/src/lib/supabase.ts
+import { createClient } from '@supabase/supabase-js'
+
+export const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+```
+
+### File Upload
+
+```typescript
+// Example file upload function
+async function uploadFile(file: File, bucket: string = 'public') {
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(`uploads/${file.name}`, file)
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+```
+
+### File Download
+
+```typescript
+// Example file download function
+async function downloadFile(path: string, bucket: string = 'public') {
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .download(path)
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+```
+
+### Get Public URL
+
+```typescript
+// Get public URL for a file
+function getPublicUrl(path: string, bucket: string = 'public') {
+  const { data } = supabase.storage
+    .from(bucket)
+    .getPublicUrl(path)
+
+  return data.publicUrl
+}
+```
+
+### Delete File
+
+```typescript
+// Delete a file
+async function deleteFile(path: string, bucket: string = 'public') {
+  const { error } = await supabase.storage
+    .from(bucket)
+    .remove([path])
+
+  if (error) {
+    throw error
+  }
+}
+```
+
+## Bucket Management
+
+### Create Bucket
+
+```typescript
+// Create a new bucket
+async function createBucket(name: string, isPublic: boolean = false) {
+  const { data, error } = await supabase.storage
+    .createBucket(name, {
+      public: isPublic
+    })
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+```
+
+### List Files
+
+```typescript
+// List files in a bucket
+async function listFiles(bucket: string = 'public') {
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .list()
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+```
+
+## Security
+
+### Row Level Security (RLS)
+
+Enable RLS on your storage buckets to control access:
+
+```sql
+-- Example RLS policy for authenticated users
+CREATE POLICY "Authenticated users can upload files"
+ON storage.objects
+FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'public');
+
+-- Example RLS policy for public access
+CREATE POLICY "Public files are accessible to everyone"
+ON storage.objects
+FOR SELECT
+TO public
+USING (bucket_id = 'public');
+```
+
+### Access Control
+
+1. **Public Buckets**
+   - Files are publicly accessible
+   - Use for public assets like images
+   - No authentication required
+
+2. **Private Buckets**
+   - Files require authentication
+   - Use for user uploads
+   - Implement RLS policies
+
+## Best Practices
+
+1. **File Organization**
+   - Use meaningful folder structures
+   - Implement file naming conventions
+   - Clean up unused files
+
+2. **Security**
+   - Enable RLS on all buckets
+   - Validate file types
+   - Set file size limits
+   - Use private buckets for sensitive data
+
+3. **Performance**
+   - Use CDN for public files
+   - Implement caching strategies
+   - Optimize file sizes
+
+4. **Error Handling**
+   - Implement proper error handling
+   - Add retry logic for uploads
+   - Validate file operations
+
+## Common Use Cases
+
+1. **User Profile Images**
+   ```typescript
+   async function uploadProfileImage(userId: string, file: File) {
+     const path = `profiles/${userId}/${file.name}`
+     const { data, error } = await supabase.storage
+       .from('private')
+       .upload(path, file)
+
+     if (error) throw error
+     return data
+   }
+   ```
+
+2. **Document Storage**
+   ```typescript
+   async function uploadDocument(userId: string, file: File) {
+     const path = `documents/${userId}/${file.name}`
+     const { data, error } = await supabase.storage
+       .from('private')
+       .upload(path, file)
+
+     if (error) throw error
+     return data
+   }
+   ```
+
+3. **Public Assets**
+   ```typescript
+   async function uploadPublicAsset(file: File) {
+     const path = `assets/${file.name}`
+     const { data, error } = await supabase.storage
+       .from('public')
+       .upload(path, file)
+
+     if (error) throw error
+     return data
+   }
+   ```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Upload Failures**
+   - Check file size limits
+   - Verify bucket permissions
+   - Ensure proper authentication
+
+2. **Access Denied**
+   - Verify RLS policies
+   - Check user authentication
+   - Confirm bucket settings
+
+3. **Performance Issues**
+   - Use CDN for public files
+   - Implement caching
+   - Optimize file sizes
+
+## Additional Resources
+
+- [Supabase Storage Documentation](https://supabase.com/docs/guides/storage)
+- [Storage API Reference](https://supabase.com/docs/reference/javascript/storage)
+- [Storage Security](https://supabase.com/docs/guides/storage/security) 
