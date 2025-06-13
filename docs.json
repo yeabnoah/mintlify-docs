@@ -35,7 +35,8 @@
               "ai/index",
               "ai/setup",
               "ai/open-router",
-              "ai/components"
+              "ai/components",
+              "ai/ai"
             ]
           },
           {
