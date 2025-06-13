@@ -88,6 +88,13 @@
             ]
           },
           {
+            "group": "Storage",
+            "pages": [
+              "storage/index",
+              "storage/supabase-setup"
+            ]
+          },
+          {
             "group": "Frontend",
             "pages": [
               "frontend/index",
