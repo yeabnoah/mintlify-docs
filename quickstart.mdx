@@ -1,135 +1,265 @@
 ---
-title: 'Quick Start Guide'
-description: 'Get started with the Better Boilerplate in minutes'
+title: 'Quick Start'
+description: 'Spin up your BetterBoilerplate project in minutes with this step-by-step guide.'
 ---
 
-## 🚀 Prerequisites
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
-<CardGroup cols={2}>
-  <Card title="Bun 1.0+" icon="code">
-    Required for running the development environment
-  </Card>
-  <Card title="Git" icon="code-branch">
-    For version control and collaboration
-  </Card>
-  <Card title="Supabase Account" icon="database">
-    Required for database and authentication
-  </Card>
-  <Card title="Stripe Account" icon="credit-card">
-    Required for payment processing
-  </Card>
-</CardGroup>
+## Quick Start
 
-## ⚡ Quick Setup
+Spin up your BetterBoilerplate project in minutes with this step-by-step guide.
 
-### 1. Clone & Install
+---
 
-<CodeGroup>
-```bash bash
-git clone https://github.com/your-org/ultimate-cursor-ai-boilerplate.git
-cd ultimate-cursor-ai-boilerplate
-bun install
+### Prerequisites
+
+Ensure the following are installed:
+
+* [Bun](https://bun.sh) v1.0+
+* Git
+* [Node.js](https://nodejs.org/en) 18+ (if not using Bun)
+
+---
+
+### 1. Project Setup
+
+1. Clone the repository:
+   ```bash
+   # Using SSH
+   git clone git@github.com:Humanoidz-ai/ultimate-boilerplate-code.git
+   
+   # Or using HTTPS
+   git clone https://github.com/Humanoidz-ai/ultimate-boilerplate-code.git
+   ```
+-
+2. Navigate to the project directory:
+   ```bash
+   cd ultimate-cursor-ai-boilerplate
+   ```
+
+3. Install dependencies:
+   ```bash
+   bun install
+   ```
+
+---
+
+### 2. Environment Variables
+
+Create `.env` files from the examples:
+
+```bash
+cp apps/web/.env.example apps/web/.env
+cp apps/server/.env.example apps/server/.env
 ```
-</CodeGroup>
 
-### 2. Environment Setup
+**Frontend (`apps/web/.env`):**
 
-Create `.env` files in both `apps/web` and `apps/server` directories:
-
-#### Frontend [apps/web/.env]
 ```env
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3001
-
-NEXT_PUBLIC_POLAR_PRODUCT_ID=example_value // If you choose polar as payment provider
+PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
 ```
 
-#### Backend [apps/server/.env]
+**Backend (`apps/server/.env`):** See steps below to fill these in.
+
+---
+
+### 3. Supabase Setup
+
+1. Go to [Supabase](https://app.supabase.com)
+ ![Supabase](./images/quickstart/supabase_login.png)
+2. Create a new organization
+ ![Supabase](./images/quickstart/supabase_organization.png)
+3. Create a new project; keep the Database password since we'll use it later
+ ![Supabase](./images/quickstart/supabase_project.png)
+4. connect your project to the database click connect on the top center of the page
+ ![Supabase](./images/quickstart/supabase_dash.png)
+5. Copy:
+
+   * `Transaction pooler`
+   * `Session pooler`
+
+Add to `apps/server/.env` respectively: 
+
 ```env
-CORS_ORIGIN=http://localhost:3001
+DATABASE_URL=...
+DIRECT_URL=...
+```
+![Supabase](./images/quickstart/supabase_db.png)
+---
 
-BETTER_AUTH_SECRET=
+### 4. Authentication Setup
+
+BetterAuth requires a secure secret key for encrypting sessions and tokens. This secret should be unique per environment and never shared.
+
+**Generate Secret:**
+1. Open your terminal
+2. Run this command to create a cryptographically secure 32-byte hex string:
+
+copy the output and add to `apps/server/.env` respectively:
+
+```env
+BETTER_AUTH_SECRET=...
 BETTER_AUTH_URL=http://localhost:3000
-GOOGLE_GENERATIVE_AI_API_KEY=
-
-
-DATABASE_URL=
-DIRECT_URL=
-
-
-POLAR_ACCESS_TOKEN= // If you choose polar as payment provider
-POLAR_SUCCESS_URL= // If you choose polar as payment provider
-
-RESEND_API_KEY= // If you choose resend as email provider
-
-STRIPE_SECRET_KEY=
-
-STRIPE_WEBHOOK_SECRET=
-
-STRIPE_EXAMPLE_PRODUCT=
-
-OPENROUTER_API_KEY=
+CORS_ORIGIN=http://localhost:3001
 ```
 
-For detailed configuration of each feature, see the corresponding sections in Next Steps.
+**Google OAuth:**
 
-### 3. Database Setup
+1. Visit [Google Cloud Console](https://console.cloud.google.com)
+2. Create project → Enable "Google+ API"
+3. Set up OAuth credentials:
 
-```bash
-cd apps/server
-npx prisma generate
-npx prisma db push
+watch this video to set up google oauth:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-vq32dsK_TI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+   * Origins: `http://localhost:3000`, `http://localhost:3001`
+   * Redirect URI: `http://localhost:3000/api/auth/callback/google`
+
+
+4. Add to `apps/server/.env`:
+
+```env
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
 ```
 
-### 4. Start Development
+---
 
-<CodeGroup>
-```bash bun
-bun dev
+### 5. Email Setup (Resend)
+
+1. Visit [Resend](https://resend.com) → sign up
+2. Create API Key → Copy it
+ ![Resend](./images/quickstart/resend_api.png)
+ ![Resend](./images/quickstart/resend_api_key.png)
+ ![Resend](./images/quickstart/resend_api_copy.png)
+3. Add to `apps/server/.env`: 
+
+```env
+RESEND_API_KEY=re_... // paste the output here
 ```
-</CodeGroup>
 
-Visit `http://localhost:3001` for the frontend application.
+---
+
+### 6. Payment Setup
+
+1. Visit [Stripe](https://stripe.com) and login
+
+2. Enable Test Mode (create a new sandbox) for testing and local development
+
+   <img
+     className="block dark:hidden"
+     src="/images/quickstart/stripe_test.png"
+     alt="Stripe Test Mode Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_test.png"
+     alt="Stripe Test Mode Dark"
+   />
+
+3. Get your Secret Key (`sk_test_...`) and add it to `apps/server/.env`:
+   ```env
+   STRIPE_SECRET_KEY=...
+   ```
+
+   <img
+     className="block dark:hidden"
+     src="/images/quickstart/stripe_key.png"
+     alt="Stripe Secret Key Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_key.png"
+     alt="Stripe Secret Key Dark"
+   />
+
+4. Create a new product in Stripe:
+   - Go to Products → Add Product
+   - Set up your product details and pricing
+   - Copy the Price ID (starts with `price_`)
+   - Add to `apps/server/.env`:
+   ```env
+   STRIPE_TEST_PRODUCT=...
+   ```
+
+   <img
+     className="block dark:hidden"
+     src="/images/quickstart/stripe_product_1.png"
+     alt="Stripe Product 1 Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_product_1.png"
+     alt="Stripe Product 1 Dark"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_product_2.png"
+     alt="Stripe Product 2 Dark"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_product_2.png"
+     alt="Stripe Product 2 Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_product_3.png"
+     alt="Stripe Product 3 Dark"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_product_3.png"
+     alt="Stripe Product 3 Light"
+   />
+
+   > BetterAuth handles subscriptions by default, so webhooks are optional but can be added for custom functionality.
+
+5. (Optional) Set up a Stripe webhook:
+
+   a. Start ngrok tunnel:
+   ```bash
+   ngrok http 3000
+   ```
+
+   b. In Stripe Dashboard:
+   - Go to Developers → Webhooks → Add Endpoint
+   - Enter your ngrok URL as the endpoint URL
+   - Select relevant webhook events (or all events)
+   - Click "Add Endpoint" to save
+
+   <img
+     className="block dark:hidden"
+     src="/images/quickstart/stripe_endpoint.png"
+     alt="Stripe Endpoint Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_endpoint.png"
+     alt="Stripe Endpoint Dark"
+   />
+
+   c. Copy the Webhook Signing Secret and add to `apps/server/.env`:
+   ```env
+   STRIPE_WEBHOOK_SECRET=...
+   ```
+
+   <img
+     className="block dark:hidden"
+     src="/images/quickstart/stripe_secret_key_found.png"
+     alt="Stripe Webhook Secret Light"
+   />
+   <img
+     className="hidden dark:block"
+     src="/images/quickstart/stripe_secret_key_found.png"
+     alt="Stripe Webhook Secret Dark"
+   />
 
 
-### 4. Start Development
+---
 
-<CodeGroup>
-```bash bun
-bun dev
-```
-</CodeGroup>
-
-Visit `http://localhost:3001` for the frontend application.
-
-## 📚 Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Database Setup" icon="database" href="/database/index">
-    Configure Supabase and database settings
-  </Card>
-  <Card title="Authentication" icon="key" href="/auth/index">
-    Set up BetterAuth and OAuth providers
-  </Card>
-  <Card title="Payments" icon="credit-card" href="/payment/index">
-    Configure Stripe and payment processing
-  </Card>
-  <Card title="Email" icon="mail" href="/email/index">
-    Set up Resend for email functionality
-  </Card>
-</CardGroup>
-
-## 🆘 Need Help?
-
-<CardGroup cols={2}>
-  <Card title="Documentation" icon="book" href="/index">
-    Full documentation
-  </Card>
-  <Card title="GitHub Issues" icon="github" href="https://github.com/your-org/ultimate-cursor-ai-boilerplate/issues">
-    Report issues
-  </Card>
-</CardGroup>
-
-<Note>
-  For detailed information about any step, click the corresponding link in the Next Steps section.
-</Note>
+You're all set! 🚀
+Now run your app and start building with BetterBoilerplate.
