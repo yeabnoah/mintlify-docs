@@ -50,6 +50,7 @@ Create `.env` files from the examples:
 
 ```bash
 cp apps/web/.env.example apps/web/.env
+cp apps/cms/.env.example apps/cms/.env
 cp apps/server/.env.example apps/server/.env
 ```
 
@@ -59,6 +60,13 @@ cp apps/server/.env.example apps/server/.env
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3001
 PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
+```
+
+**CMS (`apps/cms/.env`):** See steps below to fill these in.
+
+```env
+PAYLOAD_SECRET=...
+DATABASE_URI=...
 ```
 
 **Backend (`apps/server/.env`):** See steps below to fill these in.
@@ -95,7 +103,11 @@ BetterAuth requires a secure secret key for encrypting sessions and tokens. This
 
 **Generate Secret:**
 1. Open your terminal
-2. Run this command to create a cryptographically secure 32-byte hex string:
+2. Run this command in your terminal to generate a random string:
+
+```bash
+openssl rand -hex 16
+```
 
 copy the output and add to `apps/server/.env` respectively:
 
@@ -162,7 +174,7 @@ RESEND_API_KEY=re_... // paste the output here
 
 3. Get your Secret Key (`sk_test_...`) and add it to `apps/server/.env`:
    ```env
-   STRIPE_SECRET_KEY=...
+   NEXT_PUBLIC_STRIPE_TEST_PRODUCT_PRICE=...
    ```
 
    <img
@@ -259,7 +271,69 @@ RESEND_API_KEY=re_... // paste the output here
    />
 
 
----
+  ### 7. .env for OpenRouter 
+  - go to https://openrouter.ai/settings/keys 
+  - create a new api key
+  - copy the api key and add to `apps/server/.env`
+
+  ```env
+  OPENROUTER_API_KEY=...
+  ```
+
+  <img
+    className="block dark:hidden"
+    src="/images/openRouter.png"
+    alt="OpenRouter API Key Light"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/images/openRouter.png"
+    alt="OpenRouter API Key Dark"
+  />
+
+  ### 8. Database Migration
+
+  Run these commands to set up your database schema:
+
+  ```bash
+  # Navigate to server directory
+  cd apps/server
+
+  # Generate Prisma client
+  bun prisma generate
+
+  # Create initial migration
+  bun prisma migrate dev --name init
+
+  # Push schema changes to database
+  bun prisma db push
+  ```
+
+  > Note: The migration will create your database tables based on the Prisma schema. The `db push` ensures all changes are applied.
+
+
+**CMS Setup Steps:**
+
+1. **Generate PAYLOAD_SECRET:**
+   ```bash
+   openssl rand -hex 32
+   ```
+   Copy the output and add to `PAYLOAD_SECRET=...`
+
+2. **Create Second Supabase Database for CMS:**
+   follow the steps in the [Supabase Setup](#3-supabase-setup) section to create a new project for the CMS.
+
+3. **Add to `apps/cms/.env`:**
+   ```env
+   DATABASE_URI=...
+   PAYLOAD_SECRET=...
+   ```
+
+> **Security Note:** Keep your `PAYLOAD_SECRET` secure and never commit it to version control. Use different databases for your main app and CMS to keep them isolated.
+
+
+  ---
 
 You're all set! 🚀
 Now run your app and start building with BetterBoilerplate.
