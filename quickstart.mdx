@@ -7,46 +7,96 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 ## Quick Start
 
-Spin up your BetterBoilerplate project in minutes with this step-by-step guide.
+Welcome to BetterBoilerplate! This guide will walk you through setting up your full-stack project step by step. 
+
+**What you'll be setting up:**
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
+    <div className="text-2xl mb-2">🌐</div>
+    <h3 className="font-semibold text-lg mb-1">Frontend</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Next.js web app</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+    <div className="text-2xl mb-2">🗄️</div>
+    <h3 className="font-semibold text-lg mb-1">Backend</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">API server</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
+    <div className="text-2xl mb-2">📝</div>
+    <h3 className="font-semibold text-lg mb-1">CMS</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Content management system</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+    <div className="text-2xl mb-2">🔐</div>
+    <h3 className="font-semibold text-lg mb-1">Authentication</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Google OAuth + email</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20">
+    <div className="text-2xl mb-2">💳</div>
+    <h3 className="font-semibold text-lg mb-1">Payments</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Stripe integration</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20">
+    <div className="text-2xl mb-2">📧</div>
+    <h3 className="font-semibold text-lg mb-1">Email</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Resend service</p>
+  </div>
+  
+  <div className="border rounded-lg p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20">
+    <div className="text-2xl mb-2">🤖</div>
+    <h3 className="font-semibold text-lg mb-1">AI</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">OpenRouter integration</p>
+  </div>
+</div>
+
+<Info>
+**Expected setup time:** 15-30 minutes depending on your familiarity with these services.
+</Info>
 
 ---
 
-### Prerequisites
+## Prerequisites
 
-Ensure the following are installed:
+Before you begin, make sure you have these installed:
 
-* [Bun](https://bun.sh) v1.0+
-* Git
+* [Bun](https://bun.sh) v1.0+ (JavaScript runtime)
+* [Git](https://git-scm.com/) (version control)
 * [Node.js](https://nodejs.org/en) 18+ (if not using Bun)
 
 ---
 
-### 1. Project Setup
+## Step 1: Project Setup
 
-1. Clone the repository:
+### 1.1 Clone & Install
+
+1. **Clone the repository:**
    ```bash
-   # Using SSH
+   # Using SSH (recommended)
    git clone git@github.com:Humanoidz-ai/ultimate-boilerplate-code.git
    
    # Or using HTTPS
    git clone https://github.com/Humanoidz-ai/ultimate-boilerplate-code.git
    ```
--
-2. Navigate to the project directory:
+
+2. **Navigate to the project:**
    ```bash
    cd ultimate-cursor-ai-boilerplate
    ```
 
-3. Install dependencies:
+3. **Install dependencies:**
    ```bash
    bun install
    ```
 
----
+### 1.2 Environment Files Setup
 
-### 2. Environment Variables
-
-Create `.env` files from the examples:
+Create environment files from the provided examples:
 
 ```bash
 cp apps/web/.env.example apps/web/.env
@@ -54,113 +104,137 @@ cp apps/cms/.env.example apps/cms/.env
 cp apps/server/.env.example apps/server/.env
 ```
 
-**Frontend (`apps/web/.env`):**
-
-```env
-NEXT_PUBLIC_SERVER_URL=http://localhost:3000
-NEXT_PUBLIC_APP_URL=http://localhost:3001
-PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
-```
-
-**CMS (`apps/cms/.env`):** See steps below to fill these in.
-
-```env
-PAYLOAD_SECRET=...
-DATABASE_URI=...
-```
-
-**Backend (`apps/server/.env`):** See steps below to fill these in.
+<Warning>
+**Important:** You'll fill in these environment variables in the following steps. Don't worry about the values for now.
+</Warning>
 
 ---
 
-### 3. Supabase Setup
+## Step 2: Database Setup (Supabase)
 
-1. Go to [Supabase](https://app.supabase.com)
- ![Supabase](./images/quickstart/supabase_login.png)
-2. Create a new organization
- ![Supabase](./images/quickstart/supabase_organization.png)
-3. Create a new project; keep the Database password since we'll use it later
- ![Supabase](./images/quickstart/supabase_project.png)
-4. connect your project to the database click connect on the top center of the page
- ![Supabase](./images/quickstart/supabase_dash.png)
-5. Copy:
+**What is Supabase?** It's your PostgreSQL database hosting service.
 
-   * `Transaction pooler`
-   * `Session pooler`
+### 2.1 Create Main Database
 
-Add to `apps/server/.env` respectively: 
+1. **Go to [Supabase](https://app.supabase.com)** and sign up/login
+   ![Supabase](./images/quickstart/supabase_login.png)
 
-```env
-DATABASE_URL=...
-DIRECT_URL=...
-```
-![Supabase](./images/quickstart/supabase_db.png)
----
+2. **Create a new organization**
+   ![Supabase](./images/quickstart/supabase_organization.png)
 
-### 4. Authentication Setup
+3. **Create a new project**
+   - Choose a name for your project
+   - **Important:** Save the database password - you'll need it later
+   ![Supabase](./images/quickstart/supabase_project.png)
 
-BetterAuth requires a secure secret key for encrypting sessions and tokens. This secret should be unique per environment and never shared.
+4. **Get your database connection strings:**
+   - Click "Connect" in the top center of your dashboard
+   ![Supabase](./images/quickstart/supabase_dash.png)
+   
+   - Copy both connection strings:
+     - **Transaction pooler** (for DATABASE_URL)
+     - **Session pooler** (for DIRECT_URL)
+   ![Supabase](./images/quickstart/supabase_db.png)
 
-**Generate Secret:**
-1. Open your terminal
-2. Run this command in your terminal to generate a random string:
+5. **Add to `apps/server/.env`:**
+   ```env
+   DATABASE_URL=your_transaction_pooler_url
+   DIRECT_URL=your_session_pooler_url
+   ```
 
-```bash
-openssl rand -hex 16
-```
+### 2.2 Create CMS Database
 
-copy the output and add to `apps/server/.env` respectively:
+**Why a separate database?** The CMS needs its own database to keep content separate from your main app data.
 
-```env
-BETTER_AUTH_SECRET=...
-BETTER_AUTH_URL=http://localhost:3000
-CORS_ORIGIN=http://localhost:3001
-```
-
-**Google OAuth:**
-
-1. Visit [Google Cloud Console](https://console.cloud.google.com)
-2. Create project → Enable "Google+ API"
-3. Set up OAuth credentials:
-
-watch this video to set up google oauth:
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-vq32dsK_TI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-   * Origins: `http://localhost:3000`, `http://localhost:3001`
-   * Redirect URI: `http://localhost:3000/api/auth/callback/google`
-
-
-4. Add to `apps/server/.env`:
-
-```env
-GOOGLE_CLIENT_ID=...
-GOOGLE_CLIENT_SECRET=...
-```
+1. **Create a second Supabase project** following the same steps above
+2. **Get the connection string** (you only need one this time)
+3. **Add to `apps/cms/.env`:**
+   ```env
+   DATABASE_URI=your_cms_database_url
+   ```
 
 ---
 
-### 5. Email Setup (Resend)
+## Step 3: Authentication Setup
 
-1. Visit [Resend](https://resend.com) → sign up
-2. Create API Key → Copy it
- ![Resend](./images/quickstart/resend_api.png)
- ![Resend](./images/quickstart/resend_api_key.png)
- ![Resend](./images/quickstart/resend_api_copy.png)
-3. Add to `apps/server/.env`: 
+**What is BetterAuth?** It handles user login/signup, sessions, and OAuth integrations.
 
-```env
-RESEND_API_KEY=re_... // paste the output here
-```
+### 3.1 Generate Authentication Secret
+
+1. **Generate a secure secret:**
+   ```bash
+   openssl rand -hex 16
+   ```
+
+2. **Add to `apps/server/.env`:**
+   ```env
+   BETTER_AUTH_SECRET=your_generated_secret
+   BETTER_AUTH_URL=http://localhost:3000
+   CORS_ORIGIN=http://localhost:3001
+   ```
+
+### 3.2 Google OAuth Setup
+
+**Why Google OAuth?** It allows users to sign in with their Google accounts.
+
+1. **Visit [Google Cloud Console](https://console.cloud.google.com)**
+
+2. **Create a new project** or select an existing one
+
+3. **Enable Google+ API:**
+   - Go to APIs & Services → Library
+   - Search for "Google+ API" and enable it
+
+4. **Set up OAuth credentials:**
+   - Go to APIs & Services → Credentials
+   - Create OAuth 2.0 Client ID
+   - Set these values:
+     - **Authorized JavaScript origins:** `http://localhost:3000`, `http://localhost:3001`
+     - **Authorized redirect URIs:** `http://localhost:3000/api/auth/callback/google`
+
+5. **Watch this helpful video for detailed setup:**
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/-vq32dsK_TI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+6. **Add to `apps/server/.env`:**
+   ```env
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   ```
 
 ---
 
-### 6. Payment Setup
+## Step 4: Email Service Setup (Resend)
 
-1. Visit [Stripe](https://stripe.com) and login
+**What is Resend?** It sends transactional emails like password resets and welcome emails.
 
-2. Enable Test Mode (create a new sandbox) for testing and local development
+### 4.1 Create Resend Account
 
+1. **Visit [Resend](https://resend.com)** and sign up
+2. **Create an API Key:**
+   - Go to API Keys section
+   - Click "Create API Key"
+   - Copy the key (starts with `re_`)
+   
+   ![Resend](./images/quickstart/resend_api.png)
+   ![Resend](./images/quickstart/resend_api_key.png)
+   ![Resend](./images/quickstart/resend_api_copy.png)
+
+3. **Add to `apps/server/.env`:**
+   ```env
+   RESEND_API_KEY=re_your_api_key
+   ```
+
+---
+
+## Step 5: Payment Setup (Stripe)
+
+**What is Stripe?** It handles all payment processing, subscriptions, and billing.
+
+### 5.1 Basic Stripe Setup
+
+1. **Visit [Stripe](https://stripe.com)** and login
+
+2. **Enable Test Mode** (toggle in top right)
    <img
      className="block dark:hidden"
      src="/images/quickstart/stripe_test.png"
@@ -172,11 +246,10 @@ RESEND_API_KEY=re_... // paste the output here
      alt="Stripe Test Mode Dark"
    />
 
-3. Get your Secret Key (`sk_test_...`) and add it to `apps/server/.env`:
-   ```env
-   NEXT_PUBLIC_STRIPE_TEST_PRODUCT_PRICE=...
-   ```
-
+3. **Get your Secret Key:**
+   - Go to Developers → API Keys
+   - Copy the Secret Key (starts with `sk_test_`)
+   
    <img
      className="block dark:hidden"
      src="/images/quickstart/stripe_key.png"
@@ -188,15 +261,14 @@ RESEND_API_KEY=re_... // paste the output here
      alt="Stripe Secret Key Dark"
    />
 
-4. Create a new product in Stripe:
-   - Go to Products → Add Product
-   - Set up your product details and pricing
-   - Copy the Price ID (starts with `price_`)
-   - Add to `apps/server/.env`:
-   ```env
-   STRIPE_TEST_PRODUCT=...
-   ```
+### 5.2 Create a Product
 
+1. **Go to Products → Add Product**
+2. **Set up your product details:**
+   - Name (e.g., "Pro Subscription")
+   - Price (e.g., $9.99/month)
+   - Currency (USD)
+   
    <img
      className="block dark:hidden"
      src="/images/quickstart/stripe_product_1.png"
@@ -207,42 +279,30 @@ RESEND_API_KEY=re_... // paste the output here
      src="/images/quickstart/stripe_product_1.png"
      alt="Stripe Product 1 Dark"
    />
-   <img
-     className="hidden dark:block"
-     src="/images/quickstart/stripe_product_2.png"
-     alt="Stripe Product 2 Dark"
-   />
-   <img
-     className="hidden dark:block"
-     src="/images/quickstart/stripe_product_2.png"
-     alt="Stripe Product 2 Light"
-   />
-   <img
-     className="hidden dark:block"
-     src="/images/quickstart/stripe_product_3.png"
-     alt="Stripe Product 3 Dark"
-   />
-   <img
-     className="hidden dark:block"
-     src="/images/quickstart/stripe_product_3.png"
-     alt="Stripe Product 3 Light"
-   />
 
-   > BetterAuth handles subscriptions by default, so webhooks are optional but can be added for custom functionality.
+3. **Copy the Price ID** (starts with `price_`)
 
-5. (Optional) Set up a Stripe webhook:
+4. **Add to `apps/server/.env`:**
+   ```env
+   STRIPE_SECRET_KEY=sk_test_your_secret_key
+   STRIPE_TEST_PRODUCT=price_your_price_id
+   ```
 
-   a. Start ngrok tunnel:
+### 5.3 Webhook Setup (Optional but Recommended)
+
+**Why webhooks?** They notify your app when payments succeed or fail.
+
+1. **Install ngrok** (for local development):
    ```bash
+   # Follow instructions at https://ngrok.com/
    ngrok http 3000
    ```
 
-   b. In Stripe Dashboard:
+2. **In Stripe Dashboard:**
    - Go to Developers → Webhooks → Add Endpoint
-   - Enter your ngrok URL as the endpoint URL
-   - Select relevant webhook events (or all events)
-   - Click "Add Endpoint" to save
-
+   - Enter your ngrok URL: `https://your-ngrok-url.ngrok.io/api/webhooks/stripe`
+   - Select events or choose "Send all events"
+   
    <img
      className="block dark:hidden"
      src="/images/quickstart/stripe_endpoint.png"
@@ -254,86 +314,254 @@ RESEND_API_KEY=re_... // paste the output here
      alt="Stripe Endpoint Dark"
    />
 
-   c. Copy the Webhook Signing Secret and add to `apps/server/.env`:
+3. **Copy the Webhook Signing Secret and add to `apps/server/.env`:**
    ```env
-   STRIPE_WEBHOOK_SECRET=...
+   STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
    ```
 
-   <img
-     className="block dark:hidden"
-     src="/images/quickstart/stripe_secret_key_found.png"
-     alt="Stripe Webhook Secret Light"
-   />
-   <img
-     className="hidden dark:block"
-     src="/images/quickstart/stripe_secret_key_found.png"
-     alt="Stripe Webhook Secret Dark"
-   />
+---
 
+## Step 6: AI Integration (OpenRouter)
 
-  ### 7. .env for OpenRouter 
-  - go to https://openrouter.ai/settings/keys 
-  - create a new api key
-  - copy the api key and add to `apps/server/.env`
+**What is OpenRouter?** It provides access to multiple AI models through a single API.
 
-  ```env
-  OPENROUTER_API_KEY=...
-  ```
+### 6.1 Get OpenRouter API Key
 
-  <img
-    className="block dark:hidden"
-    src="/images/openRouter.png"
-    alt="OpenRouter API Key Light"
-  />
+1. **Go to [OpenRouter](https://openrouter.ai/settings/keys)**
+2. **Create a new API key**
+3. **Copy the API key**
 
-  <img
-    className="hidden dark:block"
-    src="/images/openRouter.png"
-    alt="OpenRouter API Key Dark"
-  />
+<img
+  className="block dark:hidden"
+  src="/images/openRouter.png"
+  alt="OpenRouter API Key Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/openRouter.png"
+  alt="OpenRouter API Key Dark"
+/>
 
-  ### 8. Database Migration
+4. **Add to `apps/server/.env`:**
+   ```env
+   OPENROUTER_API_KEY=your_openrouter_api_key
+   ```
 
-  Run these commands to set up your database schema:
+---
 
-  ```bash
-  # Navigate to server directory
-  cd apps/server
+## Step 7: CMS Secret Generation
 
-  # Generate Prisma client
-  bun prisma generate
+**What is the CMS?** It's your content management system for blog posts, pages, etc.
 
-  # Create initial migration
-  bun prisma migrate dev --name init
+### 7.1 Generate CMS Secret
 
-  # Push schema changes to database
-  bun prisma db push
-  ```
-
-  > Note: The migration will create your database tables based on the Prisma schema. The `db push` ensures all changes are applied.
-
-
-**CMS Setup Steps:**
-
-1. **Generate PAYLOAD_SECRET:**
+1. **Generate a secure secret:**
    ```bash
    openssl rand -hex 32
    ```
-   Copy the output and add to `PAYLOAD_SECRET=...`
 
-2. **Create Second Supabase Database for CMS:**
-   follow the steps in the [Supabase Setup](#3-supabase-setup) section to create a new project for the CMS.
-
-3. **Add to `apps/cms/.env`:**
+2. **Add to `apps/cms/.env`:**
    ```env
-   DATABASE_URI=...
-   PAYLOAD_SECRET=...
+   PAYLOAD_SECRET=your_generated_cms_secret
    ```
 
-> **Security Note:** Keep your `PAYLOAD_SECRET` secure and never commit it to version control. Use different databases for your main app and CMS to keep them isolated.
+---
 
+## Step 8: Frontend Configuration
 
-  ---
+**Configure the frontend app** to connect to your backend services.
 
-You're all set! 🚀
-Now run your app and start building with BetterBoilerplate.
+### 8.1 Frontend Environment Variables
+
+**Add to `apps/web/.env`:**
+```env
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3001
+PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
+```
+
+---
+
+## Step 9: Database Migration
+
+**Set up your database tables** using Prisma (database toolkit).
+
+### 9.1 Run Database Setup
+
+```bash
+# Navigate to server directory
+cd apps/server
+
+# Generate Prisma client (creates database connection code)
+bun prisma generate
+
+# Create initial migration (sets up database structure)
+bun prisma migrate dev --name init
+
+# Push schema changes to database (applies the structure)
+bun prisma db push
+```
+
+<Info>
+**What these commands do:**
+- `prisma generate`: Creates the database client code
+- `prisma migrate dev`: Creates and applies database migrations
+- `prisma db push`: Ensures all schema changes are applied
+</Info>
+
+---
+
+## Step 10: Launch Your App! 🚀
+
+### 10.1 Start All Services
+
+Since this is a **turborepo** project, you can start all services with a single command:
+
+```bash
+# From the root directory
+bun dev
+```
+
+This will automatically start:
+- **Backend Server** on port 3000
+- **Frontend App** on port 3001  
+- **CMS** on port 3003
+
+<Info>
+**Turborepo Magic:** The `bun dev` command runs all three services in parallel automatically. You'll see logs from all services in one terminal window.
+</Info>
+
+### 10.2 Alternative: Individual Services
+
+If you prefer to run services separately (for debugging or development), you can use individual terminals:
+
+<details>
+<summary>Click to see individual terminal commands</summary>
+
+**Terminal 1 - Backend Server:**
+```bash
+cd apps/server
+bun dev
+```
+
+**Terminal 2 - Frontend App:**
+```bash
+cd apps/web
+bun dev
+```
+
+**Terminal 3 - CMS:**
+```bash
+cd apps/cms
+bun dev
+```
+
+</details>
+
+### 10.3 Access Your Apps
+
+- **Frontend:** http://localhost:3001
+- **Backend API:** http://localhost:3000
+- **CMS:** http://localhost:3003
+
+---
+
+## Environment Variables Summary
+
+Here's a complete overview of all the environment variables you should have configured:
+
+<Tabs defaultValue="server">
+  <TabsList>
+    <TabsTrigger value="server">Server (.env)</TabsTrigger>
+    <TabsTrigger value="web">Web (.env)</TabsTrigger>
+    <TabsTrigger value="cms">CMS (.env)</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="server">
+    ```env
+    # Database
+    DATABASE_URL=your_supabase_transaction_pooler_url
+    DIRECT_URL=your_supabase_session_pooler_url
+
+    # Authentication
+    BETTER_AUTH_SECRET=your_generated_secret
+    BETTER_AUTH_URL=http://localhost:3000
+    CORS_ORIGIN=http://localhost:3001
+
+    # Google OAuth
+    GOOGLE_CLIENT_ID=your_google_client_id
+    GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+    # Email
+    RESEND_API_KEY=re_your_api_key
+
+    # Payments
+    STRIPE_SECRET_KEY=sk_test_your_secret_key
+    STRIPE_TEST_PRODUCT=price_your_price_id
+    STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+    # AI
+    OPENROUTER_API_KEY=your_openrouter_api_key
+    ```
+  </TabsContent>
+
+  <TabsContent value="web">
+    ```env
+    NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+    NEXT_PUBLIC_APP_URL=http://localhost:3001
+    PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
+    ```
+  </TabsContent>
+
+  <TabsContent value="cms">
+    ```env
+    DATABASE_URI=your_cms_supabase_url
+    PAYLOAD_SECRET=your_generated_cms_secret
+    ```
+  </TabsContent>
+</Tabs>
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**🔥 "Database connection failed"**
+- Double-check your Supabase connection strings
+- Ensure your database is running
+- Verify you copied the correct pooler URLs
+
+**🔥 "Authentication not working"**
+- Make sure your Google OAuth URLs are correct
+- Check that your BETTER_AUTH_SECRET is properly set
+- Verify Google+ API is enabled
+
+**🔥 "Payments not processing"**
+- Ensure you're in Stripe test mode
+- Check that your webhook endpoint is correct
+- Verify your product price ID is accurate
+
+**🔥 "Port already in use"**
+- Kill existing processes: `lsof -ti:3000 | xargs kill -9`
+- Or use different ports in your environment variables
+
+### Getting Help
+
+- **Documentation:** Check the individual service docs
+- **Community:** Join our Discord for support
+- **Issues:** Report bugs on GitHub
+
+---
+
+## Next Steps
+
+🎉 **Congratulations!** Your BetterBoilerplate is now running. Here's what you can do next:
+
+1. **Customize the frontend** - Edit components in `apps/web/src/components`
+2. **Add API endpoints** - Create new routes in `apps/server/src/routes`
+3. **Configure CMS** - Add content types in `apps/cms/src/collections`
+4. **Set up production** - Deploy to Vercel, Railway, or your preferred platform
+5. **Add features** - Extend with additional integrations and functionality
+
+**Happy building!** 🚀
