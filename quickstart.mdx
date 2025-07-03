@@ -11,49 +11,14 @@ Welcome to BetterBoilerplate! This guide will walk you through setting up your f
 
 **What you'll be setting up:**
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
-    <div className="text-2xl mb-2">🌐</div>
-    <h3 className="font-semibold text-lg mb-1">Frontend</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">Next.js web app</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
-    <div className="text-2xl mb-2">🗄️</div>
-    <h3 className="font-semibold text-lg mb-1">Backend</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">API server</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
-    <div className="text-2xl mb-2">📝</div>
-    <h3 className="font-semibold text-lg mb-1">CMS</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">Content management system</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
-    <div className="text-2xl mb-2">🔐</div>
-    <h3 className="font-semibold text-lg mb-1">Authentication</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">Google OAuth + email</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20">
-    <div className="text-2xl mb-2">💳</div>
-    <h3 className="font-semibold text-lg mb-1">Payments</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">Stripe integration</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20">
-    <div className="text-2xl mb-2">📧</div>
-    <h3 className="font-semibold text-lg mb-1">Email</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">Resend service</p>
-  </div>
-  
-  <div className="border rounded-lg p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20">
-    <div className="text-2xl mb-2">🤖</div>
-    <h3 className="font-semibold text-lg mb-1">AI</h3>
-    <p className="text-sm text-gray-600 dark:text-gray-400">OpenRouter integration</p>
-  </div>
-</div>
+- **🌐 Frontend** - Next.js web application
+- **🗄️ Backend** - Express API server  
+- **📝 CMS** - Content management system
+- **🔐 Authentication** - Google OAuth + email login
+- **💳 Payments** - Stripe integration
+- **📧 Email** - Resend service
+- **🤖 AI** - OpenRouter integration
+- **🗃️ Database** - PostgreSQL with Supabase
 
 <Info>
 **Expected setup time:** 15-30 minutes depending on your familiarity with these services.
@@ -390,16 +355,16 @@ PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3003
 
 ```bash
 # Navigate to server directory
-cd apps/server
+cd apps
 
 # Generate Prisma client (creates database connection code)
-bun prisma generate
+bun run db:generate
 
 # Create initial migration (sets up database structure)
-bun prisma migrate dev --name init
+bun run db:migrate
 
 # Push schema changes to database (applies the structure)
-bun prisma db push
+bun run db:push   
 ```
 
 <Info>

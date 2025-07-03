@@ -1,0 +1,102 @@
+---
+title: "Theme Customization"
+description: "Learn how to customize and extend the theme in your BetterBoilerplate application"
+---
+
+# Theme Customization
+
+Customize the visual appearance and behavior of your BetterBoilerplate application.
+
+## Overview
+
+The theme system allows you to:
+- Customize colors and branding
+- Modify component styles
+- Create custom themes
+- Implement dark/light mode
+
+## Color Customization
+
+### Primary Colors
+```css
+:root {
+  --primary: #f59e0b;
+  --primary-foreground: #ffffff;
+}
+```
+
+### Theme Variables
+```css
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+}
+```
+
+## Component Theming
+
+### Button Variants
+```tsx
+const buttonVariants = {
+  default: "bg-primary text-primary-foreground",
+  secondary: "bg-secondary text-secondary-foreground",
+  outline: "border border-input"
+}
+```
+
+### Custom Components
+```tsx
+// Create themed components
+export const ThemedButton = ({ children, ...props }) => {
+  return (
+    <button 
+      className="theme-button"
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+```
+
+## Dark Mode
+
+### Implementation
+```tsx
+import { useTheme } from 'next-themes'
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      Toggle Theme
+    </button>
+  )
+}
+```
+
+## Custom Themes
+
+Create your own theme configurations:
+
+```tsx
+const customTheme = {
+  colors: {
+    primary: '#your-color',
+    secondary: '#your-secondary'
+  },
+  fonts: {
+    heading: 'Your-Font',
+    body: 'Your-Body-Font'
+  }
+}
+```
+
+## Next Steps
+
+- Check out the [Components](/frontend/components) for themed UI elements
+- Learn about [Customization](/frontend/customization) for advanced styling
+- Explore [Frontend Setup](/frontend/index) for theme integration
